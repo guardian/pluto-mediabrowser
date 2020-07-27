@@ -6,6 +6,11 @@ import xml.etree.cElementTree as ET
 
 
 def get_group_name(root_node):
+    """
+    extracts the main name of the metadata group from the provided xml document.
+    :param root_node:
+    :return:
+    """
     name_node = root_node.find("{http://xml.vidispine.com/schema/vidispine}name")
     if name_node is None:
         raise Exception("Could not find a name node in the document")
@@ -14,8 +19,9 @@ def get_group_name(root_node):
     else:
         raise Exception("Name node was empty")
 
+
 ###START MAIN
-parser = ArgumentParser(description="Deploy the given XML to Vidispine")
+parser = ArgumentParser(description="Deploy the given metadata definition XML to Vidispine")
 parser.add_argument('--proto',type=str,help="http or https", default="http")
 parser.add_argument('--host',type=str,help="Host that vidispine is running on", default="localhost")
 parser.add_argument('--port',type=int,help="port that Vidisine is running on", default=8080)
