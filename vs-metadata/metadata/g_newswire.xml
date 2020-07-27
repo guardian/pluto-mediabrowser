@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MetadataFieldGroupDocument xmlns="http://xml.vidispine.com/schema/vidispine">
+    <name>Newswire</name>
+    <field>
+        <name>gnm_newswire_provider</name>
+        <schema min="1" max="1" name="gnm_newswire_provider"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Newswire provider", "readonly":"true","type":"lookup"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_description</name>
+        <schema min="0" max="1" name="gnm_description"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Description", "readonly":"true","type":"textarea"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_newswire_provider_id</name>
+        <schema min="0" max="1" name="gnm_newswire_provider_id"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>256</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Provider's ID", "readonly":"true","type":"string"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_copyright</name>
+        <schema min="0" max="1" name="gnm_copyright"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Copyright information", "readonly":"false","type":"textarea"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_location</name>
+        <schema min="0" max="1" name="gnm_location"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Filming Location", "readonly":"false","type":"string"}</value>
+        </data>
+    </field>
+</MetadataFieldGroupDocument>
