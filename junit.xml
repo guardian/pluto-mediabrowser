@@ -1,0 +1,8 @@
+<testsuites name="jest tests" tests="2" failures="0" time="6.715">
+  <testsuite name="validateAndDecode" errors="0" failures="0" skipped="0" timestamp="2020-06-23T15:57:09" time="1.143" tests="2">
+    <testcase classname="validateAndDecode should decode an example jwt" name="validateAndDecode should decode an example jwt" time="0.007">
+    </testcase>
+    <testcase classname="validateAndDecode should reject if the jwt is not valid" name="validateAndDecode should reject if the jwt is not valid" time="0.015">
+    </testcase>
+  </testsuite>
+</testsuites>

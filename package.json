@@ -1,0 +1,71 @@
+{
+  "name": "pluto-logtool",
+  "version": "1.0.0",
+  "description": "GNM's basic job browsing interface for VS",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --runInBand --verbose",
+    "dev": "webpack -d --watch",
+    "compile": "webpack -p"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "testResultsProcessor": "jest-junit",
+    "setupFiles": [
+      "./jestSetup.jsx"
+    ]
+  },
+  "author": "Andy Gallagher <andy.gallagher@theguardian.com>",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-function-bind": "^7.7.4",
+    "@babel/plugin-transform-react-jsx": "^7.7.7",
+    "babel-core": "^7.0.0-bridge.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "expect": "^24.9.0",
+    "jest": "^24.8.0",
+    "jest-cli": "^24.8.0",
+    "jest-fetch-mock": "^3.0.1",
+    "jest-junit": "^4.0.0",
+    "react-test-renderer": "^16.12.0",
+    "sinon": "^2.3.7",
+    "terser-webpack-plugin": "^1.4.3"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/preset-stage-0": "^7.0.0",
+    "@babel/preset-stage-2": "^7.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-brands-svg-icons": "^5.12.0",
+    "@fortawesome/free-regular-svg-icons": "^5.12.0",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
+    "babel-loader": "^8.0.5",
+    "cross-storage": "^1.0.0",
+    "css-loader": "^2.1.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.20.1",
+    "moment-duration-format": "2.2.2",
+    "moment-timezone": "^0.5.29",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1",
+    "react-select": "^3.1.0",
+    "react-tooltip": "^3.11.2",
+    "reactjs-popup": "^1.5.0",
+    "recharts": "^1.8.5",
+    "style-loader": "^0.20.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "license": "ISC"
+}
