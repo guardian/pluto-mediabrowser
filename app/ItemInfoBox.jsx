@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Link, Route, Switch, Redirect, withRouter} from 'react-router-dom';
-import StatusFormatter from './StatusFormatter.jsx';
-import TypeFormatter from './TypeFormatter.jsx';
-import PriorityFormatter from './PriorityFormatter.jsx';
 import moment from 'moment';
 
 class ItemInfoBox extends React.Component {
@@ -23,35 +20,6 @@ class ItemInfoBox extends React.Component {
     }
   }
 
-  returnStatusForCSS(status) {
-    // Accepts a status. If the status has a special CSS statement with a custom background colour, return the name of the correct CSS statement. If not return the name of the CSS statement for normal job boxes.
-    if (status == 'FAILED_TOTAL') {
-      return "job_box_failed";
-    }
-    if (status == 'FINISHED') {
-      return "job_box_finished";
-    }
-    if (status == 'FINISHED_WARNING') {
-      return "job_box_warning";
-    }
-    if (status == 'ABORTED') {
-      return "job_box_aborted";
-    }
-    return "job_box_normal";
-  }
-
-  displayTime(input) {
-    if (input == 'Unknown') {
-      return input;
-    } else {
-      var d = Number(parseInt(input));
-      var h = Math.floor(d / 3600);
-      var m = Math.floor(d % 3600 / 60);
-      var s = Math.floor(d % 3600 % 60);
-      return h + ":" + ('0'  + m).slice(-2) + ":" +  ('0'  + s).slice(-2);
-    }
-  }
-
   getValue(data,findthis) {
     for (let [key, value] of Object.entries(data)) {
       if (findthis == value.name) {
@@ -67,20 +35,15 @@ class ItemInfoBox extends React.Component {
     var img = new Image();
     const scope = this
     img.onload = function() {
-      //alert(this.width + 'x' + this.height);
       scope.setState({
         imageWidth: this.width,
         imageHeight: this.height
       },() => {
-        //this.clearSelections();
-        //this.getJobDataWrapper();
+
       });
     }
     const imageURL = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "representativeThumbnailNoAuth");
     img.src = this.props.vidispineHost + imageURL;
-    //const imageURL = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "representativeThumbnailNoAuth");
-    //var image = require("image-size!" + this.props.vidispineHost + imageURL);
-    //console.log(image);
   }
 
   returnImageDimensions() {
@@ -91,7 +54,6 @@ class ItemInfoBox extends React.Component {
   }
 
 render() {
-  //const stepNumber = this.props.jobData.hasOwnProperty("currentStep") ? this.props.jobData.currentStep.number : 0;
   const fileName = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "originalFilename");
   const created = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "created");
   const thumbNail = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "representativeThumbnailNoAuth");

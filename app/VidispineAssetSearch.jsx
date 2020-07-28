@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select'
 import ItemInfoBox from './ItemInfoBox.jsx';
 import PieChartBox from './PieChartBox.jsx';
-import Popup from "reactjs-popup";
 
 class VidispineAssetSearch extends Component {
 
@@ -21,256 +19,17 @@ class VidispineAssetSearch extends Component {
         entry: [],
         facet: []
       },
-      pageNumber: 1,
-      pageSize: 16,
-      selectedOption: null,
-      selectedOptionType: null,
-      button: 1,
-      autoRefresh: true,
-      selectAllSwitch: false,
-      open: false,
-      sortDirection: 'desc',
-      sortBy: 'jobId',
-      sixteenGrey: false,
-      thirtyTwoGrey: true,
-      sixtyFourGrey: true,
-      oneHundredAndTwentyEightGrey: true,
       searchType: 'all',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChangeValue = e => {
-    this.setState({
-      ['value'+e.target.name]: e.target.checked,
-      ['id'+e.target.name]: e.target.id,
-      autoRefresh: false
-    });
   }
 
   setStatePromise(newState) {
     return new Promise((resolve,reject)=>this.setState(newState, ()=>resolve()));
   }
 
-  async getJobData(endpoint) {
-    const headers = new Headers();
-    const encodedString = new Buffer(this.props.username + ":" + this.props.password).toString('base64');
-    const url = this.props.vidispine_host + "/API/" + endpoint;
-    await this.setStatePromise({loading: true});
-    const result = await fetch(url, {headers: {Accept: "application/json", Authorization: "Basic " + encodedString}});
-
-    switch(result.status) {
-    case 200:
-      const returnedData = await result.json();
-      return this.setStatePromise({loading: false, vidispineData: returnedData});
-    default:
-      const errorContent = await result.text();
-      return this.setStatePromise({loading: false, lastError: errorContent});
-    }
-  }
-
-  getDataForRefresh = () => {
-    if (this.state.autoRefresh) {
-      this.getJobDataWrapper();
-    }
-  }
-
-  getJobDataWrapper() {
-    var placeToLoad = 1;
-    if (this.state.pageNumber > 1) {
-      placeToLoad = this.state.pageNumber * this.state.pageSize - this.state.pageSize + 1;
-    }
-    var selectedData = 'all';
-    if (this.state.selectedOption != null) {
-      selectedData = this.state.selectedOption.reduce((result, item) => {
-        return `${result}${item.value},`
-      }, "")
-    }
-    var selectedDataType = 'all';
-    if (this.state.selectedOptionType != null) {
-      selectedDataType = this.state.selectedOptionType.reduce((result, item) => {
-        return `${result}${item.value},`
-      }, "")
-    }
-    this.getJobData('job?metadata=true&step=true&number=' + this.state.pageSize + '&first=' + placeToLoad + '&sort=' + this.state.sortBy + '%20' + this.state.sortDirection + '&state=' + selectedData + '&type=' + selectedDataType);
-  }
-
   componentDidMount() {
-    //this.getJobData('job?metadata=true&step=true&number=16&first=1&sort=jobId%20desc');
-    //setInterval(this.getDataForRefresh, 5000);
-    //this.getSearchData('search?content=metadata',this.makeXML({'mediaType': 'video'}));
-  }
 
-  pageHigher = () => {
-    const totalNumberOfPages = this.totalPages();
-
-    if (this.state.pageNumber < totalNumberOfPages) {
-      this.setState({
-        pageNumber: this.state.pageNumber + 1,
-        autoRefresh: true
-      },() => {
-        this.clearSelections();
-        this.getJobDataWrapper();
-      });
-    }
-  }
-
-  pageLower = () => {
-    if (this.state.pageNumber > 1) {
-      this.setState({
-        pageNumber: this.state.pageNumber - 1,
-        autoRefresh: true
-      },() => {
-        this.clearSelections();
-        this.getJobDataWrapper();
-      });
-    }
-  }
-
-  pageSize16 = () => {
-    this.setState({
-      pageSize: 16,
-      autoRefresh: true,
-      sixteenGrey: false,
-      thirtyTwoGrey: true,
-      sixtyFourGrey: true,
-      oneHundredAndTwentyEightGrey: true
-    },() => {
-      this.clearSelections();
-      this.getJobDataWrapper();
-    });
-  }
-
-  pageSize32 = () => {
-    const totalPages32 = Math.ceil(this.state.vidispineData.hits / 32);
-    var pageNumberToSet32 = this.state.pageNumber;
-
-    if (this.state.pageNumber > totalPages32) {
-      pageNumberToSet32= totalPages32;
-    }
-
-    this.setState({
-      pageSize: 32,
-      pageNumber: pageNumberToSet32,
-      autoRefresh: true,
-      sixteenGrey: true,
-      thirtyTwoGrey: false,
-      sixtyFourGrey: true,
-      oneHundredAndTwentyEightGrey: true
-    },() => {
-      this.clearSelections();
-      this.getJobDataWrapper();
-    });
-  }
-
-  pageSize64 = () => {
-    const totalPages64 = Math.ceil(this.state.vidispineData.hits / 64);
-    var pageNumberToSet64 = this.state.pageNumber;
-
-    if (this.state.pageNumber > totalPages64) {
-      pageNumberToSet64 = totalPages64;
-    }
-
-    this.setState({
-      pageSize: 64,
-      pageNumber: pageNumberToSet64,
-      autoRefresh: true,
-      sixteenGrey: true,
-      thirtyTwoGrey: true,
-      sixtyFourGrey: false,
-      oneHundredAndTwentyEightGrey: true
-    },() => {
-      this.clearSelections();
-      this.getJobDataWrapper();
-    });
-  }
-
-  pageSize128 = () => {
-    const totalPages128 = Math.ceil(this.state.vidispineData.hits / 128);
-    var pageNumberToSet128 = this.state.pageNumber;
-
-    if (this.state.pageNumber > totalPages128) {
-      pageNumberToSet128 = totalPages128;
-    }
-
-    this.setState({
-      pageSize: 128,
-      pageNumber: pageNumberToSet128,
-      autoRefresh: true,
-      sixteenGrey: true,
-      thirtyTwoGrey: true,
-      sixtyFourGrey: true,
-      oneHundredAndTwentyEightGrey: false
-    },() => {
-      this.clearSelections();
-      this.getJobDataWrapper();
-    });
-  }
-
-  placeToShow() {
-    var placeToReturn = 1;
-    if (this.state.pageNumber > 1) {
-      placeToReturn = (this.state.pageNumber * this.state.pageSize) - this.state.pageSize + 1;
-    }
-    return placeToReturn;
-  }
-
-  placeToShowEnd() {
-    var placeToReturnEnd = this.state.pageSize;
-    if (this.state.pageNumber > 1) {
-      placeToReturnEnd = (this.state.pageNumber * this.state.pageSize) + 1;
-    }
-    if (placeToReturnEnd > this.state.vidispineData.hits) {
-      placeToReturnEnd = this.state.vidispineData.hits;
-    }
-    return placeToReturnEnd;
-  }
-
-  totalPages() {
-    var totalToReturn = 1;
-    totalToReturn = Math.ceil(this.state.vidispineData.hits / this.state.pageSize);
-    return totalToReturn;
-  }
-
-  changeSort(input) {
-    if (this.state.sortDirection == 'desc') {
-      this.state.sortDirection = 'asc';
-    } else {
-      this.state.sortDirection = 'desc';
-    }
-    this.state.sortBy = input;
-    this.clearSelections();
-    this.getJobDataWrapper();
-  }
-
-  returnCSSForPageSize(pageSizeInput) {
-    if (pageSizeInput == 16) {
-      if (this.state.sixteenGrey) {
-        return "size_button_16_grey";
-      }
-    }
-    if (pageSizeInput == 32) {
-      if (this.state.thirtyTwoGrey) {
-        return "size_button_32_grey";
-      } else {
-        return "size_button_32";
-      }
-    }
-    if (pageSizeInput == 64) {
-      if (this.state.sixtyFourGrey) {
-        return "size_button_64_grey";
-      } else {
-        return "size_button_64";
-      }
-    }
-    if (pageSizeInput == 128) {
-      if (this.state.oneHundredAndTwentyEightGrey) {
-        return "size_button_128_grey";
-      } else {
-        return "size_button_128";
-      }
-    }
-    return "size_button_16";
   }
 
   handleSubmit(event) {
@@ -285,9 +44,6 @@ class VidispineAssetSearch extends Component {
     if (this.element_description.value != '') {
       dictionaryToSendToMakeXML['gnm_asset_description'] = this.element_description.value;
     }
-    //if (this.element_keywords.value != '') {
-      //dictionaryToSendToMakeXML['gnm_asset_keywords'] = this.element_keywords.value;
-    //}
     if (this.element_keywords.value != '') {
       const keywordsArray = this.element_keywords.value.split(' ');
       var keywordNumber = 1;
@@ -317,12 +73,8 @@ class VidispineAssetSearch extends Component {
     if (this.element.value != '') {
       dictionaryToSendToMakeXML['originalFilename'] = this.element.value;
     }
-    //alert(this.state.searchType);
-
-    //alert(dictionaryToSendToMakeXML);
 
     this.getSearchData('search?content=metadata',this.makeXML(dictionaryToSendToMakeXML, this.state.searchType));
-    //this.getSearchData('search?content=metadata',this.makeXML({'originalFilename': this.element.value, 'title': this.element_title.value}));
   }
 
   makeXML(inputDictionary, inputSearchType) {
@@ -369,9 +121,6 @@ class VidispineAssetSearch extends Component {
   }
 
   render() {
-    const { selectedOption } = this.state;
-    const { selectedOptionType } = this.state;
-
     return (
       <div>
         <div class="search_grid">
@@ -529,11 +278,6 @@ class VidispineAssetSearch extends Component {
            ) : (
              <div class="no_jobs_found">No items found</div>
            )
-             //this.state.vidispineData.job && this.state.vidispineData.job.length > 0 ? (
-             //this.state.vidispineData.job.map((item, i) =><JobInfoBox mapPlace={i} jobData={item} jobId={item.jobId} value={this.state[`value${i}`]} onChangeValue={this.handleChangeValue}/>)
-           //) : (
-             //<div class="no_jobs_found">No jobs found</div>
-           //)
             }
           </div>
         </div>

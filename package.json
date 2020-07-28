@@ -1,7 +1,7 @@
 {
-  "name": "pluto-logtool",
+  "name": "pluto-mediabrowser",
   "version": "1.0.0",
-  "description": "GNM's basic job browsing interface for VS",
+  "description": "GNM's basic media browsing interface for VS",
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --verbose",

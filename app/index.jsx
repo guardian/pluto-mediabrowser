@@ -2,7 +2,6 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter, Link, Route, Switch, Redirect, withRouter} from 'react-router-dom';
 import VidispineAssetSearch from './VidispineAssetSearch.jsx';
-import JobPage from './JobPage.jsx';
 
 class App extends React.Component {
 
@@ -17,7 +16,6 @@ class App extends React.Component {
   render(){
           return <div>
               <Switch>
-                  <Route path="/job/:id" component={()=><JobPage vidispine_host="http://32937.gnm.int:8080" username={this.state.username ?? "admin"} password={this.state.password ?? "admin"} />}/>
                   <Route path="/" component={()=><VidispineAssetSearch vidispine_host="http://32937.gnm.int:8080" username={this.state.username ?? "admin"} password={this.state.password ?? "admin"} />}/>
               </Switch>
           </div>

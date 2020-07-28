@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Link, Route, Switch, Redirect, withRouter} from 'react-router-dom';
-import StatusFormatter from './StatusFormatter.jsx';
-import TypeFormatter from './TypeFormatter.jsx';
-import PriorityFormatter from './PriorityFormatter.jsx';
-import moment from 'moment';
 import {
   PieChart, Pie, Sector, Cell, Legend, Label
 } from 'recharts';
@@ -17,46 +13,6 @@ class PieChartBox extends React.Component {
     mapPlace: PropTypes.number.isRequired,
     vidispineHost: PropTypes.string.isRequired
   };
-
-  returnStatusForCSS(status) {
-    // Accepts a status. If the status has a special CSS statement with a custom background colour, return the name of the correct CSS statement. If not return the name of the CSS statement for normal job boxes.
-    if (status == 'FAILED_TOTAL') {
-      return "job_box_failed";
-    }
-    if (status == 'FINISHED') {
-      return "job_box_finished";
-    }
-    if (status == 'FINISHED_WARNING') {
-      return "job_box_warning";
-    }
-    if (status == 'ABORTED') {
-      return "job_box_aborted";
-    }
-    return "job_box_normal";
-  }
-
-  displayTime(input) {
-    if (input == 'Unknown') {
-      return input;
-    } else {
-      var d = Number(parseInt(input));
-      var h = Math.floor(d / 3600);
-      var m = Math.floor(d % 3600 / 60);
-      var s = Math.floor(d % 3600 % 60);
-      return h + ":" + ('0'  + m).slice(-2) + ":" +  ('0'  + s).slice(-2);
-    }
-  }
-
-  getValue(data,findthis) {
-    for (let [key, value] of Object.entries(data)) {
-      if (findthis == value.name) {
-        for (let [key3, value3] of Object.entries(value.value)) {
-          return value3.value;
-        }
-      }
-    }
-    return 'Unknown';
-  }
 
   getChartData() {
     var chartDataToReturn = [];
@@ -157,13 +113,6 @@ class PieChartBox extends React.Component {
 render() {
 
   const data = this.getChartData();
-  //const data = [
-  //  { name: 'Group A', value: 400 },
-  //  { name: 'Group B', value: 300 },
-  //  { name: 'Group C', value: 300 },
-  //  { name: 'Group D', value: 200 },
-  //];
-
   const chartColours = ['#ff0000', '#00eaff', '#ffa200', '#00ff0c', '#ff00e4', '#fffc00', '#878aff', '#d3c69f', '#85cc7c', '#d87a7a', '#e4e591', '#9e62f9', '#3f51ff', '#b0ff63', '#d49f79', '#67aae8', '#93a354', '#9293c3', '#e58fe8', '#447645'];
 
   const renderLegend = (props) => {
@@ -193,13 +142,6 @@ render() {
     );
   };
 
-
-
-
-  //const stepNumber = this.props.jobData.hasOwnProperty("currentStep") ? this.props.jobData.currentStep.number : 0;
-  //const fileName = this.getValue(this.props.chartData.item.metadata.timespan[0].field, "originalFilename");
-  //const created = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "created");
-  //const thumbNail = this.getValue(this.props.itemData.item.metadata.timespan[0].field, "representativeThumbnailNoAuth");
   if (data != '') {
     return <div class="pie_chart_box">
         <div class="pie_chart_name">
