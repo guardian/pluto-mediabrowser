@@ -104,15 +104,23 @@ def validate_field_block(counter, field_node):
         print("{0} has no type node".format(prefix))
         passing = False
 
+    originNodes = [x for x in field_node.findall("{0}origin".format(xmlns))]
+    if len(originNodes)>0:
+        print("{0} should not have an origin node".format(prefix))
+        passing = False
+
     extradata = extract_extradata(field_node)
 
     if extradata:
         try:
             extradata_parsed = json.loads(extradata)
             readonly = extradata_parsed.get("readonly","")
-            if readonly!="true" and readonly!="false":
-                print("{0} Readonly value was '{1}', not true or false".format(prefix, readonly))
+            if not isinstance(readonly, bool):
+                print("{0} Readonly should be a boolean".format(prefix))
                 passing = False
+            # if readonly!="true" and readonly!="false":
+            #     print("{0} Readonly value was '{1}', not true or false".format(prefix, readonly))
+            #     passing = False
             values = extradata_parsed.get("values",[])
             if not isinstance(values, list):
                 print("{0} values key was a {1}, not a list".format(prefix, str(values.__class__)))

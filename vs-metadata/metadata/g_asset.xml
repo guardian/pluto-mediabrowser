@@ -22,7 +22,7 @@
         <defaultValue/>
     </field>
     <field>
-        <name>gnm_title</name>
+        <name>title</name>
         <schema min="1" max="1" name="gnm_title"/>
         <type>string</type>
         <stringRestriction>
@@ -37,7 +37,7 @@
     </field>
     <field>
         <name>gnm_keywords</name>
-        <schema min="1" max="1" name="gnm_keywords"/>
+        <schema min="0" max="1" name="gnm_keywords"/>
         <type>string</type>
         <stringRestriction>
             <minLength>0</minLength>
@@ -47,7 +47,6 @@
             <key>extradata</key>
             <value>{"name":"Keywords", "readonly":"false","type":"tags"}</value>
         </data>
-        <defaultValue/>
     </field>
     <field>
         <name>original_filename</name>
@@ -61,7 +60,6 @@
             <key>extradata</key>
             <value>{"name":"Original Filename", "readonly":"true","type":"string"}</value>
         </data>
-        <defaultValue/>
     </field>
     <field>
         <name>gnm_owner</name>
@@ -75,11 +73,10 @@
             <key>extradata</key>
             <value>{"name":"Owner(s)", "readonly":"false","type":"tags"}</value>
         </data>
-        <defaultValue/>
     </field>
     <field>
         <name>gnm_media_flags</name>
-        <schema min="1" max="1" name="gnm_media_flags"/>
+        <schema min="0" max="1" name="gnm_media_flags"/>
         <type>string-exact</type>
         <stringRestriction>
             <minLength>0</minLength>
@@ -92,11 +89,10 @@
                 {"key":"sensitive", "value":"Media is sensitive"}
             ]}</value>
         </data>
-        <defaultValue/>
     </field>
     <field>
         <name>gnm_containing_projects</name>
-        <schema min="1" max="1" name="gnm_containing_projects"/>
+        <schema min="0" max="1" name="gnm_containing_projects"/>
         <type>string-exact</type>
         <stringRestriction>
             <minLength>0</minLength>
@@ -106,6 +102,14 @@
             <key>extradata</key>
             <value>{"name":"Referenced by these projects", "readonly":"false","type":"tags"}</value>
         </data>
-        <defaultValue/>
+    </field>
+    <field>
+        <name>gnm_file_created</name>
+        <schema min="1" max="1" name="gnm_file_created"/>
+        <type>date</type>
+        <data>
+            <key>extradata</key>
+            <value>{"readonly": true, "type": "timestamp", "Asset": {}, "name": "Created"}</value>
+        </data>
     </field>
 </MetadataFieldGroupDocument>
