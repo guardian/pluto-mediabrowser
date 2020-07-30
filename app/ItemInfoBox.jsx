@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 import moment from "moment";
 
+import "./dark.css";
+
 class ItemInfoBox extends React.Component {
   static propTypes = {
     itemData: PropTypes.object.isRequired,
@@ -81,31 +83,31 @@ class ItemInfoBox extends React.Component {
       imageHeightForDisplay,
     } = this.returnImageDimensions();
     return (
-      <div class="item_box">
-        <div class="item_filename">
+      <div className="item_box">
+        <div className="item_filename">
           <strong>{fileName}</strong>
         </div>
-        <div class="item_id">{this.props.itemId}</div>
-        <div class="item_thumbnail">
+        <div className="item_id">{this.props.itemId}</div>
+        <div className="item_thumbnail">
           {thumbNail != "Unknown" ? (
             this.state.imageWidth / this.state.imageHeight > 1.78 ? (
               <img
                 src={this.props.vidispineHost + thumbNail}
                 width={240}
-                class="thumbnail"
+                className="thumbnail"
               />
             ) : (
               <img
                 src={this.props.vidispineHost + thumbNail}
                 height={135}
-                class="thumbnail"
+                className="thumbnail"
               />
             )
           ) : (
             <div> </div>
           )}
         </div>
-        <div class="item_created">
+        <div className="item_created">
           {moment(created).format("dddd D/M/YYYY H:mm:ss")}
         </div>
       </div>

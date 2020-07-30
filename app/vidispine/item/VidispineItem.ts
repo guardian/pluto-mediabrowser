@@ -1,7 +1,6 @@
 import VidispineItemTI from "./VidispineItem-ti";
 
 import { createCheckers } from "ts-interface-checker";
-import { doc } from "prettier";
 
 interface MetadataValue {
   value: string;
@@ -177,6 +176,17 @@ class VidispineItem implements ItemIF {
         throw err;
       }
     }
+  }
+
+  /**
+   * returns an array of strings representing the names of the groups mentioned in the document.
+   * This is an empty list if either the timespan does not exist or there are no group entries.
+   */
+  getGroupNames():string[] {
+    const ts = this.getDefaultTimespan();
+    if(ts==undefined) return [];
+
+    return ts.group.map(g=>g.name)
   }
 }
 

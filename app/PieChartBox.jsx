@@ -9,6 +9,8 @@ import {
   withRouter,
 } from "react-router-dom";
 import { PieChart, Pie, Sector, Cell, Legend, Label } from "recharts";
+import "./dark.css";
+
 
 class PieChartBox extends React.Component {
   static propTypes = {
@@ -146,7 +148,7 @@ class PieChartBox extends React.Component {
         <div>
           {payload.map((entry, index) => (
             <div
-              class="pie_chart_lengend_box"
+              className="pie_chart_lengend_box"
               key={`item-${index}`}
               style={{ backgroundColor: chartColours[index] }}
             >
@@ -183,13 +185,13 @@ class PieChartBox extends React.Component {
 
     if (data != "") {
       return (
-        <div class="pie_chart_box">
-          <div class="pie_chart_name">
+        <div className="pie_chart_box">
+          <div className="pie_chart_name">
             <strong>
               {this.returnHumanFriendlyTitle(this.props.chartName)}
             </strong>
           </div>
-          <div class="pie_chart">
+          <div className="pie_chart">
             <PieChart width={354} height={this.returnSuitableHeightForChart()}>
               <Pie
                 data={data}

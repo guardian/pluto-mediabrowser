@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import ItemInfoBox from "./ItemInfoBox.jsx";
 import PieChartBox from "./PieChartBox.jsx";
 
+import "./dark.css";
+
 class VidispineAssetSearch extends Component {
   static propTypes = {
     vidispine_host: PropTypes.string.isRequired,
@@ -172,13 +174,13 @@ class VidispineAssetSearch extends Component {
   render() {
     return (
       <div>
-        <div class="search_grid">
-          <div class="search_title_box">Vidispine Asset Search</div>
-          <div class="items_top_area">
-            <form class="main_form" onSubmit={this.handleSubmit}>
-              <div class="form_box">
-                <div class="form_title">Category:</div>
-                <div class="form_input">
+        <div className="search_grid">
+          <div className="search_title_box">Vidispine Asset Search</div>
+          <div className="items_top_area">
+            <form className="main_form" onSubmit={this.handleSubmit}>
+              <div className="form_box">
+                <div className="form_title">Category:</div>
+                <div className="form_input">
                   <select ref={(el) => (this.element_category = el)}>
                     <option value="">(any)</option>
                     <option value="Reuters">Reuters Package</option>
@@ -218,31 +220,31 @@ class VidispineAssetSearch extends Component {
                     </option>
                   </select>
                 </div>
-                <div class="form_title">Title:</div>
-                <div class="form_input">
+                <div className="form_title">Title:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element_title = el)}
                   />
                 </div>
-                <div class="form_title">Description:</div>
-                <div class="form_input">
+                <div className="form_title">Description:</div>
+                <div className="form_input">
                   <textarea
-                    class="standard_textarea"
+                    className="standard_textarea"
                     ref={(el) => (this.element_description = el)}
                   ></textarea>
                 </div>
-                <div class="form_title">Keywords:</div>
-                <div class="form_input">
+                <div className="form_title">Keywords:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element_keywords = el)}
                   />
                 </div>
-                <div class="form_title">Archive status:</div>
-                <div class="form_input">
+                <div className="form_title">Archive status:</div>
+                <div className="form_input">
                   <select ref={(el) => (this.element_archive_status = el)}>
                     <option value="">(any)</option>
                     <option value="Not In External Archive">
@@ -263,8 +265,8 @@ class VidispineAssetSearch extends Component {
                     <option value="Restore Completed">Restore Completed</option>
                   </select>
                 </div>
-                <div class="form_title">Production office:</div>
-                <div class="form_input">
+                <div className="form_title">Production office:</div>
+                <div className="form_input">
                   <select ref={(el) => (this.element_production_office = el)}>
                     <option value="">(any)</option>
                     <option value="UK">UK</option>
@@ -272,49 +274,49 @@ class VidispineAssetSearch extends Component {
                     <option value="AUS">AUS</option>
                   </select>
                 </div>
-                <div class="form_title">Atom id.:</div>
-                <div class="form_input">
+                <div className="form_title">Atom id.:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element_atom = el)}
                   />
                 </div>
-                <div class="form_title">Octopus id.:</div>
-                <div class="form_input">
+                <div className="form_title">Octopus id.:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element_octopus = el)}
                   />
                 </div>
-                <div class="form_title">Parent project:</div>
-                <div class="form_input">
+                <div className="form_title">Parent project:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element_project = el)}
                   />
                 </div>
-                <div class="form_title">Project reference:</div>
-                <div class="form_input">
+                <div className="form_title">Project reference:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element_reference = el)}
                   />
                 </div>
-                <div class="form_title">Filename:</div>
-                <div class="form_input">
+                <div className="form_title">Filename:</div>
+                <div className="form_input">
                   <input
-                    class="standard_input"
+                    className="standard_input"
                     type="text"
                     ref={(el) => (this.element = el)}
                   />
                 </div>
-                <div class="form_title">Search type:</div>
-                <div class="form_type" onChange={this.setSearchType.bind(this)}>
-                  <div class="form_type_left">
+                <div className="form_title">Search type:</div>
+                <div className="form_type" onChange={this.setSearchType.bind(this)}>
+                  <div className="form_type_left">
                     <input
                       type="radio"
                       id="all"
@@ -323,7 +325,7 @@ class VidispineAssetSearch extends Component {
                     />{" "}
                     Contains ALL data
                   </div>
-                  <div class="form_type_right">
+                  <div className="form_type_right">
                     <input
                       type="radio"
                       id="any"
@@ -333,19 +335,19 @@ class VidispineAssetSearch extends Component {
                     Contains ANY data
                   </div>
                 </div>
-                <div class="form_search">
+                <div className="form_search">
                   <input
                     onClick={() => (this.state.button = 2)}
-                    class="search_button"
+                    className="search_button"
                     type="submit"
                     value="Search"
-                    onclick="clicked='Go'"
+                    onClick="clicked='Go'"
                   />
                 </div>
               </div>
             </form>
-            <div class="right_box">
-              <div class="hits_display">
+            <div className="right_box">
+              <div className="hits_display">
                 {this.state.vidispineData.hits != "" ? (
                   <div>Found {this.state.vidispineData.hits} items</div>
                 ) : (
@@ -379,7 +381,7 @@ class VidispineAssetSearch extends Component {
                 />
               ))
             ) : (
-              <div class="no_jobs_found">No items found</div>
+              <div className="no_jobs_found">No items found</div>
             )}
           </div>
         </div>

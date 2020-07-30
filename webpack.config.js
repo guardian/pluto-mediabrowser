@@ -28,7 +28,8 @@ var config = {
                 loader: "source-map-loader",
             },
             {
-                test: /\.css$/,
+                test: /\.css$/i,
+                include: APP_DIR,
                 use: ['style-loader', 'css-loader', "sass-loader"]
             }
         ]
