@@ -12,7 +12,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Category", "readonly":"true","type":"dropdown", "values": [
+            <value>{"name":"Category", "readonly":true,"type":"dropdown", "values": [
                 {"value":"Rushes", "key":"Rushes"},
                 {"value":"Branding", "key":"Branding"},
                 {"value":"Deliverable", "key":"Deliverable"},
@@ -23,7 +23,7 @@
     </field>
     <field>
         <name>title</name>
-        <schema min="1" max="1" name="gnm_title"/>
+        <schema min="1" max="1" name="title"/>
         <type>string</type>
         <stringRestriction>
             <minLength>0</minLength>
@@ -31,7 +31,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Title", "readonly":"false","type":"string"}</value>
+            <value>{"name":"Title", "readonly":false,"type":"string"}</value>
         </data>
         <defaultValue>Untitled</defaultValue>
     </field>
@@ -45,7 +45,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Keywords", "readonly":"false","type":"tags"}</value>
+            <value>{"name":"Keywords", "readonly":false,"type":"tags"}</value>
         </data>
     </field>
     <field>
@@ -58,7 +58,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Original Filename", "readonly":"true","type":"string"}</value>
+            <value>{"name":"Original Filename", "readonly":true,"type":"string"}</value>
         </data>
     </field>
     <field>
@@ -71,7 +71,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Owner(s)", "readonly":"false","type":"tags"}</value>
+            <value>{"name":"Owner(s)", "readonly":false,"type":"tags"}</value>
         </data>
     </field>
     <field>
@@ -84,7 +84,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Media flags", "readonly":"false","type":"checkbox", "values":[
+            <value>{"name":"Media flags", "readonly":false,"type":"checkbox", "values":[
                 {"key":"missing_media", "value":"Media is absent"},
                 {"key":"sensitive", "value":"Media is sensitive"}
             ]}</value>
@@ -100,7 +100,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Referenced by these projects", "readonly":"false","type":"tags"}</value>
+            <value>{"name":"Referenced by these projects", "readonly":false,"type":"tags"}</value>
         </data>
     </field>
     <field>

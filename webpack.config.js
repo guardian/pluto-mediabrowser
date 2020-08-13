@@ -17,13 +17,20 @@ var config = {
     module : {
         rules : [
             {
-                test : /\.jsx?/,
-                include : APP_DIR,
-                loader : 'babel-loader'
+                test: /\.[tj]sx?/,
+                include: APP_DIR,
+                loader: "ts-loader",
             },
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                enforce: "pre",
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: "source-map-loader",
+            },
+            {
+                test: /\.css$/i,
+                include: APP_DIR,
+                use: ['style-loader', 'css-loader', "sass-loader"]
             }
         ]
     }

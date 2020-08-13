@@ -1,0 +1,38 @@
+stages:
+  - buildntest
+#  - docker
+
+buildntest:
+  image: node:12.18-alpine3.12
+  stage: buildntest
+  script:
+    - yarn install
+    - yarn test
+    - yarn compile
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-node
+    paths:
+      - node_modules/
+  artifacts:
+    paths:
+      - build/bundle.js
+    reports:
+      junit: junit.xml
+
+validatemeta:
+  image: python:3.8-alpine
+  stage: buildntest
+  script:
+    - cd vs-metadata
+    - for x in `ls metadata/`; do python validate.py "metadata/$x"; if [ "$?" != "0" ]; then echo Test failed.; exit 1; fi; done
+#
+#docker:
+#  image: docker:19.03.11
+#  stage: docker
+#  services:
+#    - docker:19.03.11-dind
+#  script:
+#    - cd build
+#    - docker login -u "${DOCKER_USER}" -p "${DOCKER_PAT}"
+#    - docker build . -t guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID
+#    - docker push guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID

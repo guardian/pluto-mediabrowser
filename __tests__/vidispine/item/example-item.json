@@ -1,0 +1,513 @@
+{
+  "item": [
+    {
+      "metadata": {
+        "revision": "VX-12,VX-11,VX-14,VX-15,VX-18",
+        "timespan": [
+          {
+            "field": [
+              {
+                "name": "originalVideoCodec",
+                "value": [
+                  {
+                    "value": "JPEG",
+                    "uuid": "6f6faef3-b127-4e32-bfcd-cb625989c8f0",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "d3cf5d60-8d1b-4cb3-abc9-a9036761ed04",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "originalAudioCodec",
+                "value": [
+                  {
+                    "value": "",
+                    "uuid": "f0bfc77f-6b34-47af-a9d9-2c7a24b9c25f",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "2c0ca188-0560-4f6d-88b3-52acd60a6cf8",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "durationSeconds",
+                "value": [
+                  {
+                    "value": "0.0",
+                    "uuid": "a0ecb5ad-19b6-45f2-b9f8-dd18f765e226",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "37f5cc78-ee8a-4143-bee5-88b28b8b769b",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "durationTimeCode",
+                "value": [
+                  {
+                    "value": "0",
+                    "uuid": "aa4fe14a-d8f5-4bb6-b5f4-3a7f4de8bcef",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "2fcc84ee-34a8-4881-84cc-dee07ec62a41",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "originalWidth",
+                "value": [
+                  {
+                    "value": "1000",
+                    "uuid": "032b3478-b465-4009-802b-98cf1a27bb0c",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "64044e93-5343-46af-a0d8-874ef9d79a99",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "originalHeight",
+                "value": [
+                  {
+                    "value": "1000",
+                    "uuid": "ea30e754-24c2-499d-8307-5a49d4dcca50",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "9e91f783-0bb4-4270-9182-a27d7c598563",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "mimeType",
+                "value": [
+                  {
+                    "value": "image/jpeg",
+                    "uuid": "3b7c742d-e2f5-4b78-ad7e-bc184db890e8",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "0cc8d5f3-b65a-4fb8-a835-f2f645076361",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "itemId",
+                "value": [
+                  {
+                    "value": "VX-6",
+                    "uuid": "6d021bd7-54d0-4290-ab6a-6238a603c029",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "e949c750-736b-4352-bef3-5f02b885a0a7",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "mediaType",
+                "value": [
+                  {
+                    "value": "image",
+                    "uuid": "b463ac60-d8a7-47f5-b2e1-7501aa6dfc92",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "608104bd-740e-4b23-abbb-1a99a169f887",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "originalUri",
+                "value": [
+                  {
+                    "value": "file:///srv/Multimedia2/Scratch/i4.php.jpeg",
+                    "uuid": "e8dd670b-61b3-43d7-9034-11b6ef683281",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "9f58e0bc-18c7-47ee-8fd4-9d64a1f843b8",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "shapeTag",
+                "value": [
+                  {
+                    "value": "original",
+                    "uuid": "94169ebb-f0b5-4b75-8285-5935a06c72b9",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:38:01.736+0000",
+                    "change": "VX-18"
+                  },
+                  {
+                    "value": "lowres",
+                    "uuid": "d5f28997-e9f2-4b97-86b6-e3bdf9deb64f",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:38:01.736+0000",
+                    "change": "VX-18"
+                  },
+                  {
+                    "value": "lowimage",
+                    "uuid": "eefef707-0c40-47c0-92ef-a4c766869a63",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:38:01.736+0000",
+                    "change": "VX-18"
+                  }
+                ],
+                "uuid": "d4b93410-48e4-4ce6-88a5-0611a0485f81",
+                "user": "system",
+                "timestamp": "2020-07-28T13:38:01.736+0000",
+                "change": "VX-18"
+              },
+              {
+                "name": "representativeThumbnail",
+                "value": [
+                  {
+                    "value": "/API/thumbnail/VX-6/VX-6;version=0/0",
+                    "uuid": "263f4899-ed13-4857-a259-808ea2ecc371",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:38:01.736+0000",
+                    "change": "VX-18"
+                  }
+                ],
+                "uuid": "72e520c9-9c17-43d0-b0f6-f52c19f73233",
+                "user": "system",
+                "timestamp": "2020-07-28T13:38:01.736+0000",
+                "change": "VX-18"
+              },
+              {
+                "name": "representativeThumbnailNoAuth",
+                "value": [
+                  {
+                    "value": "/APInoauth/thumbnail/VX-6/VX-6;version=0/0?hash=fcf54bb2f7f3d2275aa40890af68a9b0",
+                    "uuid": "2f8bb838-646e-4961-beb8-0d6db76e8ac2",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:38:01.736+0000",
+                    "change": "VX-18"
+                  }
+                ],
+                "uuid": "5ce2ad42-fdc2-47b8-b7ab-5eeb081c537d",
+                "user": "system",
+                "timestamp": "2020-07-28T13:38:01.736+0000",
+                "change": "VX-18"
+              },
+              {
+                "name": "title",
+                "value": [
+                  {
+                    "value": "Jarna Artwork",
+                    "uuid": "68b6da34-ef97-4d7b-97c9-289a4b0c6435",
+                    "user": "admin",
+                    "timestamp": "2020-07-28T13:06:32.405+0000",
+                    "change": "VX-11"
+                  }
+                ],
+                "uuid": "8c0c4986-3c0e-4713-83d4-e6e9bbe7c75b",
+                "user": "admin",
+                "timestamp": "2020-07-28T13:06:32.405+0000",
+                "change": "VX-11"
+              },
+              {
+                "name": "created",
+                "value": [
+                  {
+                    "value": "2020-07-28T13:06:32.330Z",
+                    "uuid": "f94bc15b-845c-494e-9cc1-c43966fc4630",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:06:32.542+0000",
+                    "change": "VX-12"
+                  }
+                ],
+                "uuid": "0c84a74c-f27a-44bf-aceb-fa4110248ad5",
+                "user": "system",
+                "timestamp": "2020-07-28T13:06:32.542+0000",
+                "change": "VX-12"
+              },
+              {
+                "name": "originalFilename",
+                "value": [
+                  {
+                    "value": "i4.php.jpeg",
+                    "uuid": "2b194a0c-9dfb-4678-9a9e-278522762c1b",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.067+0000",
+                    "change": "VX-14"
+                  }
+                ],
+                "uuid": "baaa219c-2d1c-43a5-aa1c-0ba999273d8c",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.067+0000",
+                "change": "VX-14"
+              },
+              {
+                "name": "originalFormat",
+                "value": [
+                  {
+                    "value": "JPEG",
+                    "uuid": "379bc4b4-fc16-43f7-83ad-04f0026a2a56",
+                    "user": "system",
+                    "timestamp": "2020-07-28T13:15:48.172+0000",
+                    "change": "VX-15"
+                  }
+                ],
+                "uuid": "050d858d-f496-4542-8de8-d3e4d8a39a66",
+                "user": "system",
+                "timestamp": "2020-07-28T13:15:48.172+0000",
+                "change": "VX-15"
+              },
+              {
+                "name": "__user",
+                "value": [
+                  {
+                    "value": "admin"
+                  }
+                ]
+              },
+              {
+                "name": "user",
+                "value": [
+                  {
+                    "value": "admin"
+                  }
+                ]
+              },
+              {
+                "name": "__metadata_last_modified",
+                "value": [
+                  {
+                    "value": "2020-07-28T13:38:01.736Z"
+                  }
+                ]
+              },
+              {
+                "name": "__placeholder_shape_size",
+                "value": [
+                  {
+                    "value": "0"
+                  }
+                ]
+              },
+              {
+                "name": "__shape_size",
+                "value": [
+                  {
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "name": "__shape",
+                "value": [
+                  {
+                    "value": "VX-7"
+                  }
+                ]
+              },
+              {
+                "name": "__shape",
+                "value": [
+                  {
+                    "value": "VX-6"
+                  }
+                ]
+              },
+              {
+                "name": "__shape",
+                "value": [
+                  {
+                    "value": "VX-8"
+                  }
+                ]
+              },
+              {
+                "name": "__version_count",
+                "value": [
+                  {
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "name": "__version",
+                "value": [
+                  {
+                    "value": "0"
+                  }
+                ]
+              },
+              {
+                "name": "__shapetag_lowres_hash",
+                "value": [
+                  {
+                    "value": "6cbbb364fd271a88bd6460ce7a71d6a07860143a"
+                  }
+                ]
+              },
+              {
+                "name": "__shapetag_original_hash",
+                "value": [
+                  {
+                    "value": "94b7d526f810f74dad0b1ef712ca94b49697f866"
+                  }
+                ]
+              },
+              {
+                "name": "__shapetag_lowimage_hash",
+                "value": [
+                  {
+                    "value": "2e8b1f41a1f2baf7f66d4fd59554a8dbe5a71a29"
+                  }
+                ]
+              },
+              {
+                "name": "__shape_last_added",
+                "value": [
+                  {
+                    "value": "2020-07-28T13:37:53.906Z"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_lowres",
+                "value": [
+                  {
+                    "value": "VX-6"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_lowres_size",
+                "value": [
+                  {
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_original",
+                "value": [
+                  {
+                    "value": "VX-6"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_original_size",
+                "value": [
+                  {
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_lowimage",
+                "value": [
+                  {
+                    "value": "VX-6"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_lowimage_size",
+                "value": [
+                  {
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "name": "__storage_size",
+                "value": [
+                  {
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "name": "__storage",
+                "value": [
+                  {
+                    "value": "VX-6"
+                  }
+                ]
+              },
+              {
+                "name": "__storagegroup_size",
+                "value": [
+                  {
+                    "value": "0"
+                  }
+                ]
+              },
+              {
+                "name": "__sequence_size",
+                "value": [
+                  {
+                    "value": "0"
+                  }
+                ]
+              },
+              {
+                "name": "__collection_size",
+                "value": [
+                  {
+                    "value": "0"
+                  }
+                ]
+              },
+              {
+                "name": "__ancestor_collection_size",
+                "value": [
+                  {
+                    "value": "0"
+                  }
+                ]
+              }
+            ],
+            "group": [],
+            "start": "-INF",
+            "end": "+INF"
+          }
+        ]
+      },
+      "id": "VX-6"
+    }
+  ]
+}

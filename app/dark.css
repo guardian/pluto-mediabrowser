@@ -108,13 +108,11 @@ div.form_title {
 }
 
 div.form_input {
-
 }
 
 div.form_search {
   grid-column-start: 1;
   grid-column-end: 3;
-
 }
 
 textarea.standard_textarea {
