@@ -99,6 +99,19 @@ class VidispineItem implements ItemIF {
   }
 
   /**
+   * convenience method that will coalesce all values into a string joined by a comma separator
+   * @param forKey
+   */
+  getMetadataString(forKey: string): string | undefined {
+    const possibleValues = this.getMetadataValuesInGroup(forKey, undefined);
+    if(possibleValues) {
+      return possibleValues.join(", ");
+    } else {
+      return undefined;
+    }
+  }
+
+  /**
    * searches the default timespan for metadata entries metching the given key, optionally within the given group.
    * @param forKey the field name that you want to get metadata for
    * @param inGroup optionally, the name of a group to locate the field in
@@ -221,4 +234,4 @@ export type {
   ItemMetadata,
 };
 
-export { GetItems, MakeItemResponse };
+export { GetItems, MakeItemResponse, VidispineItem };

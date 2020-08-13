@@ -1,0 +1,3 @@
+interface ItemViewComponentMatches {
+    itemId: string,
+}

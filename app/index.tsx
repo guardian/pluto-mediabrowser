@@ -12,6 +12,7 @@ import VidispineAssetSearch from "./VidispineAssetSearch";
 import axios from "axios";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 import {LoadGroupFromServer, VidispineFieldGroup} from "./vidispine/field-group/VidispineFieldGroup";
+import ItemViewComponent from "./ItemViewComponent";
 
 interface AppState {
   vidispineBaseUrl?: string,
@@ -108,6 +109,17 @@ class App extends React.Component<RouteComponentProps<any>,AppState> {
 
     return (
         <Switch>
+          <Route
+            path="/item/:itemId"
+            component={(props: RouteComponentProps<ItemViewComponentMatches>) => (
+                <ItemViewComponent vidispineBaseUrl={this.state.vidispineBaseUrl as string}
+                                   history={props.history}
+                                   location={props.location}
+                                   match={props.match}
+                />
+            )
+            }
+            />
           <Route
             path="/"
             component={() => (
