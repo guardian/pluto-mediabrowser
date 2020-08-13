@@ -21,9 +21,11 @@ buildntest:
 
 validatemeta:
   image: python:3.8-alpine
+  stage: buildntest
   script:
     - cd vs-metadata
     - for x in `ls metadata/`; do python validate.py "metadata/$x"; if [ "$?" != "0" ]; then echo Test failed.; exit 1; fi; done
+
 docker:
   image: docker:19.03.11
   stage: docker
