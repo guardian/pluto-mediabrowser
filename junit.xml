@@ -1,6 +1,24 @@
-<testsuites name="jest tests" tests="1" failures="0" time="3.087">
-  <testsuite name="VidispineItem" errors="0" failures="0" skipped="0" timestamp="2020-07-29T16:46:39" time="2.487" tests="1">
-    <testcase classname="VidispineItem should parse a correctly formatted item and retrieve fields from the root" name="VidispineItem should parse a correctly formatted item and retrieve fields from the root" time="0.024">
+<testsuites name="jest tests" tests="8" failures="0" time="5.695">
+  <testsuite name="validateAndDecode" errors="0" failures="0" skipped="0" timestamp="2020-08-13T09:58:57" time="1.979" tests="2">
+    <testcase classname="validateAndDecode should decode an example jwt" name="validateAndDecode should decode an example jwt" time="0.01">
+    </testcase>
+    <testcase classname="validateAndDecode should reject if the jwt is not valid" name="validateAndDecode should reject if the jwt is not valid" time="0.067">
+    </testcase>
+  </testsuite>
+  <testsuite name="VidispineItem" errors="0" failures="0" skipped="0" timestamp="2020-08-13T09:58:58" time="1.978" tests="1">
+    <testcase classname="VidispineItem should parse a correctly formatted item and retrieve fields from the root" name="VidispineItem should parse a correctly formatted item and retrieve fields from the root" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="VidispineFieldGroup" errors="0" failures="0" skipped="0" timestamp="2020-08-13T09:58:58" time="3.862" tests="5">
+    <testcase classname="VidispineFieldGroup GetField should look up the given field name" name="VidispineFieldGroup GetField should look up the given field name" time="0.007">
+    </testcase>
+    <testcase classname="VidispineFieldGroup GetField should return undefined if the field does not exist" name="VidispineFieldGroup GetField should return undefined if the field does not exist" time="0.001">
+    </testcase>
+    <testcase classname="VidispineFieldGroup should throw an exception if the source object is not to the correct spec" name="VidispineFieldGroup should throw an exception if the source object is not to the correct spec" time="0.001">
+    </testcase>
+    <testcase classname="VidispineField GetDataValue should return a custom data value" name="VidispineField GetDataValue should return a custom data value" time="0.002">
+    </testcase>
+    <testcase classname="VidispineField GetCustomData should return the parsed and validated extradata" name="VidispineField GetCustomData should return the parsed and validated extradata" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>

@@ -4,6 +4,11 @@
 import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
+export const DataPair = t.iface([], {
+  "key": "string",
+  "value": "string",
+});
+
 export const PlutoCustomData = t.iface([], {
   "name": "string",
   "readonly": "string",
@@ -12,6 +17,7 @@ export const PlutoCustomData = t.iface([], {
 });
 
 const exportedTypeSuite: t.ITypeSuite = {
+  DataPair,
   PlutoCustomData,
 };
 export default exportedTypeSuite;

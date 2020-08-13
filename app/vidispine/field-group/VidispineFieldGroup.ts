@@ -115,6 +115,15 @@ class VidispineFieldGroup implements VidispineFieldGroupIF {
     origin?: string;
     inheritance?: string;   //while actually a boolean value that is encoded as a string
 
+    /**
+     * construct a VidispineFieldGroup from an unchecked object.
+     * checks that the provided object actually is a VidispineFieldGroup and throws an exception if not.
+     * otherwise, copies the data and returns this object.
+     * alternatively, if you _know_ that a given piece of data is a VidispineFieldGroupIF you can
+     * simply cast it to VidispineFieldGroup: const g = <VidispineFieldGroup>groupdata; or
+     * const g = groupdata as VidispineFieldGroup.  This will reference rather than copy.
+     * @param sourceObject object to copy.
+     */
     constructor(sourceObject: object) {
         VidispineFieldGroupIF.check(sourceObject);
         const sourceGroup = <VidispineFieldGroupIF>sourceObject;
@@ -126,6 +135,11 @@ class VidispineFieldGroup implements VidispineFieldGroupIF {
         this.inheritance = sourceGroup.inheritance;
     }
 
+    /**
+     * returns a VidispineField object corresponding to the given field name.
+     * returns undefined if no such field exists in the group.
+     * @param fieldname the field name to search for
+     */
     getField(fieldname:string):VidispineField | undefined {
         const potentialFields = this.field.filter(f=>f.name===fieldname);
         if(potentialFields.length==0) return undefined;
@@ -133,6 +147,18 @@ class VidispineFieldGroup implements VidispineFieldGroupIF {
         return <VidispineField>potentialFields[0];
     }
 
+    /**
+     * generator that yields a VidispineField object for all the fields in the group
+     */
+    * getAllFields() : Generator<VidispineField> {
+        //doing this with foreach() does not work, because foreach expects a function which is NOT a generator.
+        //a very basic iteration loop here has no embedded anonymous function and therefore is free to yield
+        for(let i=0;i<this.field.length;i++) {
+            yield <VidispineField>this.field[i];
+        }
+    }
+
 }
+
 export type {DataPair}; //used by CustomData
-export {VidispineField};
+export {VidispineField, VidispineFieldGroup};

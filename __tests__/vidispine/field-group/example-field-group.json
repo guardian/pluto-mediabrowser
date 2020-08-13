@@ -1,0 +1,96 @@
+{
+  "name": "Asset",
+  "schema": {
+    "min": 0,
+    "max": -1,
+    "name": "Asset"
+  },
+  "field": [
+    {
+      "name": "original_filename",
+      "schema": {
+        "min": 1,
+        "max": 1,
+        "name": "original_filename"
+      },
+      "type": "string-exact",
+      "stringRestriction": {
+        "minLength": 0,
+        "maxLength": 32768
+      },
+      "data": [
+        {
+          "key": "extradata",
+          "value": "{\"name\":\"Original Filename\", \"readonly\":\"true\",\"type\":\"string\"}"
+        }
+      ],
+      "defaultValue": "",
+      "origin": "VX"
+    },
+    {
+      "name": "gnm_category",
+      "schema": {
+        "min": 1,
+        "max": 1,
+        "name": "gnm_category"
+      },
+      "type": "string-exact",
+      "stringRestriction": {
+        "minLength": 0,
+        "maxLength": 32
+      },
+      "data": [
+        {
+          "key": "extradata",
+          "value": "{\"name\":\"Category\", \"readonly\":\"true\",\"type\":\"dropdown\", \"values\": [\n                {\"value\":\"Rushes\", \"key\":\"Rushes\"},\n                {\"value\":\"Branding\", \"key\":\"Branding\"},\n                {\"value\":\"Deliverable\", \"key\":\"Deliverable\"},\n                {\"value\":\"Stock\", \"key\":\"Stock\"}\n                ]}"
+        }
+      ],
+      "defaultValue": "",
+      "origin": "VX"
+    },
+    {
+      "name": "gnm_keywords",
+      "schema": {
+        "min": 1,
+        "max": 1,
+        "name": "gnm_keywords"
+      },
+      "type": "string",
+      "stringRestriction": {
+        "minLength": 0,
+        "maxLength": 32768
+      },
+      "data": [
+        {
+          "key": "extradata",
+          "value": "{\"name\":\"Keywords\", \"readonly\":\"false\",\"type\":\"tags\"}"
+        }
+      ],
+      "defaultValue": "",
+      "origin": "VX"
+    },
+    {
+      "name": "gnm_containing_projects",
+      "schema": {
+        "min": 1,
+        "max": 1,
+        "name": "gnm_containing_projects"
+      },
+      "type": "string-exact",
+      "stringRestriction": {
+        "minLength": 0,
+        "maxLength": 128
+      },
+      "data": [
+        {
+          "key": "extradata",
+          "value": "{\"name\":\"Referenced by these projects\", \"readonly\":\"false\",\"type\":\"tags\"}"
+        }
+      ],
+      "defaultValue": "",
+      "origin": "VX"
+    }
+  ],
+  "origin": "VX",
+  "inheritance": "false"
+}

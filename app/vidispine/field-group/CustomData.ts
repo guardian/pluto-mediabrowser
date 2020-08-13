@@ -1,6 +1,10 @@
-import { createCheckers } from "ts-interface-checker";
-import {DataPair} from "./VidispineFieldGroup";
 import CustomDataTI from "./CustomData-ti";
+import { createCheckers } from "ts-interface-checker";
+
+interface DataPair {
+    key: string;
+    value: string;
+}
 
 interface PlutoCustomData {
     name: string;
