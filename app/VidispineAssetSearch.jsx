@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ItemInfoBox from "./ItemInfoBox.jsx";
 import PieChartBox from "./PieChartBox.jsx";
+import axios from "axios";
 
 import "./dark.css";
 
 class VidispineAssetSearch extends Component {
   static propTypes = {
-    vidispine_host: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
+    vidispineBaseUrl: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -36,20 +35,20 @@ class VidispineAssetSearch extends Component {
   handleSubmit(event) {
     event.preventDefault();
     var dictionaryToSendToMakeXML = {};
-    if (this.element_category.value != "") {
+    if (this.element_category.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_asset_category"
       ] = this.element_category.value;
     }
-    if (this.element_title.value != "") {
+    if (this.element_title.value !== "") {
       dictionaryToSendToMakeXML["title"] = this.element_title.value;
     }
-    if (this.element_description.value != "") {
+    if (this.element_description.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_asset_description"
       ] = this.element_description.value;
     }
-    if (this.element_keywords.value != "") {
+    if (this.element_keywords.value !== "") {
       const keywordsArray = this.element_keywords.value.split(" ");
       var keywordNumber = 1;
       for (const [index, keyword] of keywordsArray.entries()) {
@@ -57,35 +56,35 @@ class VidispineAssetSearch extends Component {
         keywordNumber++;
       }
     }
-    if (this.element_archive_status.value != "") {
+    if (this.element_archive_status.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_external_archive_external_archive_status"
       ] = this.element_archive_status.value;
     }
-    if (this.element_production_office.value != "") {
+    if (this.element_production_office.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_master_generic_production_office"
       ] = this.element_production_office.value;
     }
-    if (this.element_atom.value != "") {
+    if (this.element_atom.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_master_mediaatom_atomid"
       ] = this.element_atom.value;
     }
-    if (this.element_octopus.value != "") {
+    if (this.element_octopus.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_master_generic_titleid"
       ] = this.element_octopus.value;
     }
-    if (this.element_project.value != "") {
+    if (this.element_project.value !== "") {
       dictionaryToSendToMakeXML["gnm_project"] = this.element_project.value;
     }
-    if (this.element_reference.value != "") {
+    if (this.element_reference.value !== "") {
       dictionaryToSendToMakeXML[
         "gnm_asset_filming_location"
       ] = this.element_reference.value;
     }
-    if (this.element.value != "") {
+    if (this.element.value !== "") {
       dictionaryToSendToMakeXML["originalFilename"] = this.element.value;
     }
 
@@ -135,36 +134,31 @@ class VidispineAssetSearch extends Component {
   }
 
   async getSearchData(endpoint, xML) {
-    const headers = new Headers();
-    const encodedString = new Buffer(
-      this.props.username + ":" + this.props.password
-    ).toString("base64");
-    const url = this.props.vidispine_host + "/API/" + endpoint;
+    const url = this.props.vidispineBaseUrl + "/API/" + endpoint;
     await this.setStatePromise({ loading: true });
-    const result = await fetch(url, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/xml",
-        Authorization: "Basic " + encodedString,
-      },
-      body: xML,
-    });
+    try {
+      const result = await axios({
+        url: url,
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/xml"
+        },
+        data: xML,
+      });
+      return this.setStatePromise({
+        loading: false,
+        vidispineData: result.data,
+      });
 
-    switch (result.status) {
-      case 200:
-        const returnedData = await result.json();
-        return this.setStatePromise({
-          loading: false,
-          vidispineData: returnedData,
-        });
-      default:
-        const errorContent = await result.text();
-        return this.setStatePromise({
-          loading: false,
-          lastError: errorContent,
-        });
+    } catch(err) {
+      console.error(err);
+      return this.setStatePromise({
+        loading: false,
+        lastError: "Could not load content, see console for more details",
+      });
     }
+
   }
 
   setSearchType(event) {
