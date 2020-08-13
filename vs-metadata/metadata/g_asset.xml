@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MetadataFieldGroupDocument xmlns="http://xml.vidispine.com/schema/vidispine">
+    <name>Asset</name>
+    <field>
+        <name>gnm_category</name>
+        <schema min="1" max="1" name="gnm_category"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Category", "readonly":"true","type":"dropdown", "values": [
+                {"value":"Rushes", "key":"Rushes"},
+                {"value":"Branding", "key":"Branding"},
+                {"value":"Deliverable", "key":"Deliverable"},
+                {"value":"Stock", "key":"Stock"}
+                ]}</value>
+        </data>
+        <defaultValue/>
+    </field>
+    <field>
+        <name>title</name>
+        <schema min="1" max="1" name="gnm_title"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Title", "readonly":"false","type":"string"}</value>
+        </data>
+        <defaultValue>Untitled</defaultValue>
+    </field>
+    <field>
+        <name>gnm_keywords</name>
+        <schema min="0" max="1" name="gnm_keywords"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Keywords", "readonly":"false","type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>original_filename</name>
+        <schema min="1" max="1" name="original_filename"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Original Filename", "readonly":"true","type":"string"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_owner</name>
+        <schema min="1" max="1" name="gnm_owner"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Owner(s)", "readonly":"false","type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_media_flags</name>
+        <schema min="0" max="1" name="gnm_media_flags"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>128</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Media flags", "readonly":"false","type":"checkbox", "values":[
+                {"key":"missing_media", "value":"Media is absent"},
+                {"key":"sensitive", "value":"Media is sensitive"}
+            ]}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_containing_projects</name>
+        <schema min="0" max="1" name="gnm_containing_projects"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>128</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Referenced by these projects", "readonly":"false","type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_file_created</name>
+        <schema min="1" max="1" name="gnm_file_created"/>
+        <type>date</type>
+        <data>
+            <key>extradata</key>
+            <value>{"readonly": true, "type": "timestamp", "Asset": {}, "name": "Created"}</value>
+        </data>
+    </field>
+</MetadataFieldGroupDocument>

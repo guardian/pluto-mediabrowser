@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MetadataFieldGroupDocument xmlns="http://xml.vidispine.com/schema/vidispine">
+    <name>Rushes</name>
+    <field>
+        <name>gnm_location</name>
+        <schema min="0" max="1" name="gnm_location"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Filming Location", "readonly":false,"type":"string"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_copyright</name>
+        <schema min="0" max="1" name="gnm_copyright"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Copyright information", "readonly":false,"type":"textarea"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_camera_model</name>
+        <schema min="0" max="1" name="gnm_camera_model"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Camera model", "readonly":false,"type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_camera_lens</name>
+        <schema min="0" max="1" name="gnm_camera_lens"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>512</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Lens type", "readonly":true,"type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_captured_fps</name>
+        <schema min="0" max="1" name="gnm_captured_fps"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Captured FPS", "readonly":true,"type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_camera_serial</name>
+        <schema min="0" max="1" name="gnm_camera_serial"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>512</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Camera serial number", "readonly":true,"type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_recording_mode</name>
+        <schema min="0" max="1" name="gnm_recording_mode"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>128</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"type": "string", "readonly": true, "RushesGeneralInformation": {}, "name": "Recording Mode"}</value>
+        </data>
+        <defaultValue/>
+    </field>
+
+    <field>
+        <name>gnm_prelude_flags</name>
+        <schema min="0" max="1" name="gnm_prelude_flags"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>128</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Prelude ingest flags", "readonly":true,"type":"lookup","values":[
+                {"key":"xdcam_card","value":"Original XDCAM media"},
+                {"key":"cached_record","value":"Cached record"}
+            ]}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_adobe_prelude_flags</name>
+        <schema min="0" max="1" name="gnm_adobe_prelude_flags"/>
+        <type>string-exact</type>
+        <stringRestriction/>
+        <data>
+            <key>extradata</key>
+            <value>{"values": [{"value": "Skipped Relink", "key": "skipped_relink"}, {"value": "Imported via Prelude", "key": "prelude_imported"}], "type": "checkbox", "readonly": false, "RushesGeneralInformation": {}, "name": "Adobe Prelude Flags"}</value>
+        </data>
+        <defaultValue/>
+    </field>
+    <field>
+        <name>gnm_recording_mode</name>
+        <schema min="0" max="1" name="gnm_recording_mode"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>128</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"type": "string", "readonly": true, "RushesGeneralInformation": {}, "name": "Recording Mode"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_original_aspect_ratio</name>
+        <schema min="0" max="-1" name="gnm_original_aspect_ratio"/>
+        <type>string-exact</type>
+        <stringRestriction/>
+        <data>
+            <key>extradata</key>
+            <value>{"values": [{"value": "16x9", "key": "16x9"}, {"value": "4x3", "key": "4x3"}], "type": "dropdown", "readonly": true, "RushesGeneralInformation": {}, "name": "Original Aspect Ratio"}</value>
+        </data>
+        <defaultValue/>
+    </field>
+
+    <field>
+        <name>gnm_media_type</name>
+        <schema min="0" max="1" name="gnm_media_type"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Media type from asset sweeper", "readonly":true,"type":"tags"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_xdcam_package</name>
+        <schema min="0" max="1" name="gnm_xdcam_package"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"XDCAM package name", "readonly":true,"type":"string"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_recording_mode</name>
+        <schema min="0" max="1" name="gnm_recording_mode"/>
+        <type>string-exact</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>128</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"type": "string", "readonly": true, "name": "Recording Mode"}</value>
+        </data>
+    </field>
+</MetadataFieldGroupDocument>

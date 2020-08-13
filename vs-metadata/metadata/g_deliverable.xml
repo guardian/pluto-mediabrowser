@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<MetadataFieldGroupDocument xmlns="http://xml.vidispine.com/schema/vidispine">
+    <name>Deliverable</name>
+    <field>
+        <name>gnm_deliverable_id</name>
+        <schema min="1" max="1" name="gnm_deliverable_id"/>
+        <type>long</type>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Deliverable item ID", "readonly":"true","type":"lookup"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_deliverable_bundle</name>
+        <schema min="1" max="1" name="gnm_deliverable_bundle"/>
+        <type>long</type>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Deliverable bundle ID", "readonly":"true","type":"lookup"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_atom_id</name>
+        <schema min="0" max="1" name="gnm_atom_id"/>
+        <type>string-exact</type>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Atom ID", "readonly":"true","type":"lookup"}</value>
+        </data>
+    </field>
+</MetadataFieldGroupDocument>
