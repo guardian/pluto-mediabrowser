@@ -5,8 +5,8 @@ import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
 export const StringRestriction = t.iface([], {
-  "minLength": "number",
-  "maxLength": "number",
+  "minLength": t.opt("number"),
+  "maxLength": t.opt("number"),
 });
 
 export const Schema = t.iface([], {

@@ -1,10 +1,11 @@
 import { createCheckers } from "ts-interface-checker";
 import VidispineFieldGroupTI from "./VidispineFieldGroup-ti";
 import {GetPlutoCustomData, PlutoCustomData} from "./CustomData";
+import axios from "axios";
 
 interface StringRestriction {
-    minLength: number;
-    maxLength: number;
+    minLength?: number;
+    maxLength?: number;
 }
 
 interface Schema {
@@ -104,7 +105,15 @@ class VidispineField implements VidispineFieldIF {
         if(this.stringRestriction==undefined) return true;  //no restrictions
 
         const stringlen = target.length;
-        return stringlen>=this.stringRestriction.minLength && stringlen<=this.stringRestriction.maxLength;
+        if(this.stringRestriction.minLength && this.stringRestriction.maxLength) {
+            return stringlen >= this.stringRestriction.minLength && stringlen <= this.stringRestriction.maxLength;
+        } else if(this.stringRestriction.minLength) {
+            return stringlen >= this.stringRestriction.minLength;
+        } else if(this.stringRestriction.maxLength) {
+            return stringlen <= this.stringRestriction.maxLength;
+        } else {
+            return true;
+        }
     }
 }
 
@@ -160,5 +169,17 @@ class VidispineFieldGroup implements VidispineFieldGroupIF {
 
 }
 
+/**
+ * loads in the given group from the server. Returns a Promise<VidispineFieldGroup> if successful or a failed promise
+ * if the data is invalid or a server error occurred. Inspect the thrown value to find out what happened.
+ * @param baseUrl Vidispine server base URL
+ * @param groupname name of the group to load in
+ */
+async function LoadGroupFromServer(baseUrl: string, groupname:string):Promise<VidispineFieldGroup> {
+    const result = await axios.get(baseUrl + `/API/metadata-field/field-group/${groupname}`);
+
+    return new VidispineFieldGroup(result.data)
+}
+
 export type {DataPair}; //used by CustomData
-export {VidispineField, VidispineFieldGroup};
+export {VidispineField, VidispineFieldGroup, LoadGroupFromServer};

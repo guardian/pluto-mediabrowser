@@ -11,6 +11,9 @@ var config = {
         path: BUILD_DIR,
         filename: 'bundle.js'
     },
+    resolve: {
+        extensions: [".js",".jsx",".ts",".tsx"]
+    },
     optimization: {
         minimizer: [new TerserPlugin()]
     },
