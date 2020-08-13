@@ -8,7 +8,7 @@
         <type>long</type>
         <data>
             <key>extradata</key>
-            <value>{"name":"Deliverable item ID", "readonly":"true","type":"lookup"}</value>
+            <value>{"name":"Deliverable item ID", "readonly":true,"type":"lookup"}</value>
         </data>
     </field>
     <field>
@@ -17,7 +17,7 @@
         <type>long</type>
         <data>
             <key>extradata</key>
-            <value>{"name":"Deliverable bundle ID", "readonly":"true","type":"lookup"}</value>
+            <value>{"name":"Deliverable bundle ID", "readonly":true,"type":"lookup"}</value>
         </data>
     </field>
     <field>
@@ -26,7 +26,7 @@
         <type>string-exact</type>
         <data>
             <key>extradata</key>
-            <value>{"name":"Atom ID", "readonly":"true","type":"lookup"}</value>
+            <value>{"name":"Atom ID", "readonly":true,"type":"lookup"}</value>
         </data>
     </field>
 </MetadataFieldGroupDocument>

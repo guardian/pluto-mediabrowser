@@ -17,7 +17,7 @@ buildntest:
     paths:
       - build/bundle.js
     reports:
-      junit: frontend/junit.xml
+      junit: junit.xml
 
 validatemeta:
   image: python:3.8-alpine
