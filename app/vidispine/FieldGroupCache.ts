@@ -23,7 +23,11 @@ class FieldGroupCache {
     }
 
     /**
-     * returns a new FieldGroupCache that contains the data of this one plus the group you're adding
+     * returns a new FieldGroupCache that contains the data of this one plus the group you're adding.
+     * Why don't we just mutate this object? Because it's intended to be used in an object's state.  Replace the object,
+     * and React knows to re-render it. If you mutate the object you have to put a load of your own logic in to determine
+     * whether to replace it or not.  The actual "copy" does not copy all the content but references it from the old object
+     * so there is minimal performance change.
      * @param g a VidispineFieldGroup instance to add to the cache
      * @return the new FieldGroupCache object
      */

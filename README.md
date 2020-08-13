@@ -41,7 +41,7 @@ Unfortunately this is not as simple as just double-clicking an index.html file i
 to pull in external resources and do CORS requests to Vidispine.
 
 To start up on port 8000 locally, you can run:
-```
+```shell script
 $ cd build
 $ ./runlocal.sh
 ```
@@ -49,6 +49,34 @@ $ ./runlocal.sh
 This will build a docker image and dynamically link the current state of bundle.js into it.  You can access it at
 http://localhost:8000.  If you do so with the cache off then the bundle will get reloaded on every request and you
 can take advantage of webpack's dynamic rebuilding.
+
+The config will be supplied by the `default_config.json` file in `build/`.  This points you to `http://vidispine.local`
+for Vidispine access, which is the expected configuration from prexit-local.  If you are running a different way,
+you'll need to update the vidispine configuration.
+
+### Troubleshooting
+1. Turn on the browser console!
+2. If you are getting permission denied from VS on OPTIONS requests, then CORS is not set up properly.  The following
+CORS configuration works for me:
+    ```xml
+    <CORSConfigurationDocument xmlns="http://xml.vidispine.com/schema/vidispine">
+        <entry>
+            <request>
+                <headerRegex>
+                    <key>authorization</key>
+                    <value>.*</value>
+                </headerRegex>
+            </request>
+            <response>
+                <allowOrigin>*</allowOrigin>
+                <allowHeaders>*</allowHeaders>
+            </response>
+        </entry>
+    </CORSConfigurationDocument>
+    ```
+   See https://apidoc.vidispine.com/latest/system/property.html#cors-configuration for more information
+3. If you are getting permission denied from VS for other requests, then the issue is probably not CORS.  Check that
+your bearer token signing certificate is correctly set up, and check that the token is not expired!
 
 ### Running in prexit-local context
 
