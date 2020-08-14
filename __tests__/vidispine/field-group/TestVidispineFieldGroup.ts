@@ -117,7 +117,7 @@ describe("VidispineField", () => {
         },
         {
           key: "extradata",
-          value: `{"name":"Long field name","readonly":"true","type":"string"}`,
+          value: `{"name":"Long field name","readonly":true,"type":"string"}`,
         },
       ],
     };
@@ -126,7 +126,7 @@ describe("VidispineField", () => {
     const customdata = field.getCustomData();
     if (customdata != undefined) {
       expect(customdata.name).toEqual("Long field name");
-      expect(customdata.readonly).toEqual("true");
+      expect(customdata.readonly).toEqual(true);
       expect(customdata.type).toEqual("string");
     } else {
       throw "CustomData was undefined";
