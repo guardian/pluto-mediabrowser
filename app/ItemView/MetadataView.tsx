@@ -27,7 +27,6 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
 
   return (
     <>
-      <Paper elevation={3}>
         <Grid container justify="flex-end" alignContent="flex-start">
           <Grid item>
             <ToggleButton
@@ -41,23 +40,23 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
             </ToggleButton>
           </Grid>
         </Grid>
-      </Paper>
       {
         //So, Array.from() is not the most performant method of iterating, but should be fine on small collections
         //https://stackoverflow.com/questions/43885365/using-map-on-an-iterator
         Array.from(props.fieldCache._content, ([groupname, group]) => {
-          console.log("rendering ", groupname);
           return (
-            <MetadataGroupView
-              key={groupname}
-              group={group}
-              content={props.content}
-              elevation={props.elevation}
-              readonly={!editMode}
-              valueDidChange={(fieldname, newvalue) =>
-                props.valueDidChange(groupname, fieldname, newvalue)
-              }
-            />
+              props.content.hasGroup(groupname) ?
+                <MetadataGroupView
+                  key={groupname}
+                  group={group}
+                  content={props.content}
+                  elevation={props.elevation}
+                  readonly={!editMode}
+                  valueDidChange={(fieldname, newvalue) =>
+                    props.valueDidChange(groupname, fieldname, newvalue)
+                  }
+                />
+                : null
           );
         })
       }

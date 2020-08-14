@@ -231,6 +231,11 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
                   <MenuItem value={dataPair.key}>{dataPair.value}</MenuItem>
                 ))}
               </Select>
+                {viewHints.readonly && !props.readonly ? (
+                    <Typography variant="caption">
+                        You can't edit this, it's read-only
+                    </Typography>
+                ) : null}
             </FormControl>
           );
         } else {
