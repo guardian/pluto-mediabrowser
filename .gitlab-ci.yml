@@ -7,7 +7,7 @@ buildntest:
   stage: buildntest
   script:
     - apk add git --no-cache
-    - sh ./ci-build/setup_headers.sh
+    - sh ./ci-scripts/setup_headers.sh
     - yarn install
     - yarn test
     - yarn compile
