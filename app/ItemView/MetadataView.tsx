@@ -14,7 +14,7 @@ interface MetadataViewProps {
   valueDidChange: (
     groupname: string,
     fieldname: string,
-    newvalue: string
+    newvalue: string[]
   ) => void;
 }
 

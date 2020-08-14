@@ -12,7 +12,7 @@ var config = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: [".js",".jsx",".ts",".tsx"]
+        extensions: [".js",".jsx",".ts",".tsx",".svg"]
     },
     optimization: {
         minimizer: [new TerserPlugin()]
@@ -34,7 +34,11 @@ var config = {
                 test: /\.css$/i,
                 include: APP_DIR,
                 use: ['style-loader', 'css-loader', "sass-loader"]
-            }
+            },
+            {
+                test: /\.svg$/,
+                use: ["@svgr/webpack", "url-loader"],
+            },
         ]
     }
 };

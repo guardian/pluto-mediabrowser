@@ -25,6 +25,7 @@ import {
 } from "react-router-dom";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 import MetadataView from "./ItemView/MetadataView";
+import {makeStyles} from "@material-ui/core/styles";
 
 interface ItemViewComponentProps
   extends RouteComponentProps<ItemViewComponentMatches> {
@@ -36,6 +37,15 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   const [itemData, setItemData] = useState<VidispineItem | undefined>();
   const [lastError, setLastError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+
+  const useStyles = makeStyles((theme) => ({
+    heading: {
+      fontSize: "26",
+      padding: "0.5rem"
+    }
+  }))
+
+  const classes = useStyles();
 
   const loadItemMeta = async () => {
     const targetUrl = `${props.vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata`;
@@ -101,7 +111,9 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
 
   return (
     <>
-      <div className="search_title_box">{pageTitle()}</div>
+      <Paper elevation={3}>
+        <Typography variant="h2" classes={{root: classes.heading}}>{pageTitle()}</Typography>
+      </Paper>
       {loading ? <p>Loading...</p> : null}
       {lastError ? (
         <div className="error">

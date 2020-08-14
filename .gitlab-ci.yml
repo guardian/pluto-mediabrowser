@@ -1,11 +1,13 @@
 stages:
   - buildntest
-#  - docker
+  - docker
 
 buildntest:
   image: node:12.18-alpine3.12
   stage: buildntest
   script:
+    - apk add git --no-cache
+    - sh ./ci-build/setup_headers.sh
     - yarn install
     - yarn test
     - yarn compile
@@ -25,14 +27,18 @@ validatemeta:
   script:
     - cd vs-metadata
     - for x in `ls metadata/`; do python validate.py "metadata/$x"; if [ "$?" != "0" ]; then echo Test failed.; exit 1; fi; done
-#
-#docker:
-#  image: docker:19.03.11
-#  stage: docker
-#  services:
-#    - docker:19.03.11-dind
-#  script:
-#    - cd build
-#    - docker login -u "${DOCKER_USER}" -p "${DOCKER_PAT}"
-#    - docker build . -t guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID
-#    - docker push guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID
+
+docker:
+  image: docker:19.03.11
+  stage: docker
+  services:
+    - docker:19.03.11-dind
+  script:
+    - cd build
+    - docker login -u "${DOCKER_USER}" -p "${DOCKER_PAT}"
+    - docker build . -t guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID
+    - docker push guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID
+  only:
+    - master
+    - merge_requests
+

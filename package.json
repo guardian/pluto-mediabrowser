@@ -34,6 +34,7 @@
   },
   "author": "Andy Gallagher <andy.gallagher@theguardian.com>",
   "devDependencies": {
+    "@svgr/webpack": "^5.4.0",
     "@types/jest": "^26.0.7",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/react": "^16.9.36",
@@ -73,9 +74,11 @@
     "css-loader": "^2.1.1",
     "identity-obj-proxy": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
+    "material-ui-chip-input": "^1.1.0",
     "moment": "^2.20.1",
     "moment-duration-format": "2.2.2",
     "moment-timezone": "^0.5.29",
+    "pluto-headers": "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#master",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router": "^4.1.1",
@@ -88,7 +91,8 @@
     "ts-interface-checker": "^0.1.11",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "yarn": "^1.21.1"
+    "yarn": "^1.21.1",
+    "url-loader": "^4.1.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
