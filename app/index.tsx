@@ -19,8 +19,8 @@ import {
 } from "./vidispine/field-group/VidispineFieldGroup";
 import ItemViewComponent from "./ItemViewComponent";
 import { Header, AppSwitcher } from "pluto-headers";
-import {createMuiTheme, Theme, ThemeProvider} from "@material-ui/core";
-import colours from '@material-ui/core/colors';
+import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
+import colours from "@material-ui/core/colors";
 import logo from "./static/guardian_white.svg";
 
 interface AppState {
@@ -50,7 +50,7 @@ axios.interceptors.request.use(function (config) {
 const groupsToCache = ["Asset", "Deliverable", "Newswire", "Rushes"];
 
 class App extends React.Component<RouteComponentProps<any>, AppState> {
-  theme:Theme;
+  theme: Theme;
 
   constructor(props: RouteComponentProps<any>) {
     super(props);
@@ -64,12 +64,12 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
     this.theme = createMuiTheme({
       typography: {
-        fontFamily: "Avant Garde, Century Gothic, Helvetica, Arial, sans-serif"
+        fontFamily: "Avant Garde, Century Gothic, Helvetica, Arial, sans-serif",
       },
       palette: {
         type: "dark",
-      }
-    })
+      },
+    });
   }
 
   setStatePromise(newState: AppState) {
@@ -128,9 +128,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
     }
   }
 
-  doNothing() {
-
-  }
+  doNothing() {}
 
   render() {
     if (this.state.lastError) {
@@ -146,17 +144,26 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
     }
 
     return (
-       <ThemeProvider theme={this.theme}>
-         <Header>
-           <a href="/" style={{ display: "inline-block" }}>
-             <img style={{ height: "40px" }} src={logo} alt="The Guardian" />
-           </a>
-         </Header>
-         <AppSwitcher menuSettings={[]} isAdmin={true} isLoggedIn={true} username={"test"} onLoggedIn={this.doNothing} onLoggedOut={this.doNothing}/>
+      <ThemeProvider theme={this.theme}>
+        <Header>
+          <a href="/" style={{ display: "inline-block" }}>
+            <img style={{ height: "40px" }} src={logo} alt="The Guardian" />
+          </a>
+        </Header>
+        <AppSwitcher
+          menuSettings={[]}
+          isAdmin={true}
+          isLoggedIn={true}
+          username={"test"}
+          onLoggedIn={this.doNothing}
+          onLoggedOut={this.doNothing}
+        />
         <Switch>
           <Route
             path="/item/:itemId"
-            component={(props: RouteComponentProps<ItemViewComponentMatches>) => (
+            component={(
+              props: RouteComponentProps<ItemViewComponentMatches>
+            ) => (
               <ItemViewComponent
                 vidispineBaseUrl={this.state.vidispineBaseUrl as string}
                 history={props.history}

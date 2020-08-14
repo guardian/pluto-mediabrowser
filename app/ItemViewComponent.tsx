@@ -25,7 +25,7 @@ import {
 } from "react-router-dom";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 import MetadataView from "./ItemView/MetadataView";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface ItemViewComponentProps
   extends RouteComponentProps<ItemViewComponentMatches> {
@@ -41,9 +41,9 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   const useStyles = makeStyles((theme) => ({
     heading: {
       fontSize: "26",
-      padding: "0.5rem"
-    }
-  }))
+      padding: "0.5rem",
+    },
+  }));
 
   const classes = useStyles();
 
@@ -112,7 +112,9 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   return (
     <>
       <Paper elevation={3}>
-        <Typography variant="h2" classes={{root: classes.heading}}>{pageTitle()}</Typography>
+        <Typography variant="h2" classes={{ root: classes.heading }}>
+          {pageTitle()}
+        </Typography>
       </Paper>
       {loading ? <p>Loading...</p> : null}
       {lastError ? (
