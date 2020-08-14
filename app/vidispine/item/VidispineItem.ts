@@ -104,7 +104,7 @@ class VidispineItem implements ItemIF {
    */
   getMetadataString(forKey: string): string | undefined {
     const possibleValues = this.getMetadataValuesInGroup(forKey, undefined);
-    if(possibleValues) {
+    if (possibleValues) {
       return possibleValues.join(", ");
     } else {
       return undefined;
@@ -139,7 +139,7 @@ class VidispineItem implements ItemIF {
       .filter((f) => f.name === forKey)
       .map((f) => f.value);
 
-    if(values.length===0) return undefined;
+    if (values.length === 0) return undefined;
     return values.reduce((acc, elem) => acc.concat(...elem));
   }
 
@@ -195,11 +195,11 @@ class VidispineItem implements ItemIF {
    * returns an array of strings representing the names of the groups mentioned in the document.
    * This is an empty list if either the timespan does not exist or there are no group entries.
    */
-  getGroupNames():string[] {
+  getGroupNames(): string[] {
     const ts = this.getDefaultTimespan();
-    if(ts==undefined) return [];
+    if (ts == undefined) return [];
 
-    return ts.group.map(g=>g.name)
+    return ts.group.map((g) => g.name);
   }
 }
 

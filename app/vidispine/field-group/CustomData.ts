@@ -2,20 +2,18 @@ import CustomDataTI from "./CustomData-ti";
 import { createCheckers } from "ts-interface-checker";
 
 interface DataPair {
-    key: string;
-    value: string;
+  key: string;
+  value: string;
 }
 
 interface PlutoCustomData {
-    name: string;
-    readonly: string;   //FIXME: should be boolean
-    type: string;
-    values?: DataPair[];
+  name: string;
+  readonly: boolean;
+  type: string;
+  values?: DataPair[];
 }
 
-const {
-    PlutoCustomData
-} = createCheckers(CustomDataTI);
+const { PlutoCustomData } = createCheckers(CustomDataTI);
 
 /**
  * validates the given raw json object as a PlutoCustomData value and returns it.
@@ -23,10 +21,10 @@ const {
  * @param content raw javascript object parsed from json
  * @return the PlutoCustomData object
  */
-function GetPlutoCustomData(content: object):PlutoCustomData {
-    PlutoCustomData.check(content);
-    return <PlutoCustomData>content;
+function GetPlutoCustomData(content: object): PlutoCustomData {
+  PlutoCustomData.check(content);
+  return <PlutoCustomData>content;
 }
 
-export type {PlutoCustomData};
-export {GetPlutoCustomData};
+export type { PlutoCustomData };
+export { GetPlutoCustomData };
