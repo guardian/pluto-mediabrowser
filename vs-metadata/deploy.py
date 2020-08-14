@@ -49,7 +49,7 @@ group_name = get_group_name(parsed_content)
 url_to_send = "{0}://{1}:{2}/API/metadata-field/field-group/{3}".format(args.proto, args.host, args.port, group_name)
 print("Sending to {0}...".format(url_to_send))
 
-response = requests.put(url_to_send, data=raw_content, auth=(args.user, args.passwd), headers={"Content-Type":"application/xml"})
+response = requests.put(url_to_send, data=raw_content, auth=(args.user, args.passwd), headers={"Content-Type":"application/xml"}, verify=False)
 if response.status_code==200:
     print("Successfully sent")
 else:

@@ -1,3 +1,4 @@
+import "date-fns";
 import React, { useEffect, useState } from "react";
 import {
   TextareaAutosize,
@@ -7,9 +8,20 @@ import {
   Paper,
   FormControl,
   Typography,
-  Grid, Select, MenuItem,
-  FormGroup, Checkbox, FormControlLabel
+  Grid,
+  Select,
+  MenuItem,
+  FormGroup,
+  Checkbox,
+  FormControlLabel,
+  TextField,
 } from "@material-ui/core";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import {
   VidispineField,
   VidispineFieldGroup,
@@ -18,7 +30,8 @@ import { VidispineItem } from "../vidispine/item/VidispineItem";
 import { PlutoCustomData } from "../vidispine/field-group/CustomData";
 import { makeStyles } from "@material-ui/core/styles";
 import ChipInput from "material-ui-chip-input";
-import {CheckBox} from "@material-ui/icons";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import moment, { Moment } from "moment";
 
 interface MetadataGroupViewProps {
   group: VidispineFieldGroup;
@@ -82,112 +95,170 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               label={viewHints.name}
             />
             {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">You can't edit this, it's read-only</Typography>
+              <Typography variant="caption">
+                You can't edit this, it's read-only
+              </Typography>
             ) : null}
           </FormControl>
         );
-      // case "lookup":
-      //     break;
+      case "lookup":
+        return (
+          <FormControl classes={{ root: classes.inputField }}>
+            <FormLabel htmlFor={controlId}>{viewHints.name}</FormLabel>
+            {viewHints.readonly || props.readonly ? (
+              <Input
+                readOnly={true}
+                id={controlId}
+                value={maybeValues ? maybeValues.join(" ") : ""}
+              />
+            ) : (
+              <Autocomplete
+                renderInput={(params) => <TextField {...params} />}
+                options={viewHints.values ?? []}
+                getOptionLabel={(entry) => entry.value}
+              />
+            )}
+            {viewHints.readonly && !props.readonly ? (
+              <Typography variant="caption">
+                You can't edit this, it's read-only
+              </Typography>
+            ) : null}
+          </FormControl>
+        );
       case "checkbox":
-        if(viewHints.values) {
+        if (viewHints.values) {
           return (
-              <FormControl classes={{root: classes.inputField}}>
-                <InputLabel htmlFor={controlId}>{viewHints.name}</InputLabel>
-                <FormGroup id={controlId}>
-                  {
-                    viewHints.values.map((dataPair, idx)=>
-                      <FormControlLabel
-                          label={dataPair.value}
-                          control={
-                            <Checkbox
-                                checked={maybeValues ? maybeValues.includes(dataPair.key) : false}
-                                color="primary"
-                                readOnly={viewHints.readonly || props.readonly}
-                                onChange={(event)=>{
-                                  const newValue = event.target.checked ?
-                                      maybeValues ? maybeValues.concat(dataPair.key) : [dataPair.key] :
-                                      maybeValues ? maybeValues.filter(v=>v!==dataPair.key) : [];
-                                  props.valueDidChange(fieldname, newValue);
-                                } }
-                            />
-                          }/>
-                    )
-                  }
-                </FormGroup>
-              </FormControl>
-          )
-        } else {
-          return (
+            <FormControl classes={{ root: classes.inputField }}>
               <Grid
-                  container
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="flex-start"
-                  spacing={1}
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start"
+                spacing={1}
               >
-                <Grid item sm={6}>
-                  <Typography>{viewHints.name}</Typography>
+                <Grid item sm={3}>
+                  <FormLabel htmlFor={controlId}>{viewHints.name}</FormLabel>
+                  {viewHints.readonly && !props.readonly ? (
+                    <Typography variant="caption">
+                      You can't edit this, it's read-only
+                    </Typography>
+                  ) : null}
                 </Grid>
-
-                <Grid item sm={6}>
-                  <Typography
-                      variant="caption"
-                      id={controlId}
-                      classes={{
-                        root: classes.root,
-                      }}
-                  >
-                    Warning: field is a checkbox group but has no values configured
-                  </Typography>
+                <Grid item sm={9}>
+                  <FormGroup id={controlId}>
+                    {viewHints.values.map((dataPair, idx) => (
+                      <FormControlLabel
+                        label={dataPair.value}
+                        control={
+                          <Checkbox
+                            checked={
+                              maybeValues
+                                ? maybeValues.includes(dataPair.key)
+                                : false
+                            }
+                            color="primary"
+                            readOnly={viewHints.readonly || props.readonly}
+                            onChange={(event) => {
+                              const newValue = event.target.checked
+                                ? maybeValues
+                                  ? maybeValues.concat(dataPair.key)
+                                  : [dataPair.key]
+                                : maybeValues
+                                ? maybeValues.filter((v) => v !== dataPair.key)
+                                : [];
+                              props.valueDidChange(fieldname, newValue);
+                            }}
+                          />
+                        }
+                      />
+                    ))}
+                  </FormGroup>
                 </Grid>
               </Grid>
-          )
+            </FormControl>
+          );
+        } else {
+          return (
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+              spacing={1}
+            >
+              <Grid item sm={6}>
+                <Typography>{viewHints.name}</Typography>
+              </Grid>
+
+              <Grid item sm={6}>
+                <Typography
+                  variant="caption"
+                  id={controlId}
+                  classes={{
+                    root: classes.root,
+                  }}
+                >
+                  Warning: field is a checkbox group but has no values
+                  configured
+                </Typography>
+              </Grid>
+            </Grid>
+          );
         }
       case "dropdown":
-        if(viewHints.values) {
+        if (viewHints.values) {
           return (
-              <FormControl classes={{root: classes.inputField}}>
-                <InputLabel id={controlId}>{viewHints.name}</InputLabel>
-                <Select labelId={controlId}
-                        readOnly={viewHints.readonly || props.readonly}
-                        value={maybeValues ? maybeValues.length > 0 ? maybeValues[0] : "" : ""}
-                        onChange={(event)=>props.valueDidChange(fieldname, [event.target.value as string])}
-                >
-                  <MenuItem value="">(not set)</MenuItem>
-                  {
-                    viewHints.values.map( (dataPair, index)=>
-                      <MenuItem value={dataPair.key}>{dataPair.value}</MenuItem>
-                    )
-                  }
-                </Select>
-              </FormControl>
-          )
+            <FormControl classes={{ root: classes.inputField }}>
+              <InputLabel id={controlId}>{viewHints.name}</InputLabel>
+              <Select
+                labelId={controlId}
+                readOnly={viewHints.readonly || props.readonly}
+                value={
+                  maybeValues
+                    ? maybeValues.length > 0
+                      ? maybeValues[0]
+                      : ""
+                    : ""
+                }
+                onChange={(event) =>
+                  props.valueDidChange(fieldname, [
+                    event.target.value as string,
+                  ])
+                }
+              >
+                <MenuItem value="">(not set)</MenuItem>
+                {viewHints.values.map((dataPair, index) => (
+                  <MenuItem value={dataPair.key}>{dataPair.value}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          );
         } else {
           return (
-              <Grid
-                  container
-                  direction="row"
-                  justify="flex-start"
-                  alignItems="flex-start"
-                  spacing={1}
-              >
-                <Grid item sm={6}>
-                  <Typography>{viewHints.name}</Typography>
-                </Grid>
-
-                <Grid item sm={6}>
-                  <Typography
-                      variant="caption"
-                      id={controlId}
-                      classes={{
-                        root: classes.root,
-                      }}
-                  >
-                    Warning: field is a dropdown but has no values configured
-                  </Typography>
-                </Grid>
+            <Grid
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="flex-start"
+              spacing={1}
+            >
+              <Grid item sm={6}>
+                <Typography>{viewHints.name}</Typography>
               </Grid>
-          )
+
+              <Grid item sm={6}>
+                <Typography
+                  variant="caption"
+                  id={controlId}
+                  classes={{
+                    root: classes.root,
+                  }}
+                >
+                  Warning: field is a dropdown but has no values configured
+                </Typography>
+              </Grid>
+            </Grid>
+          );
         }
       case "textarea":
         return (
@@ -205,7 +276,9 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               }
             />
             {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">You can't edit this, it's read-only</Typography>
+              <Typography variant="caption">
+                You can't edit this, it's read-only
+              </Typography>
             ) : null}
           </FormControl>
         );
@@ -222,8 +295,48 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               }
             />
             {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">You can't edit this, it's read-only</Typography>
+              <Typography variant="caption">
+                You can't edit this, it's read-only
+              </Typography>
             ) : null}
+          </FormControl>
+        );
+      case "timestamp":
+        const currentValue: Moment | undefined = maybeValues
+          ? maybeValues.length > 0
+            ? moment(maybeValues[0])
+            : undefined
+          : undefined;
+
+        console.log("current raw values: ", maybeValues);
+        console.log(
+          "parsed value: ",
+          currentValue ? currentValue.format("YYYY-MM-DD") : " not defined"
+        );
+        console.log(
+          "parsed value: ",
+          currentValue ? currentValue.format("HH:mm:ss") : " not defined"
+        );
+        return (
+          <FormControl>
+            <FormLabel htmlFor={controlId}>{viewHints.name}</FormLabel>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                variant="inline"
+                format="yyyy-MM-dd"
+                margin="normal"
+                id={controlId}
+                value={currentValue ? currentValue.format("YYYY-MM-DD") : ""}
+                onChange={(evt) => console.log(evt)}
+              />
+              <KeyboardTimePicker
+                variant="inline"
+                format="HH:mm:ss"
+                margin="normal"
+                value={currentValue ? currentValue.format("HH:mm:ss") : ""}
+                onChange={(evt) => console.log(evt)}
+              />
+            </MuiPickersUtilsProvider>
           </FormControl>
         );
       default:

@@ -5,9 +5,9 @@ import { VidispineItem } from "../vidispine/item/VidispineItem";
 import { VidispineFieldGroup } from "../vidispine/field-group/VidispineFieldGroup";
 import { doc } from "prettier";
 import group = doc.builders.group;
-import {Grid, Paper, Typography} from "@material-ui/core";
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import {Edit} from "@material-ui/icons";
+import { Grid, Paper, Typography } from "@material-ui/core";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import { Edit } from "@material-ui/icons";
 
 interface MetadataViewProps {
   fieldCache: FieldGroupCache;
@@ -30,14 +30,15 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
       <Paper elevation={3}>
         <Grid container justify="flex-end" alignContent="flex-start">
           <Grid item>
-          <ToggleButton
-            selected={editMode}
-            onChange={()=>setEditMode(!editMode)}
-          >
-            <Edit/><Typography variant="caption">{
-              editMode ? "Finish Editing" : "Edit Metadata"
-          }</Typography>
-          </ToggleButton>
+            <ToggleButton
+              selected={editMode}
+              onChange={() => setEditMode(!editMode)}
+            >
+              <Edit />
+              <Typography variant="caption">
+                {editMode ? "Finish Editing" : "Edit Metadata"}
+              </Typography>
+            </ToggleButton>
           </Grid>
         </Grid>
       </Paper>
