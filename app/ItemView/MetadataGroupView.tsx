@@ -34,7 +34,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
       },
     },
     metagroup: {
-      marginBottom: "2rem",
+      marginTop: "1.5rem",
       padding: "0.75rem",
     },
     inputField: {
@@ -80,7 +80,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               label={viewHints.name}
             />
             {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">This is read-only</Typography>
+              <Typography variant="caption">You can't edit this, it's read-only</Typography>
             ) : null}
           </FormControl>
         );
@@ -106,7 +106,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               }
             />
             {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">This is read-only</Typography>
+              <Typography variant="caption">You can't edit this, it's read-only</Typography>
             ) : null}
           </FormControl>
         );
@@ -123,7 +123,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               }
             />
             {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">This is read-only</Typography>
+              <Typography variant="caption">You can't edit this, it's read-only</Typography>
             ) : null}
           </FormControl>
         );
