@@ -1,5 +1,7 @@
 import VidispineItemTI from "./VidispineItem-ti";
-
+import VidispineShapeTI from "../shape/VidispineShape-ti"
+import CustomDataTI from "../field-group/CustomData-ti"
+import VidispineFileTI from "../shape/VidispineFile-ti"
 import { createCheckers } from "ts-interface-checker";
 import {VidispineShapeIF, VidispineShape} from "../shape/VidispineShape";
 
@@ -55,7 +57,7 @@ const {
   ItemMetadata,
   ItemIF,
   ItemResponse,
-} = createCheckers(VidispineItemTI);
+} = createCheckers(VidispineItemTI, VidispineShapeTI, CustomDataTI, VidispineFileTI);
 
 /**
  * Main vidispine item class.  This defines a group of useful methods for retrieving metadata values from the overall

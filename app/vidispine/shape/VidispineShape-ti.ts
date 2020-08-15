@@ -16,7 +16,7 @@ export const SampleBasedTime = t.iface([], {
 
 export const VidispineShapeMediaInfo = t.iface([], {
   "Format_Settings_GOP": t.opt("string"),
-  "Bit_Rate_Mode": "string",
+  "Bit_Rate_Mode": t.opt("string"),
   "property": t.array("DataPair"),
 });
 

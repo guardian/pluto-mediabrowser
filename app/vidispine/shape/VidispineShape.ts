@@ -1,4 +1,7 @@
 import VidispineShapeTI from "./VidispineShape-ti";
+import CustomDataTI from "../field-group/CustomData-ti";
+import VidispineFileTI from "./VidispineFile-ti";
+
 import { createCheckers } from "ts-interface-checker";
 import {DataPair} from "../field-group/VidispineFieldGroup";
 import {VidispineFile} from "./VidispineFile";
@@ -16,7 +19,7 @@ interface SampleBasedTime {
 interface VidispineShapeMediaInfo {
     //these first two are only applicable to video streams
     Format_Settings_GOP?: string
-    Bit_Rate_Mode: string
+    Bit_Rate_Mode?: string
     property: DataPair[]
 }
 
@@ -113,7 +116,7 @@ interface VidispineShapeIF {
 
 const {
     VidispineShapeIF
-} = createCheckers(VidispineShapeTI);
+} = createCheckers(VidispineShapeTI, CustomDataTI, VidispineFileTI);
 
 /**
  * Helper class that defines a number of useful methods for accessing the VidispineShape data
