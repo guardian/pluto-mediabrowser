@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { VidispineItem } from "./vidispine/item/VidispineItem";
 import PreviewPlayer from "./ItemView/PreviewPlayer";
-
+import {Helmet} from "react-helmet";
 import {
   RouteComponentProps,
   useHistory,
@@ -48,7 +48,7 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   const classes = useStyles();
 
   const loadItemMeta = async () => {
-    const targetUrl = `${props.vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata`;
+    const targetUrl = `${props.vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata,shape`;
     console.debug("loading item data from ", targetUrl);
     try {
       const result = await axios.get(targetUrl, {
@@ -111,6 +111,9 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
 
   return (
     <>
+      {
+        itemData ? <Helmet><title>{pageTitle()}</title></Helmet> : null
+      }
       <Paper elevation={3}>
         <Typography variant="h2" classes={{ root: classes.heading }}>
           {pageTitle()}

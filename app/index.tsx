@@ -22,6 +22,7 @@ import { Header, AppSwitcher } from "pluto-headers";
 import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
 import colours from "@material-ui/core/colors";
 import logo from "./static/guardian_white.svg";
+import { Helmet } from "react-helmet";
 
 interface AppState {
   vidispineBaseUrl?: string;
@@ -145,6 +146,9 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
     return (
       <ThemeProvider theme={this.theme}>
+        <Helmet>
+          <title>PLUTO Media Browser</title>
+        </Helmet>
         <Header>
           <a href="/" style={{ display: "inline-block" }}>
             <img style={{ height: "40px" }} src={logo} alt="The Guardian" />
@@ -165,15 +169,14 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
               props: RouteComponentProps<ItemViewComponentMatches>
             ) => (
               <ItemViewComponent
+                {...props}
                 vidispineBaseUrl={this.state.vidispineBaseUrl as string}
-                history={props.history}
-                location={props.location}
-                match={props.match}
                 //this should never be undefined in reality; but the interface must specify it like that so we can do partial updates.
                 fieldCache={this.state.fields as FieldGroupCache}
               />
             )}
           />
+
           <Route
             path="/"
             component={() => (
