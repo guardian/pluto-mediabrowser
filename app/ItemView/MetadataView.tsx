@@ -45,7 +45,7 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
         //https://stackoverflow.com/questions/43885365/using-map-on-an-iterator
         Array.from(props.fieldCache._content, ([groupname, group]) => {
           return (
-              props.content.hasGroup(groupname) ?
+              // props.content.hasGroup(groupname) ?
                 <MetadataGroupView
                   key={groupname}
                   group={group}
@@ -56,7 +56,7 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
                     props.valueDidChange(groupname, fieldname, newvalue)
                   }
                 />
-                : null
+                // : null
           );
         })
       }
