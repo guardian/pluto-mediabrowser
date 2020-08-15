@@ -1,6 +1,7 @@
 import VidispineItemTI from "./VidispineItem-ti";
 
 import { createCheckers } from "ts-interface-checker";
+import {VidispineShapeIF, VidispineShape} from "../shape/VidispineShape";
 
 interface MetadataValue {
   value: string;
@@ -37,7 +38,8 @@ interface ItemMetadata {
 }
 
 interface ItemIF {
-  metadata: ItemMetadata;
+  metadata?: ItemMetadata;
+  shape?: VidispineShapeIF[];
   id: string;
 }
 
@@ -60,7 +62,8 @@ const {
  * document structure
  */
 class VidispineItem implements ItemIF {
-  metadata: ItemMetadata;
+  metadata?: ItemMetadata;
+  shape?: VidispineShape[];
   id: string;
 
   /**
@@ -70,6 +73,7 @@ class VidispineItem implements ItemIF {
   constructor(sourceObject: any) {
     ItemIF.check(sourceObject);
     this.metadata = sourceObject.metadata;
+    this.shape = sourceObject.shape as VidispineShape[];
     this.id = sourceObject.id;
   }
 
@@ -189,23 +193,27 @@ class VidispineItem implements ItemIF {
    * - if there are multiple timespans running from "-INF" to "+INF" then a RangeError is thrown
    */
   getDefaultTimespan(): MetadataTimespan | undefined {
-    if (this.metadata.timespan.length === 0) {
-      return undefined;
-    } else if (this.metadata.timespan.length === 1) {
-      return this.metadata.timespan[0];
-    } else {
-      const potentialTimespans = this.metadata.timespan.filter(
-        (timespan) => timespan.start === "-INF" && timespan.end === "+INF"
-      );
-      if (potentialTimespans.length === 0) {
+    if(this.metadata) {
+      if (this.metadata.timespan.length === 0) {
         return undefined;
-      } else if (potentialTimespans.length === 1) {
-        return potentialTimespans[0];
+      } else if (this.metadata.timespan.length === 1) {
+        return this.metadata.timespan[0];
       } else {
-        const err = new RangeError();
-        err.message = "Multiple default timespans existed? This is incorrect.";
-        throw err;
+        const potentialTimespans = this.metadata.timespan.filter(
+            (timespan) => timespan.start === "-INF" && timespan.end === "+INF"
+        );
+        if (potentialTimespans.length === 0) {
+          return undefined;
+        } else if (potentialTimespans.length === 1) {
+          return potentialTimespans[0];
+        } else {
+          const err = new RangeError();
+          err.message = "Multiple default timespans existed? This is incorrect.";
+          throw err;
+        }
       }
+    } else {
+      return undefined;
     }
   }
 
@@ -218,6 +226,20 @@ class VidispineItem implements ItemIF {
     if (ts == undefined) return [];
 
     return ts.group.map((g) => g.name);
+  }
+
+  /**
+   * finds an attached shape matching the given shape tag
+   * @param shapeTagName shape tag name to search for
+   * @returns undefined if there is no shape data in this VidispineItem. An array of VidispineShape otherwise, which can
+   * be empty if there are no matching shapes present.
+   */
+  findShape(shapeTagName:string):VidispineShape[] | undefined {
+    if(this.shape) {
+      return this.shape.filter((shape) => shape.tag.includes(shapeTagName))
+    } else {
+      return undefined;
+    }
   }
 }
 
