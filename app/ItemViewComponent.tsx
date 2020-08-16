@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { VidispineItem } from "./vidispine/item/VidispineItem";
 import PreviewPlayer from "./ItemView/PreviewPlayer";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 import {
   RouteComponentProps,
   useHistory,
@@ -111,9 +111,11 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
 
   return (
     <>
-      {
-        itemData ? <Helmet><title>{pageTitle()}</title></Helmet> : null
-      }
+      {itemData ? (
+        <Helmet>
+          <title>{pageTitle()}</title>
+        </Helmet>
+      ) : null}
       <Paper elevation={3}>
         <Typography variant="h2" classes={{ root: classes.heading }}>
           {pageTitle()}

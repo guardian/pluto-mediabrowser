@@ -169,12 +169,15 @@ class VidispineItem implements ItemIF {
    * @param groupName group to search for
    * @param timespan optional timspan to search in, if not set the default timespan is used
    */
-  hasGroup(groupName:string, timespan?: MetadataTimespan): boolean {
+  hasGroup(groupName: string, timespan?: MetadataTimespan): boolean {
     const timespanForLookup = timespan ?? this.getDefaultTimespan();
-    if(timespanForLookup && timespanForLookup.group) {
-      return timespanForLookup.group.filter((group)=>group.name===groupName).length>0
+    if (timespanForLookup && timespanForLookup.group) {
+      return (
+        timespanForLookup.group.filter((group) => group.name === groupName)
+          .length > 0
+      );
     } else {
-      return false
+      return false;
     }
   }
 

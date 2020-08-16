@@ -27,36 +27,36 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
 
   return (
     <>
-        <Grid container justify="flex-end" alignContent="flex-start">
-          <Grid item>
-            <ToggleButton
-              selected={editMode}
-              onChange={() => setEditMode(!editMode)}
-            >
-              <Edit />
-              <Typography variant="caption">
-                {editMode ? "Finish Editing" : "Edit Metadata"}
-              </Typography>
-            </ToggleButton>
-          </Grid>
+      <Grid container justify="flex-end" alignContent="flex-start">
+        <Grid item>
+          <ToggleButton
+            selected={editMode}
+            onChange={() => setEditMode(!editMode)}
+          >
+            <Edit />
+            <Typography variant="caption">
+              {editMode ? "Finish Editing" : "Edit Metadata"}
+            </Typography>
+          </ToggleButton>
         </Grid>
+      </Grid>
       {
         //So, Array.from() is not the most performant method of iterating, but should be fine on small collections
         //https://stackoverflow.com/questions/43885365/using-map-on-an-iterator
         Array.from(props.fieldCache._content, ([groupname, group]) => {
           return (
-              // props.content.hasGroup(groupname) ?
-                <MetadataGroupView
-                  key={groupname}
-                  group={group}
-                  content={props.content}
-                  elevation={props.elevation}
-                  readonly={!editMode}
-                  valueDidChange={(fieldname, newvalue) =>
-                    props.valueDidChange(groupname, fieldname, newvalue)
-                  }
-                />
-                // : null
+            // props.content.hasGroup(groupname) ?
+            <MetadataGroupView
+              key={groupname}
+              group={group}
+              content={props.content}
+              elevation={props.elevation}
+              readonly={!editMode}
+              valueDidChange={(fieldname, newvalue) =>
+                props.valueDidChange(groupname, fieldname, newvalue)
+              }
+            />
+            // : null
           );
         })
       }

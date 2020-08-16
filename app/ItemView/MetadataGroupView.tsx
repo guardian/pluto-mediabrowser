@@ -35,6 +35,11 @@ import moment, { Moment } from "moment";
 import TagField from "../FieldControls/TagField";
 import LookupField from "../FieldControls/LookupField";
 import CheckboxField from "../FieldControls/CheckboxField";
+import DropdownField from "../FieldControls/DropdownField";
+import TextareaField from "../FieldControls/TextareaField";
+import StringField from "../FieldControls/StringField";
+import TimestampField from "../FieldControls/TimestampField";
+import FieldTypeNotRecognised from "../FieldControls/FieldTypeNotRecognised";
 
 interface MetadataGroupViewProps {
   group: VidispineFieldGroup;
@@ -65,10 +70,12 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
 
   /**
    * returns a suitable control for the field data
-   * @param fieldname
-   * @param viewHints
-   * @param maybeValues
-   * @param controlId
+   * @param fieldname server name of the field.
+   * @param viewHints a ViewHints instance consisiting of the "custom data" which tells us the label content,
+   * type of field to render, etc.
+   * @param maybeValues an optional array of strings giving the values assigned to the field. It's up to the
+   * specific field type how this is interpreted
+   * @param controlId html id for the control
    */
   const elementForDatatype = (
     fieldname: string,
@@ -79,201 +86,99 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
     switch (viewHints.type) {
       case "tags":
         return (
-          <TagField fieldname={fieldname}
-                    viewHints={viewHints}
-                    controlId={controlId}
-                    parentReadonly={props.readonly}
-                    valueDidChange={props.valueDidChange}
-                    classes={classes}
-                    maybeValues={maybeValues}
-                    />
+          <TagField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
         );
       case "lookup":
         return (
-          <LookupField fieldname={fieldname}
-                       viewHints={viewHints}
-                       controlId={controlId}
-                       parentReadonly={props.readonly}
-                       valueDidChange={props.valueDidChange}
-                       classes={classes}
-                       maybeValues={maybeValues}
-                       />
+          <LookupField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
         );
       case "checkbox":
         return (
-          <CheckboxField fieldname={fieldname}
-                         viewHints={viewHints}
-                         controlId={controlId}
-                         parentReadonly={props.readonly}
-                         valueDidChange={props.valueDidChange}
-                         classes={classes}
-                         maybeValues={maybeValues}
-                         />
-        )
+          <CheckboxField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
+        );
       case "dropdown":
-        if (viewHints.values) {
-          return (
-            <FormControl classes={{ root: classes.inputField }}>
-              <InputLabel id={controlId}>{viewHints.name}</InputLabel>
-              <Select
-                labelId={controlId}
-                readOnly={viewHints.readonly || props.readonly}
-                value={
-                  maybeValues
-                    ? maybeValues.length > 0
-                      ? maybeValues[0]
-                      : ""
-                    : ""
-                }
-                onChange={(event) =>
-                  props.valueDidChange(fieldname, [
-                    event.target.value as string,
-                  ])
-                }
-              >
-                <MenuItem value="">(not set)</MenuItem>
-                {viewHints.values.map((dataPair, index) => (
-                  <MenuItem value={dataPair.key}>{dataPair.value}</MenuItem>
-                ))}
-              </Select>
-                {viewHints.readonly && !props.readonly ? (
-                    <Typography variant="caption">
-                        You can't edit this, it's read-only
-                    </Typography>
-                ) : null}
-            </FormControl>
-          );
-        } else {
-          return (
-            <Grid
-              container
-              direction="row"
-              justify="flex-start"
-              alignItems="flex-start"
-              spacing={1}
-            >
-              <Grid item sm={6}>
-                <Typography>{viewHints.name}</Typography>
-              </Grid>
-
-              <Grid item sm={6}>
-                <Typography
-                  variant="caption"
-                  id={controlId}
-                  classes={{
-                    root: classes.root,
-                  }}
-                >
-                  Warning: field is a dropdown but has no values configured
-                </Typography>
-              </Grid>
-            </Grid>
-          );
-        }
+        return (
+          <DropdownField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
+        );
       case "textarea":
         return (
-          <FormControl classes={{ root: classes.inputField }}>
-            <InputLabel htmlFor={controlId}>{viewHints.name}</InputLabel>
-            <Input
-              id={controlId}
-              readOnly={viewHints.readonly || props.readonly}
-              multiline={true}
-              rows={6}
-              rowsMax={6}
-              value={maybeValues ? maybeValues.join(" ") : ""}
-              onChange={(event) =>
-                props.valueDidChange(fieldname, [event.target.value])
-              }
-            />
-            {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">
-                You can't edit this, it's read-only
-              </Typography>
-            ) : null}
-          </FormControl>
+          <TextareaField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
         );
       case "string":
         return (
-          <FormControl classes={{ root: classes.inputField }}>
-            <InputLabel htmlFor={controlId}>{viewHints.name}</InputLabel>
-            <Input
-              id={controlId}
-              readOnly={viewHints.readonly || props.readonly}
-              value={maybeValues ? maybeValues.join(" ") : ""}
-              onChange={(event) =>
-                props.valueDidChange(fieldname, [event.target.value])
-              }
-            />
-            {viewHints.readonly && !props.readonly ? (
-              <Typography variant="caption">
-                You can't edit this, it's read-only
-              </Typography>
-            ) : null}
-          </FormControl>
+          <StringField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
         );
       case "timestamp":
-        const currentValue: Moment | undefined = maybeValues
-          ? maybeValues.length > 0
-            ? moment(maybeValues[0])
-            : undefined
-          : undefined;
-
-        console.log("current raw values: ", maybeValues);
-        console.log(
-          "parsed value: ",
-          currentValue ? currentValue.format("YYYY-MM-DD") : " not defined"
-        );
-        console.log(
-          "parsed value: ",
-          currentValue ? currentValue.format("HH:mm:ss") : " not defined"
-        );
         return (
-          <FormControl>
-            <FormLabel htmlFor={controlId}>{viewHints.name}</FormLabel>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                variant="inline"
-                format="yyyy-MM-dd"
-                margin="normal"
-                id={controlId}
-                value={currentValue ? currentValue.format("YYYY-MM-DD") : ""}
-                onChange={(evt) => console.log(evt)}
-              />
-              <KeyboardTimePicker
-                variant="inline"
-                format="HH:mm:ss"
-                margin="normal"
-                value={currentValue ? currentValue.format("HH:mm:ss") : ""}
-                onChange={(evt) => console.log(evt)}
-              />
-            </MuiPickersUtilsProvider>
-          </FormControl>
+          <TimestampField
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
         );
       default:
         return (
-          <Grid
-            container
-            direction="row"
-            justify="flex-start"
-            alignItems="flex-start"
-            spacing={1}
-          >
-            <Grid item sm={6}>
-              <Typography>{viewHints.name}</Typography>
-            </Grid>
-
-            <Grid item sm={6}>
-              <Typography
-                variant="caption"
-                id={controlId}
-                classes={{
-                  root: classes.root,
-                }}
-              >
-                Warning: field type {viewHints.type} is not recognised
-              </Typography>
-            </Grid>
-          </Grid>
+          <FieldTypeNotRecognised
+            fieldname={fieldname}
+            viewHints={viewHints}
+            controlId={controlId}
+            parentReadonly={props.readonly}
+            valueDidChange={props.valueDidChange}
+            classes={classes}
+            maybeValues={maybeValues}
+          />
         );
     }
   };
