@@ -23,7 +23,6 @@ interface MetadataViewProps {
 
 const MetadataView: React.FC<MetadataViewProps> = (props) => {
   const [editMode, setEditMode] = useState<boolean>(false);
-  console.log(props.fieldCache._content);
 
   return (
     <>
@@ -45,18 +44,18 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
         //https://stackoverflow.com/questions/43885365/using-map-on-an-iterator
         Array.from(props.fieldCache._content, ([groupname, group]) => {
           return (
-            // props.content.hasGroup(groupname) ?
-            <MetadataGroupView
-              key={groupname}
-              group={group}
-              content={props.content}
-              elevation={props.elevation}
-              readonly={!editMode}
-              valueDidChange={(fieldname, newvalue) =>
-                props.valueDidChange(groupname, fieldname, newvalue)
-              }
-            />
-            // : null
+            props.content.hasGroup(groupname) ? //only render groups that are present on the item
+              <MetadataGroupView
+                key={groupname}
+                group={group}
+                content={props.content}
+                elevation={props.elevation}
+                readonly={!editMode}
+                valueDidChange={(fieldname, newvalue) =>
+                  props.valueDidChange(groupname, fieldname, newvalue)
+                }
+              />
+              : null
           );
         })
       }

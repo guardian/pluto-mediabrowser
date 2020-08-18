@@ -1,6 +1,9 @@
 import { PlutoCustomData } from "../vidispine/field-group/CustomData";
 import { ClassNameMap } from "@material-ui/core/styles/withStyles";
 
+/**
+ * this interface describes the base properties that all of the FieldControls expect
+ */
 interface FieldControlProps {
   fieldname: string;
   viewHints: PlutoCustomData;
