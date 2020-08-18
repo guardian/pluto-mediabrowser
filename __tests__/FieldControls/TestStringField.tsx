@@ -1,11 +1,22 @@
 import React from "react";
-import {render, shallow} from "enzyme";
+import {ShallowRendererProps, ShallowWrapper} from "enzyme";
 import StringField from "../../app/FieldControls/StringField";
 import {PlutoCustomData} from "../../app/vidispine/field-group/CustomData";
 import sinon from "sinon";
 import {makeStyles} from "@material-ui/core/styles";
+import {createRender, createShallow} from "@material-ui/core/test-utils";
 
 describe("StringField", ()=>{
+    let shallow:{ <C extends React.Component, P = C["props"], S = C["state"]>(node: React.ReactElement<P>, options?: ShallowRendererProps): ShallowWrapper<P, S, C>; <P>(node: React.ReactElement<P>, options?: ShallowRendererProps): ShallowWrapper<P, any>; <P, S>(node: React.ReactElement<P>, options?: ShallowRendererProps): ShallowWrapper<P, S> }
+    const render = createRender();
+
+    beforeAll(()=>{
+        shallow = createShallow({
+            untilSelector: "input"
+        });
+
+
+    })
 
     it("should render a field respecting the viewhints", () => {
         const viewHints:PlutoCustomData = {
@@ -37,5 +48,32 @@ describe("StringField", ()=>{
         // rendered.find("input").simulate("click")
         // expect(label.toBeTruthy());
         // expect(label.props.htmlFor)
+    });
+
+    it("should call out to valueDidChange when the value changes", () => {
+        const viewHints:PlutoCustomData = {
+            name: "Label for test field",
+            readonly: false,
+            type: "string"
+        };
+
+        const classes:Record<string, string> = {
+
+        };
+        const didChangeCallback = sinon.spy();
+
+        const rendered = shallow(<StringField fieldname="test-field"
+                                             viewHints={viewHints}
+                                             controlId="id-test-field"
+                                             parentReadonly={false}
+                                             valueDidChange={didChangeCallback}
+                                             classes={classes}
+                                             maybeValues={["entry1", "entry2"]}
+        />);
+
+        console.log(rendered.children());
+        const control = rendered.find("#test-field");
+        control.simulate("change",{target: {value: "newvalue"}});
+        expect(didChangeCallback.calledOnceWith("test-field", "newvalue"));
     });
 });
