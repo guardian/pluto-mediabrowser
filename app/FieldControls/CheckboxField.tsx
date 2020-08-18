@@ -35,6 +35,7 @@ const CheckboxField: React.FC<FieldControlProps> = (props) => {
             <FormGroup id={props.controlId}>
               {props.viewHints.values.map((dataPair, idx) => (
                 <FormControlLabel
+                  key={dataPair.key}
                   label={dataPair.value}
                   control={
                     <Checkbox
