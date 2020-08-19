@@ -22,20 +22,6 @@
         <defaultValue/>
     </field>
     <field>
-        <name>title</name>
-        <schema min="0" max="1" name="title"/>
-        <type>string</type>
-        <stringRestriction>
-            <minLength>0</minLength>
-            <maxLength>32768</maxLength>
-        </stringRestriction>
-        <data>
-            <key>extradata</key>
-            <value>{"name":"Title", "readonly":false,"type":"string"}</value>
-        </data>
-        <defaultValue>Untitled</defaultValue>
-    </field>
-    <field>
         <name>gnm_keywords</name>
         <schema min="0" max="1" name="gnm_keywords"/>
         <type>string</type>
