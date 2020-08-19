@@ -5,34 +5,34 @@ import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
 export const SearchValueIF = t.iface([], {
-  "value": "string",
-  "noescape": t.opt("boolean"),
-  "minimum": t.opt("number"),
-  "maximum": t.opt("number"),
-  "boost": t.opt("number"),
+  value: "string",
+  noescape: t.opt("boolean"),
+  minimum: t.opt("number"),
+  maximum: t.opt("number"),
+  boost: t.opt("number"),
 });
 
 export const SearchFieldIF = t.iface([], {
-  "name": "string",
-  "value": t.array("SearchValueIF"),
+  name: "string",
+  value: t.array("SearchValueIF"),
 });
 
 export const SearchFieldGroupIF = t.iface([], {
-  "name": "string",
-  "field": t.array("SearchFieldIF"),
+  name: "string",
+  field: t.array("SearchFieldIF"),
 });
 
 export const SearchOperatorIF = t.iface([], {
-  "operation": "string",
-  "field": t.opt(t.array("SearchFieldIF")),
-  "group": t.opt(t.array("SearchFieldGroupIF")),
-  "operator": t.opt(t.array("SearchOperatorIF")),
+  operation: "string",
+  field: t.opt(t.array("SearchFieldIF")),
+  group: t.opt(t.array("SearchFieldGroupIF")),
+  operator: t.opt(t.array("SearchOperatorIF")),
 });
 
 export const VidispineSearchDocIF = t.iface([], {
-  "operator": t.opt("SearchOperatorIF"),
-  "field": t.opt(t.array("SearchFieldIF")),
-  "group": t.opt(t.array("SearchFieldGroupIF")),
+  operator: t.opt("SearchOperatorIF"),
+  field: t.opt(t.array("SearchFieldIF")),
+  group: t.opt(t.array("SearchFieldGroupIF")),
 });
 
 const exportedTypeSuite: t.ITypeSuite = {

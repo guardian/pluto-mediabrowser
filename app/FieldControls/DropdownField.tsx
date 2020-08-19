@@ -32,7 +32,9 @@ const DropdownField: React.FC<FieldControlProps> = (props) => {
         >
           <MenuItem value="">(not set)</MenuItem>
           {props.viewHints.values.map((dataPair, index) => (
-            <MenuItem value={dataPair.key} key={dataPair.key}>{dataPair.value}</MenuItem>
+            <MenuItem value={dataPair.key} key={dataPair.key}>
+              {dataPair.value}
+            </MenuItem>
           ))}
         </Select>
         {props.viewHints.readonly && !props.parentReadonly ? (

@@ -30,7 +30,7 @@ import { VidispineItem } from "../vidispine/item/VidispineItem";
 import { PlutoCustomData } from "../vidispine/field-group/CustomData";
 import { makeStyles } from "@material-ui/core/styles";
 import ChipInput from "material-ui-chip-input";
-import Autocomplete from "@material-ui/lab/Autocomplete";;
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import TagField from "../FieldControls/TagField";
 import LookupField from "../FieldControls/LookupField";
 import CheckboxField from "../FieldControls/CheckboxField";
@@ -39,12 +39,14 @@ import TextareaField from "../FieldControls/TextareaField";
 import StringField from "../FieldControls/StringField";
 import TimestampField from "../FieldControls/TimestampField";
 import FieldTypeNotRecognised from "../FieldControls/FieldTypeNotRecognised";
+import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
 
 interface MetadataGroupViewProps {
   group: VidispineFieldGroup;
-  content: VidispineItem;
+  content: VidispineItem | VidispineSearchDoc;
   elevation: number;
   readonly: boolean;
+  noHeader?: boolean;
   valueDidChange: (name: string, values: string[]) => void;
 }
 
@@ -184,7 +186,9 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
 
   return (
     <Paper elevation={props.elevation} classes={{ root: classes.metagroup }}>
-      <Typography variant="h3">{props.group.name}</Typography>
+      {props.noHeader ? null : (
+        <Typography variant="h3">{props.group.name}</Typography>
+      )}
       <Grid
         container
         direction="row"
