@@ -25,6 +25,7 @@
       "\\.(css|less)$": "identity-obj-proxy"
     },
     "testResultsProcessor": "jest-junit",
+    "testEnvironment": "jsdom",
     "setupFiles": [
       "./jestSetup.jsx"
     ],
@@ -34,11 +35,14 @@
   },
   "author": "Andy Gallagher <andy.gallagher@theguardian.com>",
   "devDependencies": {
+    "@svgr/webpack": "^5.4.0",
+    "@types/enzyme": "^3.10.5",
     "@types/jest": "^26.0.7",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/react": "^16.9.36",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
+    "@types/sinon": "^9.0.4",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "expect": "^24.9.0",
@@ -61,6 +65,8 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@date-io/core": "^1.3.6",
+    "@date-io/date-fns": "^1.3.6",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
     "@fortawesome/free-regular-svg-icons": "^5.12.0",
@@ -68,16 +74,23 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/pickers": "^3.2.10",
+    "@types/react-helmet": "^6.1.0",
     "axios": "^0.19.2",
     "cross-storage": "^1.0.0",
     "css-loader": "^2.1.1",
+    "date-fns": "^2.15.0",
     "identity-obj-proxy": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
+    "material-ui-chip-input": "^1.1.0",
     "moment": "^2.20.1",
     "moment-duration-format": "2.2.2",
     "moment-timezone": "^0.5.29",
+    "pluto-headers": "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#master",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-helmet": "^6.1.0",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-select": "^3.1.0",
@@ -86,6 +99,7 @@
     "recharts": "^1.8.5",
     "style-loader": "^0.20.2",
     "ts-interface-checker": "^0.1.11",
+    "url-loader": "^4.1.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "yarn": "^1.21.1"

@@ -99,6 +99,19 @@ class VidispineItem implements ItemIF {
   }
 
   /**
+   * convenience method that will coalesce all values into a string joined by a comma separator
+   * @param forKey
+   */
+  getMetadataString(forKey: string): string | undefined {
+    const possibleValues = this.getMetadataValuesInGroup(forKey, undefined);
+    if (possibleValues) {
+      return possibleValues.join(", ");
+    } else {
+      return undefined;
+    }
+  }
+
+  /**
    * searches the default timespan for metadata entries metching the given key, optionally within the given group.
    * @param forKey the field name that you want to get metadata for
    * @param inGroup optionally, the name of a group to locate the field in
@@ -126,7 +139,7 @@ class VidispineItem implements ItemIF {
       .filter((f) => f.name === forKey)
       .map((f) => f.value);
 
-    if(values.length===0) return undefined;
+    if (values.length === 0) return undefined;
     return values.reduce((acc, elem) => acc.concat(...elem));
   }
 
@@ -149,6 +162,23 @@ class VidispineItem implements ItemIF {
       );
     }
     return potentialGroups[0];
+  }
+
+  /**
+   * returns a simple boolean indicating whether the item has a given group on it
+   * @param groupName group to search for
+   * @param timespan optional timspan to search in, if not set the default timespan is used
+   */
+  hasGroup(groupName: string, timespan?: MetadataTimespan): boolean {
+    const timespanForLookup = timespan ?? this.getDefaultTimespan();
+    if (timespanForLookup && timespanForLookup.group) {
+      return (
+        timespanForLookup.group.filter((group) => group.name === groupName)
+          .length > 0
+      );
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -182,11 +212,11 @@ class VidispineItem implements ItemIF {
    * returns an array of strings representing the names of the groups mentioned in the document.
    * This is an empty list if either the timespan does not exist or there are no group entries.
    */
-  getGroupNames():string[] {
+  getGroupNames(): string[] {
     const ts = this.getDefaultTimespan();
-    if(ts==undefined) return [];
+    if (ts == undefined) return [];
 
-    return ts.group.map(g=>g.name)
+    return ts.group.map((g) => g.name);
   }
 }
 
@@ -221,4 +251,4 @@ export type {
   ItemMetadata,
 };
 
-export { GetItems, MakeItemResponse };
+export { GetItems, MakeItemResponse, VidispineItem };

@@ -11,7 +11,6 @@ import {
 import { PieChart, Pie, Sector, Cell, Legend, Label } from "recharts";
 import "./dark.css";
 
-
 class PieChartBox extends React.Component {
   static propTypes = {
     chartData: PropTypes.object.isRequired,

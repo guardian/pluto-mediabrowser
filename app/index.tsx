@@ -6,27 +6,41 @@ import {
   Route,
   Switch,
   Redirect,
-  withRouter, BrowserRouterProps, RouteComponentProps,
+  withRouter,
+  BrowserRouterProps,
+  RouteComponentProps,
 } from "react-router-dom";
 import VidispineAssetSearch from "./VidispineAssetSearch";
 import axios from "axios";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
-import {LoadGroupFromServer, VidispineFieldGroup} from "./vidispine/field-group/VidispineFieldGroup";
+import {
+  LoadGroupFromServer,
+  VidispineFieldGroup,
+} from "./vidispine/field-group/VidispineFieldGroup";
+import ItemViewComponent from "./ItemViewComponent";
+import { Header, AppSwitcher } from "pluto-headers";
+import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
+import colours from "@material-ui/core/colors";
+import { Helmet } from "react-helmet";
 
 interface AppState {
-  vidispineBaseUrl?: string,
-  fields?: FieldGroupCache,
-  loading?: boolean,
-  loadingStage?: number,
-  lastError?: string | null
+  vidispineBaseUrl?: string;
+  fields?: FieldGroupCache;
+  loading?: boolean;
+  loadingStage?: number;
+  lastError?: string | null;
 }
 
 interface ConfigFileData {
-  vidispineBaseUrl: string,
+  vidispineBaseUrl: string;
 }
 
+declare var deploymentRootPath:string|undefined;
+
 //this will be set in the index.html template file and gives us the value of deployment-root from the server config
-const deploymentRootPath = "/";
+if(deploymentRootPath==undefined) {
+  deploymentRootPath  = "/";
+}
 
 axios.defaults.baseURL = deploymentRootPath;
 axios.interceptors.request.use(function (config) {
@@ -37,40 +51,47 @@ axios.interceptors.request.use(function (config) {
 });
 
 //think of a way to improve this later!
-const groupsToCache = [
-    "Asset",
-    "Deliverable",
-    "Newswire",
-    "Rushes"
-];
+const groupsToCache = ["Asset", "Deliverable", "Newswire", "Rushes"];
 
-class App extends React.Component<RouteComponentProps<any>,AppState> {
+class App extends React.Component<RouteComponentProps<any>, AppState> {
+  theme: Theme;
 
-  constructor(props:RouteComponentProps<any>) {
+  constructor(props: RouteComponentProps<any>) {
     super(props);
     this.state = {
       vidispineBaseUrl: "",
       fields: new FieldGroupCache(),
       loading: true,
       loadingStage: 0,
-      lastError: null
+      lastError: null,
     };
+
+    this.theme = createMuiTheme({
+      typography: {
+        fontFamily: "Avant Garde, Century Gothic, Helvetica, Arial, sans-serif",
+      },
+      palette: {
+        type: "dark",
+      },
+    });
   }
 
-  setStatePromise(newState:AppState) {
-    return new Promise((resolve, reject)=>this.setState(newState, ()=>resolve()));
+  setStatePromise(newState: AppState) {
+    return new Promise((resolve, reject) =>
+      this.setState(newState, () => resolve())
+    );
   }
 
   /**
    * loads in the config json from the server. Required to know where Vidispine is.
    */
   async loadConfig() {
-      const response = await axios.get("/config/config.json");
+    const response = await axios.get("/config/config.json");
 
-      const configdata = response.data as ConfigFileData; //FIXME: we can improve this by adding a content test as per VS data
-      return this.setStatePromise({
-        vidispineBaseUrl: configdata.vidispineBaseUrl,
-      });
+    const configdata = response.data as ConfigFileData; //FIXME: we can improve this by adding a content test as per VS data
+    return this.setStatePromise({
+      vidispineBaseUrl: configdata.vidispineBaseUrl,
+    });
   }
 
   /**
@@ -79,35 +100,100 @@ class App extends React.Component<RouteComponentProps<any>,AppState> {
   async buildCache() {
     console.log(groupsToCache);
 
-    const groupsData = await Promise.all(groupsToCache.map(groupName=>LoadGroupFromServer(this.state.vidispineBaseUrl as string, groupName)));
+    const groupsData = await Promise.all(
+      groupsToCache.map((groupName) =>
+        LoadGroupFromServer(this.state.vidispineBaseUrl as string, groupName)
+      )
+    );
     const newCache = new FieldGroupCache(this.state.fields, ...groupsData);
-    console.log(`Successfully loaded ${newCache.size()} metadata groups from Vidispine`);
-    return this.setStatePromise({fields: newCache});
+    console.log(
+      `Successfully loaded ${newCache.size()} metadata groups from Vidispine`
+    );
+    return this.setStatePromise({ fields: newCache });
   }
 
   async componentDidMount() {
-    try{
+    try {
       await this.loadConfig();
-      await this.setStatePromise({loadingStage: 1});
+      await this.setStatePromise({ loadingStage: 1 });
       await this.buildCache();
-      await this.setStatePromise({loading: false, lastError:null, loadingStage:0});
-    } catch(err) {
+      await this.setStatePromise({
+        loading: false,
+        lastError: null,
+        loadingStage: 0,
+      });
+    } catch (err) {
       console.error(err);
-      this.setState({loading: false, lastError: "Could not load configuration, please try refreshing the page in a minute.  More details in the console log."});
+      this.setState({
+        loading: false,
+        lastError:
+          "Could not load configuration, please try refreshing the page in a minute.  More details in the console log.",
+      });
     }
   }
 
+  doNothing() {}
+
   render() {
-    if(this.state.lastError) {
-      return <div className="error-dialog"><p>{this.state.lastError}</p></div>
+    if (this.state.lastError) {
+      return (
+          <>
+            <Helmet>
+              <title>PLUTO Media Browser</title>
+            </Helmet>
+            <Header/>
+            <AppSwitcher
+                onLoggedIn={this.doNothing}
+                onLoggedOut={this.doNothing}
+            />
+            <div className="error-dialog">
+              <p>{this.state.lastError}</p>
+            </div>
+          </>
+      );
     }
 
-    if(this.state.loading) {
-        return <p>Loading....</p>
+    if (this.state.loading) {
+      return (
+          <>
+            <Helmet>
+              <title>PLUTO Media Browser</title>
+            </Helmet>
+            <Header/>
+            <AppSwitcher
+                onLoggedIn={this.doNothing}
+                onLoggedOut={this.doNothing}
+            />
+            <p>Loading....</p>
+          </>
+      )
     }
 
     return (
+      <ThemeProvider theme={this.theme}>
+        <Helmet>
+          <title>PLUTO Media Browser</title>
+        </Helmet>
+        <Header/>
+        <AppSwitcher
+          onLoggedIn={this.doNothing}
+          onLoggedOut={this.doNothing}
+        />
         <Switch>
+          <Route
+            path="/item/:itemId"
+            component={(
+              props: RouteComponentProps<ItemViewComponentMatches>
+            ) => (
+              <ItemViewComponent
+                {...props}
+                vidispineBaseUrl={this.state.vidispineBaseUrl as string}
+                //this should never be undefined in reality; but the interface must specify it like that so we can do partial updates.
+                fieldCache={this.state.fields as FieldGroupCache}
+              />
+            )}
+          />
+
           <Route
             path="/"
             component={() => (
@@ -117,6 +203,7 @@ class App extends React.Component<RouteComponentProps<any>,AppState> {
             )}
           />
         </Switch>
+      </ThemeProvider>
     );
   }
 }

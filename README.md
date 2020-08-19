@@ -55,6 +55,13 @@ for Vidispine access, which is the expected configuration from prexit-local.  If
 you'll need to update the vidispine configuration.
 
 ### Troubleshooting
+0. If you get an error doing yarn install when installing  https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git,
+you should:
+    1. Configure a git credential helper for your platform. See https://blog.scottlowe.org/2016/11/21/gnome-keyring-git-credential-helper/ for gnome,
+ Mac should have one set up already I believe.
+    2. In a temporary location run `git clone https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git` and
+    supply your gitlab username and password. This should store them in the credential helper.
+    3. Now `yarn install` should work.
 1. Turn on the browser console!
 2. If you are getting permission denied from VS on OPTIONS requests, then CORS is not set up properly.  The following
 CORS configuration works for me:

@@ -142,7 +142,7 @@ class VidispineAssetSearch extends Component {
         method: "PUT",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/xml"
+          "Content-Type": "application/xml",
         },
         data: xML,
       });
@@ -150,15 +150,13 @@ class VidispineAssetSearch extends Component {
         loading: false,
         vidispineData: result.data,
       });
-
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       return this.setStatePromise({
         loading: false,
         lastError: "Could not load content, see console for more details",
       });
     }
-
   }
 
   setSearchType(event) {
@@ -309,7 +307,10 @@ class VidispineAssetSearch extends Component {
                   />
                 </div>
                 <div className="form_title">Search type:</div>
-                <div className="form_type" onChange={this.setSearchType.bind(this)}>
+                <div
+                  className="form_type"
+                  onChange={this.setSearchType.bind(this)}
+                >
                   <div className="form_type_left">
                     <input
                       type="radio"

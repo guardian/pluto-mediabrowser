@@ -48,7 +48,7 @@ print("Found a total of {0} fields to purge".format(field_names))
 url_to_delete = "{0}://{1}:{2}/API/metadata-field/field-group/{3}".format(args.proto, args.host, args.port, group_name)
 print("Deleting {0}...".format(url_to_delete))
 
-response = requests.delete(url_to_delete, auth=(args.user, args.passwd), headers={"Content-Type":"application/xml"})
+response = requests.delete(url_to_delete, auth=(args.user, args.passwd), headers={"Content-Type":"application/xml"}, verify=False)
 if response.status_code==200:
     print("Successfully sent")
 else:
@@ -59,7 +59,7 @@ for field_name in field_names:
     url_to_delete = "{0}://{1}:{2}/API/metadata-field/{3}".format(args.proto, args.host, args.port, field_name)
     print("Deleting {0}...".format(url_to_delete))
 
-    response = requests.delete(url_to_delete, auth=(args.user, args.passwd), headers={"Content-Type":"application/xml"})
+    response = requests.delete(url_to_delete, auth=(args.user, args.passwd), headers={"Content-Type":"application/xml"}, verify=False)
     if response.status_code==200:
         print("Successfully sent")
     else:

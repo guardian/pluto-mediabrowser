@@ -1,0 +1,12 @@
+.media-player {
+  max-width: 90vw;
+  max-height: 60vh;
+  flex: 1;
+}
+
+.player-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+}
