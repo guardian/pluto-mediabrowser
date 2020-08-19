@@ -21,7 +21,6 @@ import ItemViewComponent from "./ItemViewComponent";
 import { Header, AppSwitcher } from "pluto-headers";
 import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
 import colours from "@material-ui/core/colors";
-import logo from "./static/guardian_white.svg";
 import { Helmet } from "react-helmet";
 
 interface AppState {
