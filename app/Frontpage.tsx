@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {RouteComponentProps} from "react-router";
+import {Redirect, RouteComponentProps} from "react-router";
 import VidispineSearchDoc, {SearchOrderValue} from "./vidispine/search/VidispineSearch";
 import {VidispineItem} from "./vidispine/item/VidispineItem";
 import axios from "axios";
 import {VError} from "ts-interface-checker";
+import SearchResultsPane from "./Frontpage/SearchResultsPane";
+require("./dark.css");
 
 interface FrontpageComponentProps extends RouteComponentProps {
     vidispineBaseUrl:string;
@@ -18,6 +20,7 @@ const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
     const [itemLimit, setItemLimit] = useState<number>(15);
     const [itemList, setItemList] = useState<VidispineItem[]>([]);
     const [totalItems, setTotalItems] = useState<number>(0);
+    const [redirectToItem, setRedirectToItem] = useState<string|undefined>(undefined);
 
     /**
      * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
@@ -60,6 +63,7 @@ const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
                     setSearching(false);
                     return;   //no more to do
                 }
+                //only add in items that validate as VidispineItem. Items that don't are logged to console.
                 setItemList(
                     itemList.concat(
                         serverContent.data.item
@@ -86,6 +90,8 @@ const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
         loadNextPage();
     }, []);
 
+    if(redirectToItem) return <Redirect to={`/item/${redirectToItem}`}/>;
+
     return (
         <div className="search_grid">
             <div className="items_top_area">
@@ -98,7 +104,13 @@ const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
                 {/*    <FacetDisplays/>*/}
                 {/*</div>*/}
             </div>
-            {/*<SearchResultsPane results={searchResults} onItemClicked={(itemId)=>console.log("You clicked ", itemId)}/>*/}
+            <SearchResultsPane results={itemList}
+                               onItemClicked={(itemId)=> {
+                                   console.log("You clicked ", itemId);
+                                   setRedirectToItem(itemId);
+                               }}
+            />
+
         </div>
     )
 }
