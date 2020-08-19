@@ -9,6 +9,7 @@ require("./dark.css");
 
 interface FrontpageComponentProps extends RouteComponentProps {
     vidispineBaseUrl:string;
+    itemLimit?:number;
 }
 
 const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
@@ -17,7 +18,7 @@ const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
     const [searching, setSearching] = useState<boolean>(false);
     const [lastError, setLastError] = useState<string|undefined>(undefined);
     const [pageSize, setPageSize] = useState<number>(15);
-    const [itemLimit, setItemLimit] = useState<number>(15);
+    const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 100);
     const [itemList, setItemList] = useState<VidispineItem[]>([]);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [redirectToItem, setRedirectToItem] = useState<string|undefined>(undefined);

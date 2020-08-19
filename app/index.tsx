@@ -197,6 +197,24 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
           />
 
           <Route
+            path="/last/:pageSize"
+            component={(
+                props: RouteComponentProps<LastNComponentMatches>
+            ) => {
+              let itemLimit:number = 15;
+              try {
+                itemLimit = parseInt(props.match.params.pageSize);
+              } catch (err) {
+                console.error(`${props.match.params.pageSize} is not a number`);
+              }
+              return <FrontpageComponent
+                  {...props}
+                  vidispineBaseUrl={this.state.vidispineBaseUrl as string}
+                  itemLimit={itemLimit}
+              />
+            }}
+            />
+          <Route
             path="/"
             component={(
                 props:RouteComponentProps

@@ -32,7 +32,7 @@ const ItemTile:React.FC<ItemTileProps> = (props) => {
                             }}
                             className="thumbnail"
                         />
-                    ) : null    //FIXME: replace with "broken thumbnail" icon
+                    ) : null    //FIXME: replace with media type icon
             }
             </div>
             <div className="item_created">
