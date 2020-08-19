@@ -18,6 +18,8 @@ import {
   VidispineFieldGroup,
 } from "./vidispine/field-group/VidispineFieldGroup";
 import ItemViewComponent from "./ItemViewComponent";
+import FrontpageComponent, {FrontpageComponentProps} from "./Frontpage";
+
 import { Header, AppSwitcher } from "pluto-headers";
 import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
 import colours from "@material-ui/core/colors";
@@ -196,9 +198,12 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
           <Route
             path="/"
-            component={() => (
-              <VidispineAssetSearch
-                vidispineBaseUrl={this.state.vidispineBaseUrl}
+            component={(
+                props:RouteComponentProps
+            ) => (
+              <FrontpageComponent
+                  {...props}
+                vidispineBaseUrl={this.state.vidispineBaseUrl as string}
               />
             )}
           />

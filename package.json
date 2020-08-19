@@ -10,7 +10,7 @@
     "snyk-protect": "snyk protect",
     "lint": "prettier --check app __tests__",
     "lint:fix": "prettier --write app __tests__",
-    "update-interfaces": "ts-interface-builder app/vidispine/item/VidispineItem.ts app/vidispine/field-group/CustomData.ts app/vidispine/field-group/VidispineFieldGroup.ts"
+    "update-interfaces": "ts-interface-builder app/vidispine/search/VidispineSearch.ts app/vidispine/item/VidispineItem.ts app/vidispine/field-group/CustomData.ts app/vidispine/field-group/VidispineFieldGroup.ts"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -51,7 +51,7 @@ const {
   MetadataGroup,
   MetadataTimespan,
   ItemMetadata,
-  Item,
+  ItemIF,
   ItemResponse,
 } = createCheckers(VidispineItemTI);
 
@@ -65,9 +65,10 @@ class VidispineItem implements ItemIF {
 
   /**
    * constructs the class from a raw object
-   * @param sourceObject, must match the ItemIF interface
+   * @param sourceObject, if this does not validate then VError is thrown
    */
-  constructor(sourceObject: ItemIF) {
+  constructor(sourceObject: any) {
+    ItemIF.check(sourceObject);
     this.metadata = sourceObject.metadata;
     this.id = sourceObject.id;
   }
