@@ -105,6 +105,7 @@ const FrontpageComponent:React.FC<FrontpageComponentProps> = (props) =>{
                 {/*</div>*/}
             </div>
             <SearchResultsPane results={itemList}
+                               vidispineBaseUrl={props.vidispineBaseUrl}
                                onItemClicked={(itemId)=> {
                                    console.log("You clicked ", itemId);
                                    setRedirectToItem(itemId);

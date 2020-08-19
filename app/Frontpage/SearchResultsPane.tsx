@@ -4,7 +4,8 @@ import moment from "moment";
 import ItemTile from "./ItemTile";
 
 interface SearchResultsPaneProps {
-    results: VidispineItem[],
+    results: VidispineItem[];
+    vidispineBaseUrl: string;
     onItemClicked: (itemId:string)=>void;
 }
 
@@ -17,6 +18,7 @@ const SearchResultsPane:React.FC<SearchResultsPaneProps> = (props) => {
                               key={idx.toString()}
                               imageMaxWidth={240}
                               imageMaxHeight={135}
+                              vidispineBaseUrl={props.vidispineBaseUrl}
                               onClick={props.onItemClicked}
                     />)
             }

@@ -6,6 +6,7 @@ interface ItemTileProps {
     item:VidispineItem;
     imageMaxWidth: number;
     imageMaxHeight: number;
+    vidispineBaseUrl: string;
     key?:string;
     onClick:(itemId:string)=>void;
 }
@@ -23,7 +24,7 @@ const ItemTile:React.FC<ItemTileProps> = (props) => {
             <div className="item_thumbnail">
                 { maybeThumbnail ? (
                         <img
-                            src={maybeThumbnail}
+                            src={props.vidispineBaseUrl + maybeThumbnail}
                             alt="Item thumbnail"
                             style={{
                                 maxWidth: props.imageMaxWidth,
