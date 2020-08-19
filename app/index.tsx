@@ -36,8 +36,12 @@ interface ConfigFileData {
   vidispineBaseUrl: string;
 }
 
+declare var deploymentRootPath:string|undefined;
+
 //this will be set in the index.html template file and gives us the value of deployment-root from the server config
-const deploymentRootPath = "/";
+if(deploymentRootPath==undefined) {
+  deploymentRootPath  = "/";
+}
 
 axios.defaults.baseURL = deploymentRootPath;
 axios.interceptors.request.use(function (config) {
@@ -134,14 +138,36 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
   render() {
     if (this.state.lastError) {
       return (
-        <div className="error-dialog">
-          <p>{this.state.lastError}</p>
-        </div>
+          <>
+            <Helmet>
+              <title>PLUTO Media Browser</title>
+            </Helmet>
+            <Header/>
+            <AppSwitcher
+                onLoggedIn={this.doNothing}
+                onLoggedOut={this.doNothing}
+            />
+            <div className="error-dialog">
+              <p>{this.state.lastError}</p>
+            </div>
+          </>
       );
     }
 
     if (this.state.loading) {
-      return <p>Loading....</p>;
+      return (
+          <>
+            <Helmet>
+              <title>PLUTO Media Browser</title>
+            </Helmet>
+            <Header/>
+            <AppSwitcher
+                onLoggedIn={this.doNothing}
+                onLoggedOut={this.doNothing}
+            />
+            <p>Loading....</p>
+          </>
+      )
     }
 
     return (
@@ -149,16 +175,8 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
         <Helmet>
           <title>PLUTO Media Browser</title>
         </Helmet>
-        <Header>
-          <a href="/" style={{ display: "inline-block" }}>
-            <img style={{ height: "40px" }} src={logo} alt="The Guardian" />
-          </a>
-        </Header>
+        <Header/>
         <AppSwitcher
-          menuSettings={[]}
-          isAdmin={true}
-          isLoggedIn={true}
-          username={"test"}
           onLoggedIn={this.doNothing}
           onLoggedOut={this.doNothing}
         />

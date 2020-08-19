@@ -1,6 +1,8 @@
 FROM nginx:1.17-alpine
 
 COPY nginx-server.conf /etc/nginx/conf.d/default.conf
-COPY default_config.json /usr/share/nginx/html/config/config.json
-COPY index.html /usr/share/nginx/html
+COPY index.template.html /usr/share/nginx/html
+COPY Docker-entrypoint.sh /
+COPY default_config.json /etc/config/config.json
 COPY bundle.js /usr/share/nginx/html
+CMD /Docker-entrypoint.sh
