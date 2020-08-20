@@ -8,13 +8,13 @@ const StringField: React.FC<FieldControlProps> = (props) => {
       <InputLabel htmlFor={props.controlId}>{props.viewHints.name}</InputLabel>
       <Input
         id={props.controlId}
-        readOnly={props.viewHints.readonly || props.parentReadonly}
+        readOnly={props.ignoreHintsReadonly ? false : props.viewHints.readonly || props.parentReadonly}
         value={props.maybeValues ? props.maybeValues.join(" ") : ""}
         onChange={(event) =>
           props.valueDidChange(props.fieldname, [event.target.value])
         }
       />
-      {props.viewHints.readonly && !props.parentReadonly ? (
+      {props.viewHints.readonly && !props.parentReadonly && !props.ignoreHintsReadonly ? (
         <Typography variant="caption">
           You can't edit this, it's read-only
         </Typography>

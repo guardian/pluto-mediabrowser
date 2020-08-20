@@ -2,6 +2,10 @@ interface ItemViewComponentMatches {
     itemId: string,
 }
 
+interface LastNComponentMatches {
+    pageSize: string;
+}
+
 declare module "*.svg" {
     const content: any;
     export default content;

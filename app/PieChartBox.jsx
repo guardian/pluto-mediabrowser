@@ -1,13 +1,5 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import {
-  BrowserRouter,
-  Link,
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-} from "react-router-dom";
 import { PieChart, Pie, Sector, Cell, Legend, Label } from "recharts";
 import "./dark.css";
 
@@ -15,8 +7,6 @@ class PieChartBox extends React.Component {
   static propTypes = {
     chartData: PropTypes.object.isRequired,
     chartName: PropTypes.string.isRequired,
-    mapPlace: PropTypes.number.isRequired,
-    vidispineHost: PropTypes.string.isRequired,
   };
 
   getChartData() {
@@ -70,7 +60,7 @@ class PieChartBox extends React.Component {
   returnSuitableHeightForChart() {
     var chartDataToProcess = [];
     for (const [index, value] of this.props.chartData.count.entries()) {
-      if (value.value != 0) {
+      if (value.value !== 0) {
         chartDataToProcess.push({ name: value.fieldValue, value: value.value });
       }
     }
@@ -182,41 +172,37 @@ class PieChartBox extends React.Component {
       );
     };
 
-    if (data != "") {
-      return (
-        <div className="pie_chart_box">
-          <div className="pie_chart_name">
-            <strong>
-              {this.returnHumanFriendlyTitle(this.props.chartName)}
-            </strong>
-          </div>
-          <div className="pie_chart">
-            <PieChart width={354} height={this.returnSuitableHeightForChart()}>
-              <Pie
-                data={data}
-                cx={172}
-                cy={130}
-                labelLine={false}
-                label={renderCustomizedLabel}
-                outerRadius={100}
-                dataKey="value"
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={chartColours[index % chartColours.length]}
-                    strokeWidth={0}
-                  />
-                ))}
-              </Pie>
-              <Legend content={renderLegend} />
-            </PieChart>
-          </div>
+    return (
+      <div className="pie_chart_box">
+        <div className="pie_chart_name">
+          <strong>
+            {this.returnHumanFriendlyTitle(this.props.chartName)}
+          </strong>
         </div>
-      );
-    } else {
-      return <div></div>;
-    }
+        <div className="pie_chart">
+          <PieChart width={354} height={this.returnSuitableHeightForChart()}>
+            <Pie
+              data={data}
+              cx={172}
+              cy={130}
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={100}
+              dataKey="value"
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={chartColours[index % chartColours.length]}
+                  strokeWidth={0}
+                />
+              ))}
+            </Pie>
+            <Legend content={renderLegend} />
+          </PieChart>
+        </div>
+      </div>
+    );
   }
 }
 

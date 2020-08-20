@@ -23,6 +23,7 @@ const TimestampField: React.FC<FieldControlProps> = (props) => {
           variant="inline"
           format="yyyy-MM-dd"
           margin="normal"
+          readOnly={props.ignoreHintsReadonly ? false : props.viewHints.readonly || props.parentReadonly}
           id={props.controlId}
           value={currentValue ?? ""}
           onChange={(evt) => console.log(evt)}
@@ -32,6 +33,7 @@ const TimestampField: React.FC<FieldControlProps> = (props) => {
           format="HH:mm:ss"
           margin="normal"
           id={`${props.controlId}-time`}
+          readOnly={props.ignoreHintsReadonly ? false : props.viewHints.readonly || props.parentReadonly}
           value={currentValue ?? ""}
           onChange={(evt) => console.log(evt)}
         />

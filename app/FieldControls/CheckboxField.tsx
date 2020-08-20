@@ -25,7 +25,7 @@ const CheckboxField: React.FC<FieldControlProps> = (props) => {
             <FormLabel htmlFor={props.controlId}>
               {props.viewHints.name}
             </FormLabel>
-            {props.viewHints.readonly && !props.parentReadonly ? (
+            {props.viewHints.readonly && !props.parentReadonly &&!props.ignoreHintsReadonly ? (
               <Typography variant="caption">
                 You can't edit this, it's read-only
               </Typography>
@@ -46,7 +46,7 @@ const CheckboxField: React.FC<FieldControlProps> = (props) => {
                       }
                       color="primary"
                       readOnly={
-                        props.viewHints.readonly || props.parentReadonly
+                        props.ignoreHintsReadonly ? false : props.viewHints.readonly || props.parentReadonly
                       }
                       onChange={(event) => {
                         const newValue = event.target.checked

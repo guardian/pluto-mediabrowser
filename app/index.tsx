@@ -18,6 +18,8 @@ import {
   VidispineFieldGroup,
 } from "./vidispine/field-group/VidispineFieldGroup";
 import ItemViewComponent from "./ItemViewComponent";
+import FrontpageComponent from "./Frontpage";
+
 import { Header, AppSwitcher } from "pluto-headers";
 import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
 import colours from "@material-ui/core/colors";
@@ -35,11 +37,11 @@ interface ConfigFileData {
   vidispineBaseUrl: string;
 }
 
-declare var deploymentRootPath:string|undefined;
+declare var deploymentRootPath: string | undefined;
 
 //this will be set in the index.html template file and gives us the value of deployment-root from the server config
-if(deploymentRootPath==undefined) {
-  deploymentRootPath  = "/";
+if (deploymentRootPath == undefined) {
+  deploymentRootPath = "/";
 }
 
 axios.defaults.baseURL = deploymentRootPath;
@@ -137,36 +139,36 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
   render() {
     if (this.state.lastError) {
       return (
-          <>
-            <Helmet>
-              <title>PLUTO Media Browser</title>
-            </Helmet>
-            <Header/>
-            <AppSwitcher
-                onLoggedIn={this.doNothing}
-                onLoggedOut={this.doNothing}
-            />
-            <div className="error-dialog">
-              <p>{this.state.lastError}</p>
-            </div>
-          </>
+        <>
+          <Helmet>
+            <title>PLUTO Media Browser</title>
+          </Helmet>
+          <Header />
+          <AppSwitcher
+            onLoggedIn={this.doNothing}
+            onLoggedOut={this.doNothing}
+          />
+          <div className="error-dialog">
+            <p>{this.state.lastError}</p>
+          </div>
+        </>
       );
     }
 
     if (this.state.loading) {
       return (
-          <>
-            <Helmet>
-              <title>PLUTO Media Browser</title>
-            </Helmet>
-            <Header/>
-            <AppSwitcher
-                onLoggedIn={this.doNothing}
-                onLoggedOut={this.doNothing}
-            />
-            <p>Loading....</p>
-          </>
-      )
+        <>
+          <Helmet>
+            <title>PLUTO Media Browser</title>
+          </Helmet>
+          <Header />
+          <AppSwitcher
+            onLoggedIn={this.doNothing}
+            onLoggedOut={this.doNothing}
+          />
+          <p>Loading....</p>
+        </>
+      );
     }
 
     return (
@@ -174,11 +176,8 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
         <Helmet>
           <title>PLUTO Media Browser</title>
         </Helmet>
-        <Header/>
-        <AppSwitcher
-          onLoggedIn={this.doNothing}
-          onLoggedOut={this.doNothing}
-        />
+        <Header />
+        <AppSwitcher onLoggedIn={this.doNothing} onLoggedOut={this.doNothing} />
         <Switch>
           <Route
             path="/item/:itemId"
@@ -195,12 +194,39 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
           />
 
           <Route
-            path="/"
-            component={() => (
-              <VidispineAssetSearch
-                vidispineBaseUrl={this.state.vidispineBaseUrl}
+            path="/last/:pageSize"
+            component={(props: RouteComponentProps<LastNComponentMatches>) => {
+              let itemLimit: number = 15;
+              try {
+                itemLimit = parseInt(props.match.params.pageSize);
+              } catch (err) {
+                console.error(`${props.match.params.pageSize} is not a number`);
+              }
+              return (
+                <FrontpageComponent
+                  {...props}
+                  vidispineBaseUrl={this.state.vidispineBaseUrl as string}
+                  itemLimit={itemLimit}
+                  fieldGroupCache={this.state.fields as FieldGroupCache}
+                />
+              );
+            }}
+          />
+          <Route
+            path="/search"
+            component={(props: RouteComponentProps) => (
+              <FrontpageComponent
+                {...props}
+                vidispineBaseUrl={this.state.vidispineBaseUrl as string}
+                fieldGroupCache={this.state.fields as FieldGroupCache}
               />
             )}
+          />
+
+          <Route
+            path="/"
+            exact={true}
+            component={() => <Redirect to="/last/15" />}
           />
         </Switch>
       </ThemeProvider>
@@ -210,7 +236,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
 const AppWithRouter = withRouter(App);
 render(
-  <BrowserRouter basename="/">
+  <BrowserRouter basename={deploymentRootPath}>
     <AppWithRouter />
   </BrowserRouter>,
   document.getElementById("app")

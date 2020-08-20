@@ -158,6 +158,9 @@ div.item_created {
 }
 
 div.item_thumbnail {
+  display: flex;
+  justify-content: center;
+  align-content: center;
   width: 240px;
 }
 
@@ -189,7 +192,6 @@ div.hits_display {
 }
 
 div.pie_chart_box {
-  background-color: #000000;
   margin-top: 4px;
   border-radius: 6px;
   width: 358px;

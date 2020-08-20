@@ -8,7 +8,7 @@ const TagField: React.FC<FieldControlProps> = (props) => {
     <FormControl classes={{ root: props.classes.inputField }}>
       <ChipInput
         value={props.maybeValues ?? []}
-        readOnly={props.viewHints.readonly || props.parentReadonly}
+        readOnly={props.ignoreHintsReadonly ? false : props.viewHints.readonly || props.parentReadonly}
         onAdd={(newtext) => {
           props.valueDidChange(
             props.fieldname,
@@ -25,7 +25,7 @@ const TagField: React.FC<FieldControlProps> = (props) => {
         }
         label={props.viewHints.name}
       />
-      {props.viewHints.readonly && !props.parentReadonly ? (
+      {props.viewHints.readonly && !props.parentReadonly && !props.ignoreHintsReadonly ? (
         <Typography variant="caption">
           You can't edit this, it's read-only
         </Typography>
