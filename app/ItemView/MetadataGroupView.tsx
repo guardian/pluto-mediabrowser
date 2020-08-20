@@ -43,7 +43,7 @@ import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
 
 interface MetadataGroupViewProps {
   group: VidispineFieldGroup;
-  content: VidispineItem | VidispineSearchDoc;
+  content: VidispineItem | Map<string,string>;
   elevation: number;
   readonly: boolean;
   noHeader?: boolean;
@@ -184,6 +184,18 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
     }
   };
 
+  const valuesFromContent = (field:VidispineField) => {
+    if(props.content instanceof VidispineItem) {
+      return props.content.getMetadataValuesInGroup(
+          field.name,
+          props.group.name
+      );
+    } else {
+      const singleValue = props.content.get(field.name);
+      return singleValue ? [singleValue] : undefined;
+    }
+  }
+
   return (
     <Paper elevation={props.elevation} classes={{ root: classes.metagroup }}>
       {props.noHeader ? null : (
@@ -199,10 +211,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
         {props.group.field.map((entry, idx) => {
           const field = new VidispineField(entry);
           const controlId = `${props.group.name}-${idx}`;
-          const maybeValues = props.content.getMetadataValuesInGroup(
-            field.name,
-            props.group.name
-          );
+          const maybeValues:string[]|undefined = valuesFromContent(field);
           const viewHints = field.getCustomData();
 
           if (!viewHints) {

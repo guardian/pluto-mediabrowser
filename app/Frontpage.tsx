@@ -10,6 +10,7 @@ import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 require("./dark.css");
+require("./FrontPageLayout.css");
 
 interface FrontpageComponentProps extends RouteComponentProps {
   vidispineBaseUrl: string;
@@ -22,7 +23,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     VidispineSearchDoc | undefined
   >(undefined);
   const [hideSearchBox, setHideSearchBox] = useState<boolean>(
-    !props.location.pathname.startsWith("search")
+    !props.location.pathname.startsWith("/search")
   );
   const [searching, setSearching] = useState<boolean>(false);
   const [lastError, setLastError] = useState<string | undefined>(undefined);
@@ -57,6 +58,11 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }
   };
 
+  /**
+   * load the next page of results as per the currently set search.
+   * this "recurses" to pull in subsequent pages, after a short delay
+   * to allow the ui to update
+   */
   const loadNextPage = async () => {
     setSearching(true);
     const shouldCount: boolean = itemList.length > 0;
@@ -65,6 +71,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }/API/item?content=metadata&from=${
       itemList.length + 1
     }&number=${pageSize}&count=${shouldCount}`;
+
     try {
       const payload =
         currentSearch ??
@@ -79,9 +86,10 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         },
       });
 
-      if (serverContent.data.hits) {
+      if (serverContent.data.hits) {  //we only take the "hits" field on the first page
         setTotalItems(serverContent.data.hits);
       }
+
       if (serverContent.data.item) {
         if (serverContent.data.item.length == 0) {
           setSearching(false);
@@ -106,6 +114,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       setLastError("Please see console for error details");
     }
   };
+
   /**
    * display last-15 items on startup
    * */
@@ -113,30 +122,54 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     loadNextPage();
   }, []);
 
+  /**
+   * re-run the search when the searchdoc changes
+   * */
+  useEffect(() => {
+    setItemList([]);
+    setLastError(undefined);
+    setTotalItems(0);
+    //give the above a chance to execute before we kick off the download
+    window.setTimeout(()=>loadNextPage(), 100);
+  }, [currentSearch]);
+
   if (redirectToItem) return <Redirect to={`/item/${redirectToItem}`} />;
 
+  const makeClassName = () => {
+    let className = ["front-page-container"];
+    if(hideSearchBox)  className = className.concat("hide-left");
+    return className.join(" ");
+  }
+
   return (
-    <div className="search_grid">
-      <div className="items_top_area">
+    <div className={makeClassName()}>
+      <div className="form-container">
         <VidispineSearchForm
           currentSearch={currentSearch}
           fieldGroupCache={props.fieldGroupCache}
-          onUpdated={(newSearch) => setCurrentSearch(newSearch)}
+          onUpdated={(newSearch) => {
+            console.log("Got new search doc: ", newSearch);
+            setCurrentSearch(newSearch);
+          }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
         />
-        {/*<div className="right_box">*/}
-        {/*    <FacetDisplays/>*/}
-        {/*</div>*/}
       </div>
-      <SearchResultsPane
-        results={itemList}
-        vidispineBaseUrl={props.vidispineBaseUrl}
-        onItemClicked={(itemId) => {
-          console.log("You clicked ", itemId);
-          setRedirectToItem(itemId);
-        }}
-      />
+      <div className="results-container">
+        <SearchResultsPane
+          results={itemList}
+          vidispineBaseUrl={props.vidispineBaseUrl}
+          onItemClicked={(itemId) => {
+            console.log("You clicked ", itemId);
+            props.history.push(`/item/${itemId}`);
+          }}
+        />
+      </div>
+      <div className="facets-container">
+          {/*<div className="right_box">*/}
+          {/*    <FacetDisplays/>*/}
+          {/*</div>*/}
+      </div>
     </div>
   );
 };

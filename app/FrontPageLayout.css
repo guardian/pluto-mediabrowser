@@ -1,0 +1,44 @@
+.front-page-container {
+    display: grid;
+    grid-template-columns: [left-edge] minmax(20px, 400px)
+                            [content-main] auto
+                            [right-pane] minmax(20px, 400px) [right-edge];
+    grid-template-rows: [top] 50px [content-main] auto [bottom];
+    gap: 1px 1px;
+    grid-template-areas: ". . .";
+}
+
+.front-page-container.hide-left {
+    grid-template-columns: [left-edge] 20px
+                            [content-main] auto
+                            [right-pane] minmax(20px, 400px) [right-edge];
+    grid-template-rows: [top] 50px [content-main] auto [bottom];
+}
+
+.front-page-container.hide-both {
+    grid-template-columns: [left-edge] 20px
+                            [content-main] auto
+                            [right-pane] 20px [right-edge];
+    grid-template-rows: [top] 50px [content-main] auto [bottom];
+}
+
+.form-container {
+    grid-column-start: left-edge;
+    grid-column-end: content-main;
+    grid-row-start: top;
+    grid-row-end: bottom;
+}
+
+.results-container {
+    grid-column-start: content-main;
+    grid-column-end: right-pane;
+    grid-row-start: content-main;
+    grid-row-end: bottom;
+}
+
+.facets-container {
+    grid-column-start: right-pane;
+    grid-column-end: right-edge;
+    grid-row-start: top;
+    grid-row-end: bottom;
+}
