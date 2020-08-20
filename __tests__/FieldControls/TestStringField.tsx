@@ -41,6 +41,7 @@ describe("StringField", () => {
 
     const rendered = render(
       <StringField
+          ignoreHintsReadonly={false}
         fieldname="test-field"
         viewHints={viewHints}
         controlId="id-test-field"

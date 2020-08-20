@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
-import MetadataGroupView from "../ItemView/MetadataGroupView";
+import MetadataGroupView, {MetadataGroupViewMode} from "../ItemView/MetadataGroupView";
 import FieldGroupCache from "../vidispine/FieldGroupCache";
-import { VidispineFieldGroup } from "../vidispine/field-group/VidispineFieldGroup";
+import {VidispineFieldGroup} from "../vidispine/field-group/VidispineFieldGroup";
 import MetadataGroupSelector from "./MetadataGroupSelector";
 import {Button, FormControl, Grid, IconButton, Input, InputLabel, Paper, Typography} from "@material-ui/core";
 import {ArrowLeft, ArrowRight} from "@material-ui/icons";
@@ -40,8 +40,13 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
         .from(groupFieldSearch)
         .reduce(
             (searchDoc, entry, idx)=>{
-              console.log(idx, searchDoc);
-              return searchDoc.withSearchTerm(entry[0],entry[1],groupName);
+              const nonEmptyEntries = entry[1].filter(str=>str.length>0);
+
+              if(nonEmptyEntries.length>0){
+                return searchDoc.withSearchTerm(entry[0], nonEmptyEntries, groupName);
+              } else {
+                return searchDoc;
+              }
             },
             withTitle
         );
@@ -98,7 +103,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             group={props.fieldGroupCache.get(groupName) as VidispineFieldGroup}
             content={groupFieldSearch}
             elevation={3}
-            readonly={false}
+            mode={MetadataGroupViewMode.SearchForm}
             noHeader={true}
             valueDidChange={(fieldName, newValue) => {
                 console.log(fieldName, newValue);

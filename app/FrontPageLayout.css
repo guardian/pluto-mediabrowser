@@ -1,8 +1,8 @@
 .front-page-container {
     display: grid;
-    grid-template-columns: [left-edge] minmax(20px, 400px)
+    grid-template-columns: [left-edge] minmax(48px, 400px)
                             [content-main] auto
-                            [right-pane] minmax(20px, 400px) [right-edge];
+                            [right-pane] minmax(48px, 400px) [right-edge];
     grid-template-rows: [top] 50px [content-main] auto [bottom];
     gap: 1px 1px;
     grid-template-areas: ". . .";
@@ -11,14 +11,14 @@
 .front-page-container.hide-left {
     grid-template-columns: [left-edge] 48px
                             [content-main] auto
-                            [right-pane] minmax(20px, 400px) [right-edge];
+                            [right-pane] minmax(48px, 400px) [right-edge];
     grid-template-rows: [top] 50px [content-main] auto [bottom];
 }
 
 .front-page-container.hide-both {
     grid-template-columns: [left-edge] 48px
                             [content-main] auto
-                            [right-pane] 20px [right-edge];
+                            [right-pane] 48px [right-edge];
     grid-template-rows: [top] 50px [content-main] auto [bottom];
 }
 

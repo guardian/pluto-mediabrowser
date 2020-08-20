@@ -35,6 +35,7 @@ describe("TimestampField", () => {
 
     const rendered = mount(
       <TimestampField
+          ignoreHintsReadonly={false}
         fieldname="test-field"
         viewHints={viewHints}
         controlId="id-test-field"

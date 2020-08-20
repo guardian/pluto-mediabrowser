@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import MetadataGroupView from "./MetadataGroupView";
+import React, {useState} from "react";
+import MetadataGroupView, {MetadataGroupViewMode} from "./MetadataGroupView";
 import FieldGroupCache from "../vidispine/FieldGroupCache";
-import { VidispineItem } from "../vidispine/item/VidispineItem";
-import { VidispineFieldGroup } from "../vidispine/field-group/VidispineFieldGroup";
-import { doc } from "prettier";
-import group = doc.builders.group;
-import { Grid, Paper, Typography } from "@material-ui/core";
+import {VidispineItem} from "../vidispine/item/VidispineItem";
+import {Grid, Typography} from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
-import { Edit } from "@material-ui/icons";
+import {Edit} from "@material-ui/icons";
 
 interface MetadataViewProps {
   fieldCache: FieldGroupCache;
@@ -29,6 +26,7 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
       <Grid container justify="flex-end" alignContent="flex-start">
         <Grid item>
           <ToggleButton
+              id="metadata-edit-toggle"
             selected={editMode}
             onChange={() => setEditMode(!editMode)}
           >
@@ -49,7 +47,7 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
               group={group}
               content={props.content}
               elevation={props.elevation}
-              readonly={!editMode}
+              mode={editMode ? MetadataGroupViewMode.MetadataEdit : MetadataGroupViewMode.MetadataView}
               valueDidChange={(fieldname, newvalue) =>
                 props.valueDidChange(groupname, fieldname, newvalue)
               }

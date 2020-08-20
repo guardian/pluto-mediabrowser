@@ -236,7 +236,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
 const AppWithRouter = withRouter(App);
 render(
-  <BrowserRouter basename="/">
+  <BrowserRouter basename={deploymentRootPath}>
     <AppWithRouter />
   </BrowserRouter>,
   document.getElementById("app")

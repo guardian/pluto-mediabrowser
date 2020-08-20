@@ -16,7 +16,7 @@ const DropdownField: React.FC<FieldControlProps> = (props) => {
         <InputLabel id={props.controlId}>{props.viewHints.name}</InputLabel>
         <Select
           labelId={props.controlId}
-          readOnly={props.viewHints.readonly || props.parentReadonly}
+          readOnly={props.ignoreHintsReadonly ? false : props.viewHints.readonly || props.parentReadonly}
           value={
             props.maybeValues
               ? props.maybeValues.length > 0
@@ -37,7 +37,7 @@ const DropdownField: React.FC<FieldControlProps> = (props) => {
             </MenuItem>
           ))}
         </Select>
-        {props.viewHints.readonly && !props.parentReadonly ? (
+        {props.viewHints.readonly && !props.parentReadonly && !props.ignoreHintsReadonly ? (
           <Typography variant="caption">
             You can't edit this, it's read-only
           </Typography>

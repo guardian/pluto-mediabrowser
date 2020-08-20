@@ -1,6 +1,6 @@
 import React from "react";
-import {shallow, mount} from "enzyme";
-import MetadataGroupView from "../../app/ItemView/MetadataGroupView";
+import {mount} from "enzyme";
+import MetadataGroupView, {MetadataGroupViewMode} from "../../app/ItemView/MetadataGroupView";
 import {VidispineField, VidispineFieldGroup} from "../../app/vidispine/field-group/VidispineFieldGroup";
 import sinon from "sinon";
 import {PlutoCustomData} from "../../app/vidispine/field-group/CustomData";
@@ -50,15 +50,15 @@ describe("MetadataGroupView", ()=>{
             ],
         });
 
-        const mapContent = new Map<string,string>();
-        mapContent.set("field1","value1");
+        const mapContent = new Map<string,string[]>();
+        mapContent.set("field1",["value1"]);
 
         const didChangeCb = sinon.spy();
 
         const rendered = mount(<MetadataGroupView group={mdGroup}
                                                   content={mapContent}
                                                   elevation={3}
-                                                  readonly={false}
+                                                  mode={MetadataGroupViewMode.MetadataEdit}
                                                   valueDidChange={didChangeCb}/>);
         const inputField = rendered.find("input#Group1-0");
         expect(inputField.length).toEqual(1);
@@ -119,15 +119,15 @@ describe("MetadataGroupView", ()=>{
             ],
         });
 
-        const mapContent = new Map<string,string>();
-        mapContent.set("field1","value1");
+        const mapContent = new Map<string,string[]>();
+        mapContent.set("field1",["value1"]);
 
         const didChangeCb = sinon.spy();
 
         const rendered = mount(<MetadataGroupView group={mdGroup}
                                                   content={mapContent}
                                                   elevation={3}
-                                                  readonly={false}
+                                                  mode={MetadataGroupViewMode.MetadataEdit}
                                                   valueDidChange={didChangeCb}/>);
         const inputField = rendered.find("input#Group1-0");
         expect(inputField.length).toEqual(1);

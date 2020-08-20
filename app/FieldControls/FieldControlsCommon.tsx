@@ -10,6 +10,7 @@ interface FieldControlProps {
   maybeValues?: string[];
   controlId: string;
   parentReadonly: boolean;
+  ignoreHintsReadonly: boolean;
   valueDidChange: (fieldname: string, newvalues: string[]) => void;
   classes: ClassNameMap<any>;
 }
