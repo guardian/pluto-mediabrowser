@@ -76,23 +76,31 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
     }
   }
 
-  findMatchingGroupIndex(
+  /**
+   * finds the index in our group list of the given group, or alternatively creates a blank entry and returns it
+   * @param groupName group name to find or create
+   * @returns an array of the group reference [0] and the index [1]
+   */
+  findOrMakeMatchingGroupIndex(
     groupName: string
   ): [SearchFieldGroupIF, number] | undefined {
-    let searchList: SearchFieldGroupIF[];
+    let searchList: SearchFieldGroupIF[] | undefined;
 
     if (this.operator && this.operator.group) {
       searchList = this.operator.group;
     } else if (this.group) {
       searchList = this.group;
-    } else {
-      return undefined;
     }
 
-    for (let i = 0; i < searchList.length; ++i) {
-      if (searchList[i].name === groupName) return [searchList[i], i];
+    if(searchList) {
+      for (let i = 0; i < searchList.length; ++i) {
+        if (searchList[i].name === groupName) return [searchList[i], i];
+      }
     }
-    return undefined;
+
+    const willInsertIndex = this.group ? this.group.length : 0;
+    this.group = this.group ? this.group.concat({name: groupName, field: []}) : [{name: groupName, field: []}];
+    return [this.group[willInsertIndex], willInsertIndex];
   }
 
   /**
@@ -112,15 +120,18 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
 
     let groupMatch;
     if (toGroup) {
-      groupMatch = this.findMatchingGroupIndex(toGroup);
+      groupMatch = newObject.findOrMakeMatchingGroupIndex(toGroup);
+      console.log("groupMatch", groupMatch);
     }
 
     //FIXME: this needs a load of optimising
     if (groupMatch) {
       const updatedGroupContent = groupMatch[0].field.concat(newEl);
+      console.log("updatedGroupContent", updatedGroupContent);
       if (newObject.operator && newObject.operator.group) {
         newObject.operator.group[groupMatch[1]].field = updatedGroupContent;
       } else if (newObject.group) {
+        console.log("adding to ", newObject.group[groupMatch[1]].field);
         newObject.group[groupMatch[1]].field = updatedGroupContent;
       } else {
         console.error(

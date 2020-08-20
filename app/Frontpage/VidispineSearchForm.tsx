@@ -4,7 +4,8 @@ import MetadataGroupView from "../ItemView/MetadataGroupView";
 import FieldGroupCache from "../vidispine/FieldGroupCache";
 import { VidispineFieldGroup } from "../vidispine/field-group/VidispineFieldGroup";
 import MetadataGroupSelector from "./MetadataGroupSelector";
-import {Button, FormControl, Input, InputLabel, Paper, Typography} from "@material-ui/core";
+import {Button, FormControl, Grid, IconButton, Input, InputLabel, Paper, Typography} from "@material-ui/core";
+import {ArrowLeft, ArrowRight} from "@material-ui/icons";
 
 interface VidispineSearchFormProps {
   currentSearch?: VidispineSearchDoc;
@@ -49,22 +50,47 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
 
   return (
       //FIXME: replace the null with an expander
-      props.isHidden ? null :
+      props.isHidden ? <Paper elevation={3}>
+            <IconButton aria-label="hide" onClick={()=>props.onHideToggled(false)}>
+              <ArrowRight/>
+            </IconButton>
+          </Paper> :
     <>
       <Paper elevation={3}>
-        <Typography variant="h4">Search</Typography>
-        <FormControl>
-          <InputLabel>Title</InputLabel>
-          <Input
-              value={titleSearch}
-              onChange={(evt)=>setTitleSearch(evt.target.value)}
-          />
-        </FormControl>
-        <MetadataGroupSelector
-            value={groupName}
-            onChange={(evt) => setGroupName(evt.target.value)}
-        />
-        <Button variant="outlined" onClick={makeSearchDoc}>Search</Button>
+        <Grid container justify="space-between">
+          <Grid item>
+            <Typography variant="h4">Search</Typography>
+          </Grid>
+          <Grid item>
+            <IconButton aria-label="hide" onClick={()=>props.onHideToggled(true)}>
+              <ArrowLeft/>
+            </IconButton>
+          </Grid>
+        </Grid>
+        <ul className="hidden-list">
+          <li className="hidden-list">
+            <FormControl>
+              <InputLabel>Title</InputLabel>
+              <Input
+                  value={titleSearch}
+                  onChange={(evt)=>setTitleSearch(evt.target.value)}
+              />
+            </FormControl>
+          </li>
+          <li className="hidden-list">
+            <MetadataGroupSelector
+                value={groupName}
+                onChange={(evt) => setGroupName(evt.target.value)}
+            />
+          </li>
+          <li className="hidden-list">
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Button variant="contained" onClick={makeSearchDoc}>Search</Button>
+              </Grid>
+            </Grid>
+          </li>
+        </ul>
       </Paper>
 
         {
