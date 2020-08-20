@@ -202,7 +202,7 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
       console.log("groupMatch", groupMatch);
     }
 
-    //FIXME: this needs a load of optimising
+    //TODO: this needs a load of optimising, if we decide to keep it (not currently used)
     if (groupMatch) {
       const updatedGroupContent = groupMatch[0].field.concat(newEl);
       console.log("updatedGroupContent", updatedGroupContent);

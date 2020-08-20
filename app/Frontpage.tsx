@@ -126,7 +126,6 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         )
         setItemList(updatedItemList);
 
-        console.log("updated list length is", updatedItemList.length);
         if (updatedItemList.length < itemLimit && serverContent.data.item.length) {
           //allow the javascript engine to process state updates above before recursing on to next page.
           window.setTimeout(() => loadNextPage(updatedItemList.length, updatedItemList), 200);

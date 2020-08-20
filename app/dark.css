@@ -158,6 +158,9 @@ div.item_created {
 }
 
 div.item_thumbnail {
+  display: flex;
+  justify-content: center;
+  align-content: center;
   width: 240px;
 }
 
