@@ -33,24 +33,15 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
     setGroupFieldSearch(new Map());
   }, [groupName]);
 
+  /**
+   * called when the search button is pressed. Marshal our state into a VidispineSearchDoc and return it
+   */
   const makeSearchDoc = () => {
-    const initialDoc = new VidispineSearchDoc()
-    const withTitle = titleSearch ? initialDoc.withSearchTerm("title", [titleSearch]) : initialDoc;
-    const finalSearch = Array
-        .from(groupFieldSearch)
-        .reduce(
-            (searchDoc, entry, idx)=>{
-              const nonEmptyEntries = entry[1].filter(str=>str.length>0);
+    const maybeFields:Map<string,string[]>|undefined = titleSearch ? new Map([["title", [titleSearch]]]) : undefined
 
-              if(nonEmptyEntries.length>0){
-                return searchDoc.withSearchTerm(entry[0], nonEmptyEntries, groupName);
-              } else {
-                return searchDoc;
-              }
-            },
-            withTitle
-        );
-    props.onUpdated(finalSearch);
+    const groups:Map<string,Map<string,string[]>> = new Map([[groupName, groupFieldSearch]]);
+
+    props.onUpdated(new VidispineSearchDoc(undefined, maybeFields, groups));
   }
 
   return (
@@ -106,10 +97,16 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             noHeader={true}
             valueDidChange={(fieldName, newValue) => {
                 console.log(fieldName, newValue);
-              //setGroupFieldSearch(Object.assign({}, groupFieldSearch, {fieldName: newValue}))
               setGroupFieldSearch(existingValue=>{
                 const newMap = new Map(existingValue);
-                return newMap.set(fieldName, newValue);
+                const nonEmptyValues = newValue.filter(str=>str.length>0);
+
+                if(nonEmptyValues.length>0) {
+                  newMap.set(fieldName, nonEmptyValues);
+                } else {
+                  newMap.delete(fieldName);
+                }
+                return newMap
               });
             }}
           />

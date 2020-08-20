@@ -62,9 +62,39 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
   sort?: SearchOrderIF[];
   facet?: SearchFacet[];
 
-  constructor(baseOperation?: string) {
+  /**
+   * construct a new SearchDoc, optionally with an "operation" (and/or/not) at the base and a set of groups and fields within
+   * those groups to search for
+   * @param baseOperation
+   * @param withGroups
+   */
+  constructor(baseOperation?: string, withFields?:Map<string,string[]>, withGroups?:Map<string,Map<string,string[]>>) {
+    let groupElList:SearchFieldGroupIF[]|undefined;
+    let fieldElList:SearchFieldIF[]|undefined;
+
+    if(withGroups) {
+      groupElList = Array.from(withGroups, (elem)=>({
+        name: elem[0],
+        field: Array.from(elem[1], (fieldData) => ({
+          name: fieldData[0],
+          value: fieldData[1].map(stringVal=>({
+            value: stringVal
+          }))
+        }))
+      }));
+    }
+
+    if(withFields) {
+      fieldElList = Array.from(withFields, (elem) => ({
+        name: elem[0],
+        value: elem[1].map(stringVal=>({value: stringVal}))
+      }));
+    }
     if (baseOperation) {
-      this.operator = { operation: baseOperation, field: [], group: [] };
+      this.operator = { operation: baseOperation, field: fieldElList ?? [], group: groupElList ?? [] };
+    } else {
+      this.group = groupElList ?? []
+      this.field = fieldElList ?? []
     }
   }
 

@@ -63,6 +63,10 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }
   };
 
+  /**
+   * puts terms to request the default graph set onto the provided SearchDoc
+   * @param toSearch VidispineSearchDoc to add them to
+   */
   const addDefaultFacets = (toSearch:VidispineSearchDoc) => {
     //FIXME: should load these in from config or from some kind of user profile!
     return toSearch
