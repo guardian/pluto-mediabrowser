@@ -54,7 +54,6 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
   }
 
   return (
-      //FIXME: replace the null with an expander
       props.isHidden ? <Paper elevation={3}>
             <IconButton aria-label="hide" onClick={()=>props.onHideToggled(false)}>
               <ArrowRight/>

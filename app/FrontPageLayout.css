@@ -15,6 +15,16 @@
     grid-template-rows: [top] 50px [content-main] auto [bottom];
 }
 
+.front-page-container.hide-right {
+    display: grid;
+    grid-template-columns: [left-edge] minmax(48px, 400px)
+                            [content-main] auto
+                            [right-pane] 48px [right-edge];
+    grid-template-rows: [top] 50px [content-main] auto [bottom];
+    gap: 1px 1px;
+    grid-template-areas: ". . .";
+}
+
 .front-page-container.hide-both {
     grid-template-columns: [left-edge] 48px
                             [content-main] auto
@@ -29,6 +39,12 @@
     grid-row-end: bottom;
 }
 
+.status-container {
+    grid-column-start: content-main;
+    grid-column-end: right-pane;
+    grid-row-start: top;
+    grid-row-end: content-main;
+}
 .results-container {
     grid-column-start: content-main;
     grid-column-end: right-pane;

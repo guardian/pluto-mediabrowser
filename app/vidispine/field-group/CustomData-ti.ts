@@ -5,15 +5,15 @@ import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
 export const DataPair = t.iface([], {
-  key: "string",
-  value: "string",
+  "key": "string",
+  "value": "string",
 });
 
 export const PlutoCustomData = t.iface([], {
-  name: "string",
-  readonly: "boolean",
-  type: "string",
-  values: t.opt(t.array("DataPair")),
+  "name": "string",
+  "readonly": "boolean",
+  "type": "string",
+  "values": t.opt(t.array("DataPair")),
 });
 
 const exportedTypeSuite: t.ITypeSuite = {

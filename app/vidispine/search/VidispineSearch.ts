@@ -1,6 +1,3 @@
-import VidispineSearchTI from "./VidispineSearch-ti";
-
-import { createCheckers } from "ts-interface-checker";
 import { VidispineFieldGroup } from "../field-group/VidispineFieldGroup";
 
 interface SearchValueIF {
@@ -38,10 +35,23 @@ interface SearchOrderIF {
   order: SearchOrderValue;
 }
 
+interface SearchRange {
+  start: string;
+  end: string;
+}
+
+interface SearchFacet {
+  count: boolean;         //if true, return the raw counts of items for each field value. If false, use the ranges to group them.
+  field: string;
+  range?: SearchRange[];  //if count is false, range should be specified
+}
+
+
 interface VidispineSearchDocIF {
   operator?: SearchOperatorIF;
   field?: SearchFieldIF[];
   group?: SearchFieldGroupIF[];
+  facet?: SearchFacet[];
   sort?: SearchOrderIF[];
 }
 
@@ -50,6 +60,7 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
   field?: SearchFieldIF[];
   group?: SearchFieldGroupIF[];
   sort?: SearchOrderIF[];
+  facet?: SearchFacet[];
 
   constructor(baseOperation?: string) {
     if (baseOperation) {
@@ -101,6 +112,43 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
     const willInsertIndex = this.group ? this.group.length : 0;
     this.group = this.group ? this.group.concat({name: groupName, field: []}) : [{name: groupName, field: []}];
     return [this.group[willInsertIndex], willInsertIndex];
+  }
+
+  /**
+   * adds a facet term to this search
+   * @param field field to facet on
+   * @param count whether to return raw counts or use range buckets
+   * @param ranges if count=false, the range buckets to use
+   * @return this object, for chaining
+   */
+  addFacet(field:string, count:boolean, ranges?:SearchRange[]) {
+    const newEl:SearchFacet = {
+      field: field,
+      count: count,
+      range: ranges
+    };
+
+    this.facet = this.facet ? this.facet.concat(newEl) : [newEl];
+    return this;
+  }
+
+  /**
+   * returns a new VidispineSearchDoc with the given facet added
+   * @param field field to facet on
+   * @param count whether to return raw counts or use range buckets
+   * @param ranges if count=false, the range buckets to use
+   * @return new object with the contents of this one plus the new facet
+   */
+  withFacet(field:string, count:boolean, ranges?:SearchRange[]) {
+    const newEl:SearchFacet = {
+      field: field,
+      count: count,
+      range: ranges
+    };
+
+    let newObject = Object.assign(new VidispineSearchDoc(), this);
+    newObject.facet = newObject.facet ? newObject.facet.concat(newEl) : [newEl];
+    return newObject;
   }
 
   /**
@@ -194,6 +242,6 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
   }
 }
 
-export type { VidispineSearchDocIF };
+export type { VidispineSearchDocIF};
 export { SearchOrderValue };
 export default VidispineSearchDoc;
