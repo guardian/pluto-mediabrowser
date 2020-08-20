@@ -23,7 +23,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
   //FIXME: don't like the Asset name hard-coded like this
   const [groupName, setGroupName] = useState<string>("Asset");
   const [titleSearch, setTitleSearch] = useState<string>("");
-  const [groupFieldSearch, setGroupFieldSearch] = useState<Map<string,string>>(new Map());
+  const [groupFieldSearch, setGroupFieldSearch] = useState<Map<string,string[]>>(new Map());
 
   /**
    * reset the search if the user changes the group selector
@@ -35,9 +35,15 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
   const makeSearchDoc = () => {
     const initialDoc = new VidispineSearchDoc()
     const withTitle = titleSearch ? initialDoc.withSearchTerm("title", [titleSearch]) : initialDoc;
-    const finalSearch = Array.from(groupFieldSearch).reduce((searchDoc, entry, idx)=>{
-      return searchDoc.withSearchTerm(entry[0],[entry[1]],groupName);
-    },withTitle);
+    const finalSearch = Array
+        .from(groupFieldSearch)
+        .reduce(
+            (searchDoc, entry, idx)=>{
+              console.log(idx, searchDoc);
+              return searchDoc.withSearchTerm(entry[0],entry[1],groupName);
+            },
+            withTitle
+        );
     props.onUpdated(finalSearch);
   }
 
@@ -70,7 +76,11 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             noHeader={true}
             valueDidChange={(fieldName, newValue) => {
                 console.log(fieldName, newValue);
-              setGroupFieldSearch(Object.assign({}, groupFieldSearch, {fieldName: newValue}))
+              //setGroupFieldSearch(Object.assign({}, groupFieldSearch, {fieldName: newValue}))
+              setGroupFieldSearch(existingValue=>{
+                const newMap = new Map(existingValue);
+                return newMap.set(fieldName, newValue);
+              });
             }}
           />
       }

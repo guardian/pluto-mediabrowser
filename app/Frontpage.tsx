@@ -63,13 +63,14 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
    * this "recurses" to pull in subsequent pages, after a short delay
    * to allow the ui to update
    */
-  const loadNextPage = async () => {
+  const loadNextPage = async (startAt?:number, previousItemList?:VidispineItem[]) => {
     setSearching(true);
-    const shouldCount: boolean = itemList.length > 0;
+    const shouldCount: boolean = itemList.length == 0;
+    const fromParam = startAt ?? itemList.length;
     const searchUrl = `${
       props.vidispineBaseUrl
-    }/API/item?content=metadata&from=${
-      itemList.length + 1
+    }/API/item?content=metadata&first=${
+      fromParam + 1
     }&number=${pageSize}&count=${shouldCount}`;
 
     try {
@@ -96,17 +97,18 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           return; //no more to do
         }
         //only add in items that validate as VidispineItem. Items that don't are logged to console.
-        setItemList(
-          itemList.concat(
+        const existingList = previousItemList ?? itemList;
+        const updatedItemList = existingList.concat(
             serverContent.data.item
-              .map(validateVSItem)
-              .filter((item: VidispineItem | undefined) => item !== undefined)
-          )
-        );
+                .map(validateVSItem)
+                .filter((item: VidispineItem | undefined) => item !== undefined)
+        )
+        setItemList(updatedItemList);
 
-        if (itemList.length + serverContent.data.item.length < itemLimit) {
+        console.log("updated list length is", updatedItemList.length);
+        if (updatedItemList.length < itemLimit) {
           //allow the javascript engine to process state updates above before recursing on to next page.
-          window.setTimeout(() => loadNextPage(), 200);
+          window.setTimeout(() => loadNextPage(updatedItemList.length, updatedItemList), 200);
         }
       }
     } catch (err) {
@@ -126,6 +128,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
    * re-run the search when the searchdoc changes
    * */
   useEffect(() => {
+    console.log("Search updated, reloading...");
     setItemList([]);
     setLastError(undefined);
     setTotalItems(0);

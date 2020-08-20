@@ -43,7 +43,7 @@ import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
 
 interface MetadataGroupViewProps {
   group: VidispineFieldGroup;
-  content: VidispineItem | Map<string,string>;
+  content: VidispineItem | Map<string,string[]>;
   elevation: number;
   readonly: boolean;
   noHeader?: boolean;
@@ -191,8 +191,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
           props.group.name
       );
     } else {
-      const singleValue = props.content.get(field.name);
-      return singleValue ? [singleValue] : undefined;
+      return props.content.get(field.name);
     }
   }
 
@@ -223,7 +222,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
 
           if (viewHints) {
             return (
-              <Grid item sm={6}>
+              <Grid item sm={6} key={idx}>
                 {elementForDatatype(
                   field.name,
                   viewHints,
@@ -233,7 +232,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
               </Grid>
             );
           } else {
-            return <p />;
+            return null;
           }
         })}
       </Grid>

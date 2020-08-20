@@ -108,7 +108,7 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
       value: values.map((stringval) => ({ value: stringval })),
     };
 
-    let newObject = Object.assign({}, this);
+    let newObject = Object.assign(new VidispineSearchDoc(), this);
 
     let groupMatch;
     if (toGroup) {

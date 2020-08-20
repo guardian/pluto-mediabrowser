@@ -5,6 +5,7 @@ import sinon from "sinon";
 import FieldGroupCache from "../../app/vidispine/FieldGroupCache";
 import { VidispineFieldGroup } from "../../app/vidispine/field-group/VidispineFieldGroup";
 import { VidispineItem } from "../../app/vidispine/item/VidispineItem";
+import MetadataGroupView from "../../app/ItemView/MetadataGroupView";
 
 describe("MetadataView", () => {
   it("should render MetadataGroupView instances via the fieldcache for all groups that are present on the item", () => {
