@@ -12,7 +12,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Newswire provider", "readonly":true,"type":"lookup"}</value>
+            <value>{"name":"Newswire provider", "readonly":true, "type":"lookup"}</value>
         </data>
     </field>
     <field>
@@ -25,7 +25,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Description", "readonly":true,"type":"textarea"}</value>
+            <value>{"name":"Description", "readonly":true, "type":"textarea"}</value>
         </data>
     </field>
     <field>
@@ -38,7 +38,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Provider's ID", "readonly":true,"type":"string"}</value>
+            <value>{"name":"Provider's ID", "readonly":true ,"type":"string"}</value>
         </data>
     </field>
     <field>
@@ -51,7 +51,7 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Copyright information", "readonly":false,"type":"textarea"}</value>
+            <value>{"name":"Copyright information", "readonly":false, "type":"textarea"}</value>
         </data>
     </field>
     <field>
@@ -64,7 +64,20 @@
         </stringRestriction>
         <data>
             <key>extradata</key>
-            <value>{"name":"Filming Location", "readonly":false,"type":"string"}</value>
+            <value>{"name":"Filming Location", "readonly":false, "type":"string"}</value>
+        </data>
+    </field>
+    <field>
+        <name>gnm_supplier_reference</name>
+        <schema min="0" max="1" name="gnm_supplier_reference"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Supplier Reference", "readonly":false, "type":"string"}</value>
         </data>
     </field>
 </MetadataFieldGroupDocument>
