@@ -53,7 +53,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 //think of a way to improve this later!
-const groupsToCache = ["Asset", "Deliverable", "Newswire", "Rushes"];
+const groupsToCache = ["Deliverable", "Newswire", "Rushes", "Asset"];
 
 class App extends React.Component<RouteComponentProps<any>, AppState> {
   theme: Theme;
