@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Paper } from "@material-ui/core";
 
 interface PreviewPlayerProps {
-  proxyUri: string;
+  proxyUri?: string;
   mediaType: string;
+  autoplay?: boolean;
 }
 
 const PreviewPlayer: React.FC<PreviewPlayerProps> = (props) => {
   const playerForMediaType = () => {
     if (props.mediaType.startsWith("video")) {
       return (
-        <video className="media-player video-player" src={props.proxyUri} />
+        <video className="media-player video-player" src={props.proxyUri} controls={true} autoPlay={props.autoplay ?? true}/>
       );
     } else if (props.mediaType.startsWith("audio")) {
       return (

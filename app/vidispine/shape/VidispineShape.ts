@@ -141,9 +141,10 @@ class VidispineShape implements VidispineShapeIF {
      * construct from an untyped object (parsed from json).
      * raises an exception if the data does not validate against the object spec
      * @param sourceObject untyped parsed json to build from
+     * @param check if false then skip the data check (i.e. data has already been checked)
      */
-    constructor(sourceObject: any) {
-        VidispineShapeIF.check(sourceObject)
+    constructor(sourceObject: any, check=true) {
+        if(check) VidispineShapeIF.check(sourceObject)
         this.id = sourceObject.id
         this.created = sourceObject.created
         this.essenceVersion = sourceObject.essenceVersion

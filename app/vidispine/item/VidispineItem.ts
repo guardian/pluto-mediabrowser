@@ -5,6 +5,10 @@ import VidispineFileTI from "../shape/VidispineFile-ti"
 import { createCheckers } from "ts-interface-checker";
 import {VidispineShapeIF, VidispineShape} from "../shape/VidispineShape";
 
+interface URIList {
+  uri: string[];
+}
+
 interface MetadataValue {
   value: string;
   uuid?: string;
@@ -42,6 +46,7 @@ interface ItemMetadata {
 interface ItemIF {
   metadata?: ItemMetadata;
   shape?: VidispineShapeIF[];
+  files?: URIList;
   id: string;
 }
 
@@ -67,6 +72,7 @@ class VidispineItem implements ItemIF {
   metadata?: ItemMetadata;
   shape?: VidispineShape[];
   id: string;
+  files?: URIList;
 
   /**
    * constructs the class from a raw object
@@ -75,7 +81,8 @@ class VidispineItem implements ItemIF {
   constructor(sourceObject: any) {
     ItemIF.check(sourceObject);
     this.metadata = sourceObject.metadata;
-    this.shape = sourceObject.shape as VidispineShape[];
+    this.shape = sourceObject.shape ? sourceObject.shape.map((s:VidispineShapeIF)=>new VidispineShape(s, false)) : undefined;
+    this.files = sourceObject.files;
     this.id = sourceObject.id;
   }
 
