@@ -10,7 +10,7 @@ interface ShapeSelectorProps {
 const ShapeSelector:React.FC<ShapeSelectorProps> = (props) => {
     return (
         <FormControl>
-            <InputLabel htmlFor="shape-tag-selector">Proxy to play:</InputLabel>
+            <InputLabel htmlFor="shape-tag-selector">Showing:</InputLabel>
             <Select id="shape-tag-selector" value={props.currentTag}
                     onChange={(evt)=>props.onSelectionChanged(evt.target.value as string)}>
                 {

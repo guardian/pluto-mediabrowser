@@ -7,15 +7,26 @@ interface PreviewPlayerProps {
   autoplay?: boolean;
 }
 
+
 const PreviewPlayer: React.FC<PreviewPlayerProps> = (props) => {
   const playerForMediaType = () => {
     if (props.mediaType.startsWith("video")) {
       return (
-        <video className="media-player video-player" src={props.proxyUri} controls={true} autoPlay={props.autoplay ?? true}/>
+        <video className="media-player video-player"
+               src={props.proxyUri}
+               controls={true}
+               autoPlay={props.autoplay ?? true}
+               style={{maxWidth: "95vw"}}
+        />
       );
     } else if (props.mediaType.startsWith("audio")) {
       return (
-        <audio className="media-player audio-player" src={props.proxyUri} />
+        <audio className="media-player audio-player"
+               src={props.proxyUri}
+               controls={true}
+               autoPlay={props.autoplay ?? true}
+               style={{maxWidth: "95vw"}}
+        />
       );
     } else if (props.mediaType.startsWith("image")) {
       return (
@@ -24,6 +35,7 @@ const PreviewPlayer: React.FC<PreviewPlayerProps> = (props) => {
             className="media-player image-view"
             src={props.proxyUri}
             alt="Image preview"
+            style={{maxWidth: "95vw"}}
           />
         </Paper>
       );
