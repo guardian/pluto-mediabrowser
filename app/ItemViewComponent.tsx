@@ -26,6 +26,7 @@ import {
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 import MetadataView from "./ItemView/MetadataView";
 import { makeStyles } from "@material-ui/core/styles";
+import PlayerContainer from "./ItemView/PlayerContainer";
 
 interface ItemViewComponentProps
   extends RouteComponentProps<ItemViewComponentMatches> {
@@ -38,6 +39,9 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   const [lastError, setLastError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
+  //FIXME: should be loaded in from config!
+  const defaultShapes = ["lowres","lowimage","lowaudio"];
+
   const useStyles = makeStyles((theme) => ({
     heading: {
       fontSize: "26",
@@ -48,7 +52,7 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   const classes = useStyles();
 
   const loadItemMeta = async () => {
-    const targetUrl = `${props.vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata,shape`;
+    const targetUrl = `${props.vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata,shape,uri&methodType=AUTO`;
     console.debug("loading item data from ", targetUrl);
     try {
       const result = await axios.get(targetUrl, {
@@ -129,7 +133,14 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
       ) : null}
       {itemData ? (
         <>
-          <PreviewPlayer proxyUri="notsetyet" mediaType="notsetyet" />
+          { itemData && itemData.shape && itemData.files ?
+            <PlayerContainer shapes={itemData.shape}
+                             defaultShapes={defaultShapes}
+                             vidispineBaseUri={props.vidispineBaseUrl}
+                             uriList={itemData.files.uri}
+            /> :
+              <Typography variant="caption">No shapes exist on this item</Typography>
+          }
           <hr />
           <MetadataView
             fieldCache={props.fieldCache}

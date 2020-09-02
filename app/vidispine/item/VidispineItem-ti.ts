@@ -39,7 +39,8 @@ export const ItemMetadata = t.iface([], {
 });
 
 export const ItemIF = t.iface([], {
-  "metadata": "ItemMetadata",
+  "metadata": t.opt("ItemMetadata"),
+  "shape": t.opt(t.array("VidispineShapeIF")),
   "id": "string",
 });
 
