@@ -7475,9 +7475,11 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-"pluto-headers@https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git##v1.0.2-3":
-  version "1.0.2-3"
-  resolved "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#78744b3613d2ca6b884f2d6da3dc46d0385f08af"
+"pluto-headers@https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.2.0":
+  version "1.2.0"
+  resolved "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#7cf0dd50262a2b4f75056a005dd1d061a1c42dc1"
+  dependencies:
+    ts-interface-checker "^0.1.13"
 
 pn@^1.1.0:
   version "1.1.0"
@@ -9136,6 +9138,11 @@ ts-interface-checker@^0.1.11:
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-0.1.12.tgz#5cf69fa301778a412f4b2f564533576516fff019"
   integrity sha512-zfJsb81glBbt4iKclqwWj8ESP2qUq1tccdnYpbUqEy7jj2JFaN09vpgtnPtKmL2jRd/U80rYLo5H4ErxJSAXQQ==
+
+ts-interface-checker@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz#784fd3d679722bc103b1b4b8030bcddb5db2a699"
+  integrity sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==
 
 ts-jest@^26.1.4:
   version "26.2.0"
