@@ -46,7 +46,7 @@ if (deploymentRootPath == undefined) {
 
 axios.defaults.baseURL = deploymentRootPath;
 axios.interceptors.request.use(function (config) {
-  const token = window.sessionStorage.getItem("pluto:access-token");
+  const token = window.localStorage.getItem("pluto:access-token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
   return config;
