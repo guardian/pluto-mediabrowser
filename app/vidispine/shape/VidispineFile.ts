@@ -8,7 +8,6 @@ interface VidispineFile {
   uri: string[];
   state: string;
   size: number;
-  hash?: string;
   timestamp?: string;
   refreshFlag?: number;
   storage: string;
