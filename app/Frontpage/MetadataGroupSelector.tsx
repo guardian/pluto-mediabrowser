@@ -17,7 +17,7 @@ const MetadataGroupSelector: React.FC<MetadataGroupSelectorProps> = (props) => {
 
   return (
     <FormControl
-        style={{width:"100%"}}  //FIXME: find a better way to do this
+      style={{ width: "100%" }} //FIXME: find a better way to do this
     >
       <InputLabel id="md-group-selector">Search metadata group</InputLabel>
       <Select

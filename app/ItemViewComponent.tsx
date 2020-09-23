@@ -40,7 +40,7 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   //FIXME: should be loaded in from config!
-  const defaultShapes = ["lowres","lowimage","lowaudio"];
+  const defaultShapes = ["lowres", "lowimage", "lowaudio"];
 
   const useStyles = makeStyles((theme) => ({
     heading: {
@@ -133,14 +133,18 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
       ) : null}
       {itemData ? (
         <>
-          { itemData && itemData.shape && itemData.files ?
-            <PlayerContainer shapes={itemData.shape}
-                             defaultShapes={defaultShapes}
-                             vidispineBaseUri={props.vidispineBaseUrl}
-                             uriList={itemData.files.uri}
-            /> :
-              <Typography variant="caption">No shapes exist on this item</Typography>
-          }
+          {itemData && itemData.shape && itemData.files ? (
+            <PlayerContainer
+              shapes={itemData.shape}
+              defaultShapes={defaultShapes}
+              vidispineBaseUri={props.vidispineBaseUrl}
+              uriList={itemData.files.uri}
+            />
+          ) : (
+            <Typography variant="caption">
+              No shapes exist on this item
+            </Typography>
+          )}
           <hr />
           <MetadataView
             fieldCache={props.fieldCache}

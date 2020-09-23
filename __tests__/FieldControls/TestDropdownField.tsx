@@ -35,7 +35,7 @@ describe("DropdownField", () => {
 
     const rendered = shallow(
       <DropdownField
-          ignoreHintsReadonly={false}
+        ignoreHintsReadonly={false}
         fieldname="test-field"
         viewHints={viewHints}
         controlId="id-test-field"

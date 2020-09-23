@@ -41,11 +41,10 @@ interface SearchRange {
 }
 
 interface SearchFacet {
-  count: boolean;         //if true, return the raw counts of items for each field value. If false, use the ranges to group them.
+  count: boolean; //if true, return the raw counts of items for each field value. If false, use the ranges to group them.
   field: string;
-  range?: SearchRange[];  //if count is false, range should be specified
+  range?: SearchRange[]; //if count is false, range should be specified
 }
-
 
 interface VidispineSearchDocIF {
   operator?: SearchOperatorIF;
@@ -68,33 +67,41 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
    * @param baseOperation
    * @param withGroups
    */
-  constructor(baseOperation?: string, withFields?:Map<string,string[]>, withGroups?:Map<string,Map<string,string[]>>) {
-    let groupElList:SearchFieldGroupIF[]|undefined;
-    let fieldElList:SearchFieldIF[]|undefined;
+  constructor(
+    baseOperation?: string,
+    withFields?: Map<string, string[]>,
+    withGroups?: Map<string, Map<string, string[]>>
+  ) {
+    let groupElList: SearchFieldGroupIF[] | undefined;
+    let fieldElList: SearchFieldIF[] | undefined;
 
-    if(withGroups) {
-      groupElList = Array.from(withGroups, (elem)=>({
+    if (withGroups) {
+      groupElList = Array.from(withGroups, (elem) => ({
         name: elem[0],
         field: Array.from(elem[1], (fieldData) => ({
           name: fieldData[0],
-          value: fieldData[1].map(stringVal=>({
-            value: stringVal
-          }))
-        }))
+          value: fieldData[1].map((stringVal) => ({
+            value: stringVal,
+          })),
+        })),
       }));
     }
 
-    if(withFields) {
+    if (withFields) {
       fieldElList = Array.from(withFields, (elem) => ({
         name: elem[0],
-        value: elem[1].map(stringVal=>({value: stringVal}))
+        value: elem[1].map((stringVal) => ({ value: stringVal })),
       }));
     }
     if (baseOperation) {
-      this.operator = { operation: baseOperation, field: fieldElList ?? [], group: groupElList ?? [] };
+      this.operator = {
+        operation: baseOperation,
+        field: fieldElList ?? [],
+        group: groupElList ?? [],
+      };
     } else {
-      this.group = groupElList ?? []
-      this.field = fieldElList ?? []
+      this.group = groupElList ?? [];
+      this.field = fieldElList ?? [];
     }
   }
 
@@ -133,14 +140,16 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
       searchList = this.group;
     }
 
-    if(searchList) {
+    if (searchList) {
       for (let i = 0; i < searchList.length; ++i) {
         if (searchList[i].name === groupName) return [searchList[i], i];
       }
     }
 
     const willInsertIndex = this.group ? this.group.length : 0;
-    this.group = this.group ? this.group.concat({name: groupName, field: []}) : [{name: groupName, field: []}];
+    this.group = this.group
+      ? this.group.concat({ name: groupName, field: [] })
+      : [{ name: groupName, field: [] }];
     return [this.group[willInsertIndex], willInsertIndex];
   }
 
@@ -151,11 +160,11 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
    * @param ranges if count=false, the range buckets to use
    * @return this object, for chaining
    */
-  addFacet(field:string, count:boolean, ranges?:SearchRange[]) {
-    const newEl:SearchFacet = {
+  addFacet(field: string, count: boolean, ranges?: SearchRange[]) {
+    const newEl: SearchFacet = {
       field: field,
       count: count,
-      range: ranges
+      range: ranges,
     };
 
     this.facet = this.facet ? this.facet.concat(newEl) : [newEl];
@@ -169,11 +178,11 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
    * @param ranges if count=false, the range buckets to use
    * @return new object with the contents of this one plus the new facet
    */
-  withFacet(field:string, count:boolean, ranges?:SearchRange[]) {
-    const newEl:SearchFacet = {
+  withFacet(field: string, count: boolean, ranges?: SearchRange[]) {
+    const newEl: SearchFacet = {
       field: field,
       count: count,
-      range: ranges
+      range: ranges,
     };
 
     let newObject = Object.assign(new VidispineSearchDoc(), this);
@@ -272,6 +281,6 @@ class VidispineSearchDoc implements VidispineSearchDocIF {
   }
 }
 
-export type { VidispineSearchDocIF};
+export type { VidispineSearchDocIF };
 export { SearchOrderValue };
 export default VidispineSearchDoc;

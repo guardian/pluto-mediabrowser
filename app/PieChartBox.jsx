@@ -175,9 +175,7 @@ class PieChartBox extends React.Component {
     return (
       <div className="pie_chart_box">
         <div className="pie_chart_name">
-          <strong>
-            {this.returnHumanFriendlyTitle(this.props.chartName)}
-          </strong>
+          <strong>{this.returnHumanFriendlyTitle(this.props.chartName)}</strong>
         </div>
         <div className="pie_chart">
           <PieChart width={354} height={this.returnSuitableHeightForChart()}>

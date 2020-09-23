@@ -2,12 +2,8 @@
   "id": "VX-122",
   "created": "2020-08-13T14:51:05.374+0000",
   "essenceVersion": 0,
-  "tag": [
-    "lowres"
-  ],
-  "mimeType": [
-    "video/mp4"
-  ],
+  "tag": ["lowres"],
+  "mimeType": ["video/mp4"],
   "containerComponent": {
     "duration": {
       "samples": 72000000,

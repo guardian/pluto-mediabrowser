@@ -13,7 +13,8 @@ const LookupField: React.FC<FieldControlProps> = (props) => {
   return (
     <FormControl classes={{ root: props.classes.inputField }}>
       <FormLabel htmlFor={props.controlId}>{props.viewHints.name}</FormLabel>
-      {props.viewHints.readonly || props.parentReadonly && !props.ignoreHintsReadonly ? (
+      {props.viewHints.readonly ||
+      (props.parentReadonly && !props.ignoreHintsReadonly) ? (
         <Input
           readOnly={true}
           id={props.controlId}
@@ -26,7 +27,9 @@ const LookupField: React.FC<FieldControlProps> = (props) => {
           getOptionLabel={(entry) => entry.value}
         />
       )}
-      {props.viewHints.readonly && !props.parentReadonly && !props.ignoreHintsReadonly? (
+      {props.viewHints.readonly &&
+      !props.parentReadonly &&
+      !props.ignoreHintsReadonly ? (
         <Typography variant="caption">
           You can't edit this, it's read-only
         </Typography>

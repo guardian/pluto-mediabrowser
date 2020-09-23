@@ -1,9 +1,9 @@
 import VidispineItemTI from "./VidispineItem-ti";
-import VidispineShapeTI from "../shape/VidispineShape-ti"
-import CustomDataTI from "../field-group/CustomData-ti"
-import VidispineFileTI from "../shape/VidispineFile-ti"
+import VidispineShapeTI from "../shape/VidispineShape-ti";
+import CustomDataTI from "../field-group/CustomData-ti";
+import VidispineFileTI from "../shape/VidispineFile-ti";
 import { createCheckers } from "ts-interface-checker";
-import {VidispineShapeIF, VidispineShape} from "../shape/VidispineShape";
+import { VidispineShapeIF, VidispineShape } from "../shape/VidispineShape";
 
 interface URIList {
   uri: string[];
@@ -62,7 +62,12 @@ const {
   ItemMetadata,
   ItemIF,
   ItemResponse,
-} = createCheckers(VidispineItemTI, VidispineShapeTI, CustomDataTI, VidispineFileTI);
+} = createCheckers(
+  VidispineItemTI,
+  VidispineShapeTI,
+  CustomDataTI,
+  VidispineFileTI
+);
 
 /**
  * Main vidispine item class.  This defines a group of useful methods for retrieving metadata values from the overall
@@ -81,7 +86,11 @@ class VidispineItem implements ItemIF {
   constructor(sourceObject: any) {
     ItemIF.check(sourceObject);
     this.metadata = sourceObject.metadata;
-    this.shape = sourceObject.shape ? sourceObject.shape.map((s:VidispineShapeIF)=>new VidispineShape(s, false)) : undefined;
+    this.shape = sourceObject.shape
+      ? sourceObject.shape.map(
+          (s: VidispineShapeIF) => new VidispineShape(s, false)
+        )
+      : undefined;
     this.files = sourceObject.files;
     this.id = sourceObject.id;
   }
@@ -202,14 +211,14 @@ class VidispineItem implements ItemIF {
    * - if there are multiple timespans running from "-INF" to "+INF" then a RangeError is thrown
    */
   getDefaultTimespan(): MetadataTimespan | undefined {
-    if(this.metadata) {
+    if (this.metadata) {
       if (this.metadata.timespan.length === 0) {
         return undefined;
       } else if (this.metadata.timespan.length === 1) {
         return this.metadata.timespan[0];
       } else {
         const potentialTimespans = this.metadata.timespan.filter(
-            (timespan) => timespan.start === "-INF" && timespan.end === "+INF"
+          (timespan) => timespan.start === "-INF" && timespan.end === "+INF"
         );
         if (potentialTimespans.length === 0) {
           return undefined;
@@ -217,7 +226,8 @@ class VidispineItem implements ItemIF {
           return potentialTimespans[0];
         } else {
           const err = new RangeError();
-          err.message = "Multiple default timespans existed? This is incorrect.";
+          err.message =
+            "Multiple default timespans existed? This is incorrect.";
           throw err;
         }
       }
@@ -243,9 +253,9 @@ class VidispineItem implements ItemIF {
    * @returns undefined if there is no shape data in this VidispineItem. An array of VidispineShape otherwise, which can
    * be empty if there are no matching shapes present.
    */
-  findShape(shapeTagName:string):VidispineShape[] | undefined {
-    if(this.shape) {
-      return this.shape.filter((shape) => shape.tag.includes(shapeTagName))
+  findShape(shapeTagName: string): VidispineShape[] | undefined {
+    if (this.shape) {
+      return this.shape.filter((shape) => shape.tag.includes(shapeTagName));
     } else {
       return undefined;
     }

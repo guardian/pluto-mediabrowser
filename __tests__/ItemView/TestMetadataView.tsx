@@ -5,7 +5,9 @@ import sinon from "sinon";
 import FieldGroupCache from "../../app/vidispine/FieldGroupCache";
 import { VidispineFieldGroup } from "../../app/vidispine/field-group/VidispineFieldGroup";
 import { VidispineItem } from "../../app/vidispine/item/VidispineItem";
-import MetadataGroupView, {MetadataGroupViewMode} from "../../app/ItemView/MetadataGroupView";
+import MetadataGroupView, {
+  MetadataGroupViewMode,
+} from "../../app/ItemView/MetadataGroupView";
 
 describe("MetadataView", () => {
   it("should render MetadataGroupView instances via the fieldcache for all groups that are present on the item", () => {
@@ -62,7 +64,9 @@ describe("MetadataView", () => {
     expect(mdGroupBoxes.at(0).prop("group")).toEqual(groups[0]);
     expect(mdGroupBoxes.at(0).prop("content")).toEqual(item);
     expect(mdGroupBoxes.at(0).prop("elevation")).toEqual(1);
-    expect(mdGroupBoxes.at(0).prop("mode")).toEqual(MetadataGroupViewMode.MetadataView);
+    expect(mdGroupBoxes.at(0).prop("mode")).toEqual(
+      MetadataGroupViewMode.MetadataView
+    );
   });
 
   it("should change to edit mode when the button is clicked", () => {
@@ -104,23 +108,27 @@ describe("MetadataView", () => {
     const didChangeCb = sinon.spy();
 
     const rendered = shallow(
-        <MetadataView
-            fieldCache={fieldCache}
-            elevation={1}
-            readonly={false}
-            content={item}
-            valueDidChange={didChangeCb}
-        />
+      <MetadataView
+        fieldCache={fieldCache}
+        elevation={1}
+        readonly={false}
+        content={item}
+        valueDidChange={didChangeCb}
+      />
     );
 
     const mdGroupBoxes = rendered.find("MetadataGroupView");
     expect(mdGroupBoxes.length).toEqual(1);
 
-    expect(mdGroupBoxes.at(0).prop("mode")).toEqual(MetadataGroupViewMode.MetadataView);
+    expect(mdGroupBoxes.at(0).prop("mode")).toEqual(
+      MetadataGroupViewMode.MetadataView
+    );
 
     const modebutton = rendered.find("#metadata-edit-toggle");
     modebutton.simulate("change");
 
-    expect(rendered.find("MetadataGroupView").at(0).prop("mode")).toEqual(MetadataGroupViewMode.MetadataEdit)
+    expect(rendered.find("MetadataGroupView").at(0).prop("mode")).toEqual(
+      MetadataGroupViewMode.MetadataEdit
+    );
   });
 });

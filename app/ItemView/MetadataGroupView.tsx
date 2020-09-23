@@ -44,12 +44,12 @@ import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
 enum MetadataGroupViewMode {
   MetadataView,
   MetadataEdit,
-  SearchForm
+  SearchForm,
 }
 
 interface MetadataGroupViewProps {
   group: VidispineFieldGroup;
-  content: VidispineItem | Map<string,string[]>;
+  content: VidispineItem | Map<string, string[]>;
   elevation: number;
   mode: MetadataGroupViewMode;
   noHeader?: boolean;
@@ -97,8 +97,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView} //always force read-only if in view mode
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView} //always force read-only if in view mode
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -110,8 +110,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -123,8 +123,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -136,8 +136,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -149,8 +149,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -162,8 +162,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -176,8 +176,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -189,8 +189,8 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             fieldname={fieldname}
             viewHints={viewHints}
             controlId={controlId}
-            parentReadonly={props.mode==MetadataGroupViewMode.MetadataView}
-            ignoreHintsReadonly={props.mode==MetadataGroupViewMode.SearchForm}  //always allow edit in search form mode
+            parentReadonly={props.mode == MetadataGroupViewMode.MetadataView}
+            ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
             maybeValues={maybeValues}
@@ -199,16 +199,16 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
     }
   };
 
-  const valuesFromContent = (field:VidispineField) => {
-    if(props.content instanceof VidispineItem) {
+  const valuesFromContent = (field: VidispineField) => {
+    if (props.content instanceof VidispineItem) {
       return props.content.getMetadataValuesInGroup(
-          field.name,
-          props.group.name
+        field.name,
+        props.group.name
       );
     } else {
       return props.content.get(field.name);
     }
-  }
+  };
 
   return (
     <Paper elevation={props.elevation} classes={{ root: classes.metagroup }}>
@@ -225,7 +225,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
         {props.group.field.map((entry, idx) => {
           const field = new VidispineField(entry);
           const controlId = `${props.group.name}-${idx}`;
-          const maybeValues:string[]|undefined = valuesFromContent(field);
+          const maybeValues: string[] | undefined = valuesFromContent(field);
           const viewHints = field.getCustomData();
 
           if (!viewHints) {
@@ -255,5 +255,5 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
   );
 };
 
-export {MetadataGroupViewMode};
+export { MetadataGroupViewMode };
 export default MetadataGroupView;

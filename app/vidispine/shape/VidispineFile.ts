@@ -1,20 +1,20 @@
-import VidispineFileTI from "./VidispineFile-ti"
+import VidispineFileTI from "./VidispineFile-ti";
 
 import { createCheckers } from "ts-interface-checker";
 
 interface VidispineFile {
-    id: string
-    path: string
-    uri: string[]
-    state: string,
-    size: number,
-    hash: string
-    timestamp?: string
-    refreshFlag?: number
-    storage: string
-    metadata: any   //not sure about the format of this yet
+  id: string;
+  path: string;
+  uri: string[];
+  state: string;
+  size: number;
+  hash?: string;
+  timestamp?: string;
+  refreshFlag?: number;
+  storage: string;
+  metadata: any; //not sure about the format of this yet
 }
 
-const {VidispineFile} = createCheckers(VidispineFileTI);
+const { VidispineFile } = createCheckers(VidispineFileTI);
 
-export type {VidispineFile};
+export type { VidispineFile };

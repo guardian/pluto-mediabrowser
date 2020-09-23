@@ -5,13 +5,13 @@ import * as t from "ts-interface-checker";
 // tslint:disable:object-literal-key-quotes
 
 export const FacetCountEntry = t.iface([], {
-  "fieldValue": "string",
-  "value": "number",
+  fieldValue: "string",
+  value: "number",
 });
 
 export const FacetCountResponse = t.iface([], {
-  "field": "string",
-  "count": t.array("FacetCountEntry"),
+  field: "string",
+  count: t.array("FacetCountEntry"),
 });
 
 const exportedTypeSuite: t.ITypeSuite = {

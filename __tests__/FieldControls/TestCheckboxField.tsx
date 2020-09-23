@@ -38,7 +38,7 @@ describe("CheckboxField", () => {
 
     const rendered = mount(
       <CheckboxField
-          ignoreHintsReadonly={false}
+        ignoreHintsReadonly={false}
         fieldname="test-field"
         viewHints={viewHints}
         controlId="id-test-field"
