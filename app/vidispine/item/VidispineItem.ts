@@ -3,7 +3,11 @@ import VidispineShapeTI from "../shape/VidispineShape-ti";
 import CustomDataTI from "../field-group/CustomData-ti";
 import VidispineFileTI from "../shape/VidispineFile-ti";
 import { createCheckers } from "ts-interface-checker";
-import { VidispineShapeIF, VidispineShape } from "../shape/VidispineShape";
+import {
+  VidispineShapeIF,
+  VidispineShape,
+  VidispineShapeChecker,
+} from "../shape/VidispineShape";
 
 interface URIList {
   uri: string[];
@@ -84,15 +88,42 @@ class VidispineItem implements ItemIF {
    * @param sourceObject, if this does not validate then VError is thrown
    */
   constructor(sourceObject: any) {
-    ItemIF.check(sourceObject);
+    let bareObject = {
+      id: sourceObject.hasOwnProperty("id") ? sourceObject.id : undefined,
+    };
+    ItemIF.check(bareObject);
+    const shapes = sourceObject.hasOwnProperty("shape")
+      ? this.validateSourceShapes(sourceObject.shape)
+      : undefined;
+
     this.metadata = sourceObject.metadata;
-    this.shape = sourceObject.shape
-      ? sourceObject.shape.map(
-          (s: VidispineShapeIF) => new VidispineShape(s, false)
-        )
+    this.shape = shapes
+      ? shapes.map((s: VidispineShapeIF) => new VidispineShape(s, false))
       : undefined;
     this.files = sourceObject.files;
     this.id = sourceObject.id;
+  }
+
+  /**
+   * perform a validation as a Shape object for each item in the given list.
+   * only validated ones are returned
+   * @param sourceShapes
+   */
+  validateSourceShapes(sourceShapes: any[]): VidispineShapeIF[] {
+    return <VidispineShapeIF[]>sourceShapes
+      .map((maybeShape) => {
+        try {
+          VidispineShapeChecker.check(maybeShape);
+          return <VidispineShapeIF>maybeShape;
+        } catch (e) {
+          const presentableId = maybeShape.hasOwnProperty("id")
+            ? maybeShape.id
+            : "unknown-id";
+          console.warn(`Source shape ${presentableId} did not validate: `, e);
+          return null;
+        }
+      })
+      .filter((maybeShape) => maybeShape !== null);
   }
 
   /**
@@ -263,24 +294,14 @@ class VidispineItem implements ItemIF {
 }
 
 /**
- * takes an untyped object from JSON.parse, validates it and returns an ItemResponse.
- * if it fails to validate as an ItemResponse, then an exception is thrown describing the syntax issue
- * @param content decoded json object
- * @returns the ItemResponse or raises an error
- */
-function MakeItemResponse(content: object): ItemResponse {
-  ItemResponse.check(content);
-  return <ItemResponse>content;
-}
-
-/**
  * takes an untyped object from JSON.parse, validates it and returns an array of VidispineItems.
  * if it fails to validate as an ItemResponse, then an exception is thrown describing the syntax issue
  * @param content decoded json object
  * @returns an erray of VidispineItems (which might be empty) or throws an error
  */
 function GetItems(content: object): Array<VidispineItem> {
-  const itemresponse = MakeItemResponse(content);
+  const itemresponse = <ItemResponse>content;
+
   return itemresponse.item.map((rawitem) => new VidispineItem(rawitem));
 }
 
@@ -293,4 +314,4 @@ export type {
   ItemMetadata,
 };
 
-export { GetItems, MakeItemResponse, VidispineItem };
+export { GetItems, VidispineItem };

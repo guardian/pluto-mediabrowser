@@ -174,4 +174,4 @@ class VidispineShape implements VidispineShapeIF {
 }
 
 export type { VidispineShapeIF };
-export { VidispineShape };
+export { VidispineShape, VidispineShapeIF as VidispineShapeChecker };

@@ -636,9 +636,6 @@
         {
           "id": "VX-158",
           "created": "2020-09-22T14:06:34.291+0000",
-          "essenceVersion": 1,
-          "tag": ["lowres"],
-          "mimeType": ["video/mp4"],
           "containerComponent": {
             "duration": {
               "samples": 9578700,
