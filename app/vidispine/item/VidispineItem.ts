@@ -92,13 +92,20 @@ class VidispineItem implements ItemIF {
       id: sourceObject.hasOwnProperty("id") ? sourceObject.id : undefined,
     };
     ItemIF.check(bareObject);
-    const shapes = sourceObject.hasOwnProperty("shape")
-      ? this.validateSourceShapes(sourceObject.shape)
-      : undefined;
 
     this.metadata = sourceObject.metadata;
-    this.shape = shapes
-      ? shapes.map((s: VidispineShapeIF) => new VidispineShape(s, false))
+    this.shape = sourceObject.hasOwnProperty("shape")
+      ? sourceObject.shape
+          .map((s: VidispineShapeIF) => {
+            try {
+              return new VidispineShape(s, true);
+            } catch (e) {
+              const loggedId = s.id ?? "unknown-id";
+              console.warn(`Shape ${loggedId} did not validate: `, e);
+              return null;
+            }
+          })
+          .filter((maybeShape: VidispineShapeIF | null) => maybeShape != null)
       : undefined;
     this.files = sourceObject.files;
     this.id = sourceObject.id;
