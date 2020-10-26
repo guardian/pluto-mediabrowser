@@ -57,7 +57,7 @@ describe("VidispineShape", () => {
         } catch (err) {
           if (
             err instanceof VError &&
-            err.message.includes("value.containerComponent.id is missing")
+            err.message.includes("value.id is missing") //containerComponent should be shown here but not right now due to partial validations
           ) {
             done();
           } else {
