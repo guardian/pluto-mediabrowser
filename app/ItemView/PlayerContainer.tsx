@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { VidispineShape } from "../vidispine/shape/VidispineShape";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, Button } from "@material-ui/core";
 import PreviewPlayer from "./PreviewPlayer";
 import ShapeSelector from "./ShapeSelector";
 import axios from "axios";
@@ -133,6 +133,8 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     return null;
   };
 
+  const targetUrl = `${playerUri.replace(":8080", "")}`;
+
   return (
     <Grid container alignItems="center" justify="center" direction="column">
       <Grid item xs={12} spacing={1}>
@@ -149,13 +151,33 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
         ) : null}
       </Grid>
       <Grid item xs={12}>
-        <ShapeSelector
-          options={props.shapes.map((s) => (s.tag.length > 0 ? s.tag[0] : ""))}
-          onSelectionChanged={(newSelection) =>
-            setSelectedShapeTag(newSelection)
-          }
-          currentTag={selectedShapeTag}
-        />
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
+            <ShapeSelector
+              options={props.shapes.map((s) =>
+                s.tag.length > 0 ? s.tag[0] : ""
+              )}
+              onSelectionChanged={(newSelection) =>
+                setSelectedShapeTag(newSelection)
+              }
+              currentTag={selectedShapeTag}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            {playerUri != "" ? (
+              <div style={{ marginTop: "8px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  target="_blank"
+                  href={targetUrl}
+                >
+                  Download
+                </Button>
+              </div>
+            ) : null}
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
