@@ -30,6 +30,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
   //const [selectedShape, setSelectedShape] = useState<VidispineShape|null>(null);
   const [playerUri, setPlayerUri] = useState<string>("");
   const [mimeType, setMimeType] = useState<string>("");
+  const [targetUrl, setTargetUrl] = useState<string>("");
 
   // /**
   //  * when the selected shape tag changes, update the player url
@@ -121,6 +122,10 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     }
   }, [selectedShapeTag]);
 
+  useEffect(() => {
+    setTargetUrl(`${playerUri.replace(":8080", "")}`);
+  }, [playerUri]);
+
   /**
    * returns the VidispineShape data structure associated with the shape matching the selected tag
    */
@@ -132,8 +137,6 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     }
     return null;
   };
-
-  const targetUrl = `${playerUri.replace(":8080", "")}`;
 
   return (
     <Grid container alignItems="center" justify="center" direction="column">
