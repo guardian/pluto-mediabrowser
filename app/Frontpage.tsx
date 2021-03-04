@@ -83,6 +83,15 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   };
 
   /**
+   * Puts the project id to load onto the provided SearchDoc
+   * @param toSearch VidispineSearchDoc to add them to
+   */
+  const addProject = (toSearch: VidispineSearchDoc) => {
+    return toSearch
+      .withSearchTerm("gnm_containing_projects", [String(projectIdToLoad)])
+  };
+
+  /**
    * load the next page of results as per the currently set search.
    * this "recurses" to pull in subsequent pages, after a short delay
    * to allow the ui to update
@@ -101,7 +110,11 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }&number=${pageSize}&count=${shouldCount}`;
 
     try {
-      const initialSearch = currentSearch ?? new VidispineSearchDoc();
+      let initialSearch = currentSearch ?? new VidispineSearchDoc();
+
+      if (projectIdToLoad != 0) {
+        initialSearch = addProject(initialSearch);
+      }
 
       const payload =
         fromParam == 0 ? addDefaultFacets(initialSearch) : initialSearch;
