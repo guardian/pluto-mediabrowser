@@ -54,6 +54,7 @@ interface MetadataGroupViewProps {
   mode: MetadataGroupViewMode;
   noHeader?: boolean;
   valueDidChange: (name: string, values: string[]) => void;
+  projectIdToLoad?: number;
 }
 
 const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
@@ -92,6 +93,10 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
   ) => {
     switch (viewHints.type) {
       case "tags":
+        let valuesToUse = maybeValues;
+        if ((fieldname == 'gnm_containing_projects') && (props.projectIdToLoad != 0)) {
+          valuesToUse = [String(props.projectIdToLoad)]
+        }
         return (
           <TagField
             fieldname={fieldname}
@@ -101,7 +106,7 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
             ignoreHintsReadonly={props.mode == MetadataGroupViewMode.SearchForm} //always allow edit in search form mode
             valueDidChange={props.valueDidChange}
             classes={classes}
-            maybeValues={maybeValues}
+            maybeValues={valuesToUse}
           />
         );
       case "lookup":

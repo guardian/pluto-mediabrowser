@@ -24,6 +24,7 @@ interface VidispineSearchFormProps {
   onUpdated: (newSearch: VidispineSearchDoc) => void;
   onHideToggled: (newValue: boolean) => void;
   isHidden: boolean;
+  projectIdToLoad?: number
 }
 
 interface SearchEntry {
@@ -118,6 +119,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
           elevation={3}
           mode={MetadataGroupViewMode.SearchForm}
           noHeader={true}
+          projectIdToLoad={props.projectIdToLoad}
           valueDidChange={(fieldName, newValue) => {
             console.log(fieldName, newValue);
             setGroupFieldSearch((existingValue) => {

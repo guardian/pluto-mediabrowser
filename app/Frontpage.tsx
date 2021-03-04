@@ -23,6 +23,7 @@ interface FrontpageComponentProps extends RouteComponentProps {
   vidispineBaseUrl: string;
   itemLimit?: number;
   fieldGroupCache: FieldGroupCache;
+  projectIdToLoad?: number;
 }
 
 const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
@@ -44,6 +45,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
   );
+  const [projectIdToLoad, setProjectIdToLoad] = useState<number>(props.projectIdToLoad ?? 0);
 
   /**
    * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
@@ -214,6 +216,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
+          projectIdToLoad={projectIdToLoad}
         />
       </div>
       <div className="results-container">
