@@ -46,6 +46,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     undefined
   );
   const [projectIdToLoad, setProjectIdToLoad] = useState<number>(props.projectIdToLoad ?? 0);
+  const [projectTitle, setProjectTitle] = useState<string | undefined>(undefined);
 
   /**
    * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
@@ -176,11 +177,32 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }
   };
 
+  const getProjectTitle = async (
+    projectId: number
+  ) => {
+    const project = await axios.get(
+      `../pluto-core/api/project/` + projectId,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("pluto:access-token")}`,
+        },
+      }
+    );
+
+    if (project.status !== 200) {
+      throw new Error("Unable to fetch project title");
+    }
+    setProjectTitle(project.data.result.title);
+  }
+
   /**
    * display last-15 items on startup
    * */
   useEffect(() => {
     loadNextPage();
+    if (projectIdToLoad != 0) {
+      getProjectTitle(projectIdToLoad);
+    }
   }, []);
 
   /**
@@ -233,6 +255,9 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         />
       </div>
       <div className="results-container">
+        {projectIdToLoad != 0 ? (
+          <div>Items from project: {projectTitle}</div>
+        ) : null}
         <SearchResultsPane
           results={itemList}
           vidispineBaseUrl={props.vidispineBaseUrl}
