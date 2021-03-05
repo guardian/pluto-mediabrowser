@@ -9,7 +9,7 @@ import { VError } from "ts-interface-checker";
 import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
@@ -25,6 +25,12 @@ interface FrontpageComponentProps extends RouteComponentProps {
   fieldGroupCache: FieldGroupCache;
   projectIdToLoad?: number;
 }
+
+const useStyles = makeStyles({
+  statusArea: {
+    margin: "12px",
+  },
+});
 
 const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [currentSearch, setCurrentSearch] = useState<
@@ -47,6 +53,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   );
   const [projectIdToLoad, setProjectIdToLoad] = useState<number>(props.projectIdToLoad ?? 0);
   const [projectTitle, setProjectTitle] = useState<string | undefined>(undefined);
+  const classes = useStyles();
 
   /**
    * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
@@ -233,12 +240,18 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   return (
     <div className={makeClassName()}>
       <div className="status-container">
-        <Grid container justify="space-around">
+        <Grid container className={classes.statusArea}>
           {searching ? (
             <Grid item>
               <Typography>Loading...</Typography>
             </Grid>
-          ) : null}
+          ) : (
+            <Grid item>
+            {projectIdToLoad != 0 ? (
+                <Typography>Items from project: {projectTitle}</Typography>
+            ) : null}
+            </Grid>
+          )}
         </Grid>
       </div>
       <div className="form-container">
@@ -255,9 +268,6 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         />
       </div>
       <div className="results-container">
-        {projectIdToLoad != 0 ? (
-          <div>Items from project: {projectTitle}</div>
-        ) : null}
         <SearchResultsPane
           results={itemList}
           vidispineBaseUrl={props.vidispineBaseUrl}
