@@ -184,7 +184,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   };
 
   const getProjectTitle = async (
-    projectId: number
+    projectId: number | undefined
   ) => {
     const project = await axios.get(
       `../pluto-core/api/project/` + projectId,
