@@ -9,7 +9,7 @@ import { VError } from "ts-interface-checker";
 import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, makeStyles } from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
@@ -23,7 +23,14 @@ interface FrontpageComponentProps extends RouteComponentProps {
   vidispineBaseUrl: string;
   itemLimit?: number;
   fieldGroupCache: FieldGroupCache;
+  projectIdToLoad?: number;
 }
+
+const useStyles = makeStyles({
+  statusArea: {
+    margin: "12px",
+  },
+});
 
 const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [currentSearch, setCurrentSearch] = useState<
@@ -44,6 +51,10 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
   );
+  const [projectTitle, setProjectTitle] = useState<string | undefined>(
+    undefined
+  );
+  const classes = useStyles();
 
   /**
    * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
@@ -81,6 +92,16 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   };
 
   /**
+   * Puts the project id to load onto the provided SearchDoc
+   * @param toSearch VidispineSearchDoc to add them to
+   */
+  const addProject = (toSearch: VidispineSearchDoc) => {
+    return toSearch.withSearchTerm("gnm_containing_projects", [
+      String(props.projectIdToLoad),
+    ]);
+  };
+
+  /**
    * load the next page of results as per the currently set search.
    * this "recurses" to pull in subsequent pages, after a short delay
    * to allow the ui to update
@@ -99,7 +120,11 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }&number=${pageSize}&count=${shouldCount}`;
 
     try {
-      const initialSearch = currentSearch ?? new VidispineSearchDoc();
+      let initialSearch = currentSearch ?? new VidispineSearchDoc();
+
+      if (props.projectIdToLoad != 0) {
+        initialSearch = addProject(initialSearch);
+      }
 
       const payload =
         fromParam == 0 ? addDefaultFacets(initialSearch) : initialSearch;
@@ -161,11 +186,33 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }
   };
 
+  const getProjectTitle = async (projectId: number | undefined) => {
+    try {
+      const project = await axios.get(
+        `../pluto-core/api/project/` + projectId,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "pluto:access-token"
+            )}`,
+          },
+        }
+      );
+      setProjectTitle(project.data.result.title);
+    } catch (error) {
+      console.error("Unable to fetch project title: ", error);
+      setProjectTitle("Could not load project title");
+    }
+  };
+
   /**
    * display last-15 items on startup
    * */
   useEffect(() => {
     loadNextPage();
+    if (props.projectIdToLoad != 0) {
+      getProjectTitle(props.projectIdToLoad);
+    }
   }, []);
 
   /**
@@ -196,12 +243,18 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   return (
     <div className={makeClassName()}>
       <div className="status-container">
-        <Grid container justify="space-around">
+        <Grid container className={classes.statusArea}>
           {searching ? (
             <Grid item>
               <Typography>Loading...</Typography>
             </Grid>
-          ) : null}
+          ) : (
+            <Grid item>
+              {props.projectIdToLoad != 0 ? (
+                <Typography>Items from project: {projectTitle}</Typography>
+              ) : null}
+            </Grid>
+          )}
         </Grid>
       </div>
       <div className="form-container">
@@ -214,6 +267,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
+          projectIdToLoad={props.projectIdToLoad}
         />
       </div>
       <div className="results-container">

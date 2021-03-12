@@ -208,6 +208,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
                   vidispineBaseUrl={this.state.vidispineBaseUrl as string}
                   itemLimit={itemLimit}
                   fieldGroupCache={this.state.fields as FieldGroupCache}
+                  projectIdToLoad={0}
                 />
               );
             }}
@@ -219,10 +220,29 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
                 {...props}
                 vidispineBaseUrl={this.state.vidispineBaseUrl as string}
                 fieldGroupCache={this.state.fields as FieldGroupCache}
+                projectIdToLoad={0}
               />
             )}
           />
-
+          <Route
+            path="/project/:projectId"
+            component={(props: RouteComponentProps<ProjectComponentMatches>) => {
+              let projectIdToLoad: number = 0;
+              try {
+                projectIdToLoad = parseInt(props.match.params.projectId);
+              } catch (err) {
+                console.error(`${props.match.params.projectId} is not a number`);
+              }
+              return (
+                <FrontpageComponent
+                  {...props}
+                  vidispineBaseUrl={this.state.vidispineBaseUrl as string}
+                  projectIdToLoad={projectIdToLoad}
+                  fieldGroupCache={this.state.fields as FieldGroupCache}
+                />
+              );
+            }}
+          />
           <Route
             path="/"
             exact={true}
