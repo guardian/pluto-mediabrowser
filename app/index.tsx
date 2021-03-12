@@ -208,6 +208,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
                   vidispineBaseUrl={this.state.vidispineBaseUrl as string}
                   itemLimit={itemLimit}
                   fieldGroupCache={this.state.fields as FieldGroupCache}
+                  projectIdToLoad={0}
                 />
               );
             }}
@@ -219,6 +220,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
                 {...props}
                 vidispineBaseUrl={this.state.vidispineBaseUrl as string}
                 fieldGroupCache={this.state.fields as FieldGroupCache}
+                projectIdToLoad={0}
               />
             )}
           />
