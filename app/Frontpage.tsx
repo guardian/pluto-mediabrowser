@@ -51,7 +51,9 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
   );
-  const [projectTitle, setProjectTitle] = useState<string | undefined>(undefined);
+  const [projectTitle, setProjectTitle] = useState<string | undefined>(
+    undefined
+  );
   const classes = useStyles();
 
   /**
@@ -94,8 +96,9 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
    * @param toSearch VidispineSearchDoc to add them to
    */
   const addProject = (toSearch: VidispineSearchDoc) => {
-    return toSearch
-      .withSearchTerm("gnm_containing_projects", [String(props.projectIdToLoad)])
+    return toSearch.withSearchTerm("gnm_containing_projects", [
+      String(props.projectIdToLoad),
+    ]);
   };
 
   /**
@@ -183,23 +186,24 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     }
   };
 
-  const getProjectTitle = async (
-    projectId: number | undefined
-  ) => {
-    const project = await axios.get(
-      `../pluto-core/api/project/` + projectId,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("pluto:access-token")}`,
-        },
-      }
-    );
-
-    if (project.status !== 200) {
-      throw new Error("Unable to fetch project title");
+  const getProjectTitle = async (projectId: number | undefined) => {
+    try {
+      const project = await axios.get(
+        `../pluto-core/api/project/` + projectId,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "pluto:access-token"
+            )}`,
+          },
+        }
+      );
+      setProjectTitle(project.data.result.title);
+    } catch (error) {
+      console.error("Unable to fetch project title: ", error);
+      setProjectTitle("Could not load project title");
     }
-    setProjectTitle(project.data.result.title);
-  }
+  };
 
   /**
    * display last-15 items on startup
@@ -246,9 +250,9 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
             </Grid>
           ) : (
             <Grid item>
-            {props.projectIdToLoad != 0 ? (
+              {props.projectIdToLoad != 0 ? (
                 <Typography>Items from project: {projectTitle}</Typography>
-            ) : null}
+              ) : null}
             </Grid>
           )}
         </Grid>
