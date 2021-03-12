@@ -51,7 +51,6 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
   );
-  const [projectIdToLoad, setProjectIdToLoad] = useState<number>(props.projectIdToLoad ?? 0);
   const [projectTitle, setProjectTitle] = useState<string | undefined>(undefined);
   const classes = useStyles();
 
@@ -96,7 +95,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
    */
   const addProject = (toSearch: VidispineSearchDoc) => {
     return toSearch
-      .withSearchTerm("gnm_containing_projects", [String(projectIdToLoad)])
+      .withSearchTerm("gnm_containing_projects", [String(props.projectIdToLoad)])
   };
 
   /**
@@ -120,7 +119,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     try {
       let initialSearch = currentSearch ?? new VidispineSearchDoc();
 
-      if (projectIdToLoad != 0) {
+      if (props.projectIdToLoad != 0) {
         initialSearch = addProject(initialSearch);
       }
 
@@ -207,8 +206,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
    * */
   useEffect(() => {
     loadNextPage();
-    if (projectIdToLoad != 0) {
-      getProjectTitle(projectIdToLoad);
+    if (props.projectIdToLoad != 0) {
+      getProjectTitle(props.projectIdToLoad);
     }
   }, []);
 
@@ -247,7 +246,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
             </Grid>
           ) : (
             <Grid item>
-            {projectIdToLoad != 0 ? (
+            {props.projectIdToLoad != 0 ? (
                 <Typography>Items from project: {projectTitle}</Typography>
             ) : null}
             </Grid>
@@ -264,7 +263,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
-          projectIdToLoad={projectIdToLoad}
+          projectIdToLoad={props.projectIdToLoad}
         />
       </div>
       <div className="results-container">
