@@ -79,7 +79,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
   }
 
   setStatePromise(newState: AppState) {
-    return new Promise((resolve, reject) =>
+    return new Promise<void>((resolve, reject) =>
       this.setState(newState, () => resolve())
     );
   }
