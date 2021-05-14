@@ -21,7 +21,7 @@ import ItemViewComponent from "./ItemViewComponent";
 import FrontpageComponent from "./Frontpage";
 
 import { Header, AppSwitcher } from "pluto-headers";
-import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
+import {createMuiTheme, CssBaseline, Theme, ThemeProvider} from "@material-ui/core";
 import colours from "@material-ui/core/colors";
 import { Helmet } from "react-helmet";
 
@@ -173,6 +173,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
     return (
       <ThemeProvider theme={this.theme}>
+          <CssBaseline/>
         <Helmet>
           <title>PLUTO Media Browser</title>
         </Helmet>
