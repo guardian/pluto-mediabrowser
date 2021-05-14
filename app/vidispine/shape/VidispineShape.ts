@@ -1,6 +1,7 @@
 import VidispineShapeTI from "./VidispineShape-ti";
 import CustomDataTI from "../field-group/CustomData-ti";
 import VidispineFileTI from "./VidispineFile-ti";
+import omit from "lodash.omit";
 
 import { createCheckers } from "ts-interface-checker";
 import { DataPair } from "../field-group/VidispineFieldGroup";
@@ -69,38 +70,6 @@ interface VidispineAudioComponent {
   startTimestamp?: SampleBasedTime;
 }
 
-interface VidispineVideoComponent {
-  id: string;
-  resolution: WidthHeight;
-  pixelFormat?: string;
-  maxBFrames?: number;
-  pixelAspectRation?: HorizVert;
-  fieldOrder?: string;
-  codecTimeBase?: TimeBase;
-  averageFrameRate?: TimeBase;
-  realBaseFrameRate?: TimeBase;
-  displayWidth?: TimeBase;
-  displayHeight?: TimeBase;
-  max_packet_size?: number;
-  ticks_per_frame?: number;
-  bitDepth?: number;
-  bitsPerPixel?: number;
-  mediaInfo?: VidispineShapeMediaInfo;
-  file: VidispineFile[];
-  metadata?: DataPair[];
-  codec: string;
-  timeBase?: TimeBase;
-  itemTrack?: string;
-  essenceStreamId?: number;
-  bitrate?: number;
-  numberOfPackets?: number;
-  extradata?: string;
-  pid?: number;
-  duration?: SampleBasedTime;
-  profile?: number;
-  level?: number;
-  startTimestamp?: SampleBasedTime;
-}
 
 interface VidispineShapeIF {
   id: string;
@@ -113,7 +82,7 @@ interface VidispineShapeIF {
   videoComponent?: VidispineVideoComponent[];
 }
 
-const { VidispineShapeIF } = createCheckers(
+const { VidispineShapeIF, CustomDataIF, VidispineFileIF } = createCheckers(
   VidispineShapeTI,
   CustomDataTI,
   VidispineFileTI
@@ -139,13 +108,52 @@ class VidispineShape implements VidispineShapeIF {
   videoComponent?: VidispineVideoComponent[];
 
   /**
+   * validate a File entry. Returns the validated entry if it succeeds or null if it refused to validate. Error is output to console if it does not validate
+   * @param sourceFile untyped object to validate
+   * @returns either the typed, validated object or 'null'.
+   */
+  validateFile(sourceFile: any):VidispineFile|null {
+    try {
+      VidispineFileIF.check(sourceFile);
+      return <VidispineFile>sourceFile;
+    } catch(e) {
+      const maybeId = sourceFile.hasOwnProperty("id") ? sourceFile.id : "unknown-id";
+      console.warn(`File ${maybeId} did not validate: `, e);
+      return null;
+    }
+  }
+
+  /**
+   * validate the video component part of the shape. Individually validates each file entry and only includes the entries that pass validation.
+   * @param sourceComponent untyped object to validate
+   * @returns either the typed, validated object or 'null' if it refused to validate. Error is output to console if it does not validate.
+   */
+  validateVideoComponent(sourceComponent: any):VidispineVideoComponent|null {
+    const remainingObject = omit(sourceComponent, "file");
+    const files = sourceComponent.hasOwnProperty("file") ?
+        sourceComponent.file.map((f:any)=>this.validateFile(f)).filter((maybeF:VidispineFile|null)=>maybeF !== null) : undefined
+    try {
+      VidispineVideoComponentIF.check(remainingObject)
+      return <VidispineVideoComponent>Object.assign(remainingObject, {file: files});
+    } catch(e) {
+      const maybeId = sourceComponent.hasOwnProperty("id") ? sourceComponent.id : "unknown-id";
+      console.warn(`Video component ${maybeId} did not validate: `, e);
+      return null;
+    }
+  }
+
+  /**
    * construct from an untyped object (parsed from json).
    * raises an exception if the data does not validate against the object spec
    * @param sourceObject untyped parsed json to build from
    * @param check if false then skip the data check (i.e. data has already been checked)
    */
   constructor(sourceObject: any, check = true) {
-    if (check) VidispineShapeIF.check(sourceObject);
+    if (check) {
+
+
+      VidispineShapeIF.check(sourceObject);
+    }
     this.id = sourceObject.id;
     this.created = sourceObject.created;
     this.essenceVersion = sourceObject.essenceVersion;
