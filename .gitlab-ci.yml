@@ -47,6 +47,8 @@ docker:
     - "echo ci_project_name: ${CI_PROJECT_NAME} >> build-info.yaml"
     - "echo ci_merge_request_project_url: ${CI_MERGE_REQUEST_PROJECT_URL} >> build-info.yaml"
     - "echo ci_merge_request_title: ${CI_MERGE_REQUEST_TITLE} >> build-info.yaml"
+    - "echo ci_pipeline_iid: ${CI_PIPELINE_IID} >> build-info.yaml"
+    - "echo built_image: guardianmultimedia/pluto-mediabrowser:$CI_PIPELINE_IID >> build-info.yaml"
   artifacts:
     paths:
       - build/build-info.yaml
