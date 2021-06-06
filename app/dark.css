@@ -68,7 +68,7 @@ div.item_box {
   font-size: 14px;
   float: left;
   padding: 8px;
-  height: 194px;
+  height: 220px;
 }
 
 input.search_button {
@@ -162,6 +162,7 @@ div.item_thumbnail {
   justify-content: center;
   align-content: center;
   width: 240px;
+  margin: -8px; /* inverse of the padding in item_box, its container */
 }
 
 form.main_form {

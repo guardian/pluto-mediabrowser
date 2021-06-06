@@ -94,8 +94,11 @@ const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
     switch (viewHints.type) {
       case "tags":
         let valuesToUse = maybeValues;
-        if ((fieldname == 'gnm_containing_projects') && (props.projectIdToLoad != 0)) {
-          valuesToUse = [String(props.projectIdToLoad)]
+        if (
+          fieldname == "gnm_containing_projects" &&
+          props.projectIdToLoad != 0
+        ) {
+          valuesToUse = [String(props.projectIdToLoad)];
         }
         return (
           <TagField
