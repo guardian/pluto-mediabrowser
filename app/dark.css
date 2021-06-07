@@ -162,6 +162,7 @@ div.item_thumbnail {
   justify-content: center;
   align-content: center;
   width: 240px;
+  margin-top: 0 !important;
   margin: -8px; /* inverse of the padding in item_box, its container */
 }
 
