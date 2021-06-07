@@ -21,7 +21,12 @@ import ItemViewComponent from "./ItemViewComponent";
 import FrontpageComponent from "./Frontpage";
 
 import { Header, AppSwitcher } from "pluto-headers";
-import { createMuiTheme, Theme, ThemeProvider } from "@material-ui/core";
+import {
+  createMuiTheme,
+  CssBaseline,
+  Theme,
+  ThemeProvider,
+} from "@material-ui/core";
 import colours from "@material-ui/core/colors";
 import { Helmet } from "react-helmet";
 
@@ -70,7 +75,14 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
     this.theme = createMuiTheme({
       typography: {
-        fontFamily: "Avant Garde, Century Gothic, Helvetica, Arial, sans-serif",
+        fontFamily: [
+          //keep in-line with pluto-core 'till we implement a theming service
+          "sans-serif",
+          '"Helvetica Neue"',
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ].join(","),
       },
       palette: {
         type: "dark",
@@ -173,6 +185,7 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
 
     return (
       <ThemeProvider theme={this.theme}>
+        <CssBaseline />
         <Helmet>
           <title>PLUTO Media Browser</title>
         </Helmet>
@@ -226,12 +239,16 @@ class App extends React.Component<RouteComponentProps<any>, AppState> {
           />
           <Route
             path="/project/:projectId"
-            component={(props: RouteComponentProps<ProjectComponentMatches>) => {
+            component={(
+              props: RouteComponentProps<ProjectComponentMatches>
+            ) => {
               let projectIdToLoad: number = 0;
               try {
                 projectIdToLoad = parseInt(props.match.params.projectId);
               } catch (err) {
-                console.error(`${props.match.params.projectId} is not a number`);
+                console.error(
+                  `${props.match.params.projectId} is not a number`
+                );
               }
               return (
                 <FrontpageComponent
