@@ -63,6 +63,7 @@ div.item_box {
   border-radius: 6px;
   width: 240px;
   display: grid;
+  cursor: pointer;
   grid-template-columns: 200px;
   grid-template-rows: 20px 18px 144px 20px;
   font-size: 14px;
