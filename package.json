@@ -94,7 +94,7 @@
     "moment": "^2.20.1",
     "moment-duration-format": "2.2.2",
     "moment-timezone": "^0.5.29",
-    "pluto-headers": "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.3.6",
+    "pluto-headers": "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.5.1",
     "process": "^0.11.10",
     "query-string": "^6.13.1",
     "react": "^16.12.0",
