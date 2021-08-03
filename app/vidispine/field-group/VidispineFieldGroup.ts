@@ -181,11 +181,20 @@ async function LoadGroupFromServer(
   baseUrl: string,
   groupname: string
 ): Promise<VidispineFieldGroup> {
-  const result = await axios.get(
-    baseUrl + `/API/metadata-field/field-group/${groupname}`
-  );
+  console.log("Loading ", groupname);
+  const url = baseUrl + `/API/metadata-field/field-group/${groupname}`;
+  const result = await axios.get(url);
+  console.log("got", result.data);
 
-  return new VidispineFieldGroup(result.data);
+  try {
+    return new VidispineFieldGroup(result.data);
+  } catch (err) {
+    console.error(err);
+    console.error(
+      `Could not load ${groupname} from ${url} - data validation failed because of ${err.toString()}`
+    );
+    return Promise.reject("invalid data from server");
+  }
 }
 
 export type { DataPair }; //used by CustomData

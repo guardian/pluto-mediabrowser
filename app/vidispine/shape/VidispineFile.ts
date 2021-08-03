@@ -17,4 +17,4 @@ interface VidispineFile {
 const { VidispineFile } = createCheckers(VidispineFileTI);
 
 export type { VidispineFile };
-export { VidispineFile as VidispineFileChecker};
+export { VidispineFile as VidispineFileChecker };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
 import MetadataGroupView, {
   MetadataGroupViewMode,
@@ -17,14 +17,14 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ArrowLeft, ArrowRight } from "@material-ui/icons";
+import VidispineContext from "../Context/VidispineContext";
 
 interface VidispineSearchFormProps {
   currentSearch?: VidispineSearchDoc;
-  fieldGroupCache: FieldGroupCache;
   onUpdated: (newSearch: VidispineSearchDoc) => void;
   onHideToggled: (newValue: boolean) => void;
   isHidden: boolean;
-  projectIdToLoad?: number
+  projectIdToLoad?: number;
 }
 
 interface SearchEntry {
@@ -39,6 +39,8 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
   const [groupFieldSearch, setGroupFieldSearch] = useState<
     Map<string, string[]>
   >(new Map());
+
+  const vidispineContext = useContext(VidispineContext);
 
   /**
    * reset the search if the user changes the group selector
@@ -112,9 +114,11 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
         </ul>
       </Paper>
 
-      {
+      {vidispineContext ? (
         <MetadataGroupView
-          group={props.fieldGroupCache.get(groupName) as VidispineFieldGroup}
+          group={
+            vidispineContext.fieldCache.get(groupName) as VidispineFieldGroup
+          }
           content={groupFieldSearch}
           elevation={3}
           mode={MetadataGroupViewMode.SearchForm}
@@ -135,7 +139,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             });
           }}
         />
-      }
+      ) : undefined}
     </>
   );
 };
