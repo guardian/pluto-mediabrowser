@@ -14,6 +14,7 @@ import {
   Input,
   InputLabel,
   Paper,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { ArrowLeft, ArrowRight } from "@material-ui/icons";
@@ -25,6 +26,8 @@ interface VidispineSearchFormProps {
   onHideToggled: (newValue: boolean) => void;
   isHidden: boolean;
   projectIdToLoad?: number;
+  onLoadMoreClicked?: () => void;
+  moreItemsAvailable?: boolean;
 }
 
 interface SearchEntry {
@@ -72,7 +75,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
     </Paper>
   ) : (
     <>
-      <Paper elevation={3}>
+      <Paper elevation={3} style={{ padding: "0.2em" }}>
         <Grid container justify="space-between">
           <Grid item>
             <Typography variant="h4">Search</Typography>
@@ -103,11 +106,35 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             />
           </li>
           <li className="hidden-list">
-            <Grid container justify="flex-end">
+            <Grid container spacing={2} justify="flex-end">
               <Grid item>
-                <Button variant="contained" onClick={makeSearchDoc}>
-                  Search
-                </Button>
+                <Tooltip
+                  title={
+                    props.moreItemsAvailable
+                      ? "Load in 50 more items"
+                      : "All of the search results are displayed"
+                  }
+                >
+                  <span>
+                    <Button
+                      disabled={!props.moreItemsAvailable}
+                      onClick={() =>
+                        props.onLoadMoreClicked
+                          ? props.onLoadMoreClicked()
+                          : undefined
+                      }
+                    >
+                      Load more
+                    </Button>
+                  </span>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Tooltip title="Start a new search from the first item">
+                  <Button variant="contained" onClick={makeSearchDoc}>
+                    Search
+                  </Button>
+                </Tooltip>
               </Grid>
             </Grid>
           </li>

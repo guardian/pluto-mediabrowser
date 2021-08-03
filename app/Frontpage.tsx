@@ -8,7 +8,7 @@ import axios from "axios";
 import { VError } from "ts-interface-checker";
 import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
@@ -43,6 +43,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const [pageSize, setPageSize] = useState<number>(15);
   const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 100);
+  const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
+
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [facetList, setFacetList] = useState<FacetCountResponse[]>([]);
@@ -162,6 +164,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       }
 
       if (serverContent.data.item) {
+        if (serverContent.data.item.length < pageSize)
+          setMoreItemsAvailable(false);
         //only add in items that validate as VidispineItem. Items that don't are logged to console.
         const existingList = previousItemList ?? itemList;
         const updatedItemList = existingList.concat(
@@ -218,7 +222,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     if (props.projectIdToLoad != 0) {
       getProjectTitle(props.projectIdToLoad);
     }
-  }, []);
+  }, [itemLimit]);
 
   /**
    * re-run the search when the searchdoc changes
@@ -274,6 +278,10 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
           projectIdToLoad={props.projectIdToLoad}
+          moreItemsAvailable={moreItemsAvailable}
+          onLoadMoreClicked={() =>
+            setPageSize((currentValue) => currentValue + 50)
+          }
         />
       </div>
       <div className="results-container" ref={resultsContainerRef}>

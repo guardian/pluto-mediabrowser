@@ -1,4 +1,4 @@
-import React, {CSSProperties, useEffect, useState} from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { VidispineItem } from "../vidispine/item/VidispineItem";
 import ItemTile from "./ItemTile";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
@@ -25,33 +25,36 @@ const SearchResultsPane: React.FC<SearchResultsPaneProps> = (props) => {
   const columnCount = Math.floor(dimensions.width / (tileWidth + tileMargin));
   const rowCount = Math.ceil(totalResults / columnCount);
 
-  useEffect(()=>{
-      if(props.parentRef.current) {
-          const parentDiv = props.parentRef.current as HTMLDivElement;
-          const newval = {
-              height: parentDiv.clientHeight,
-              width: parentDiv.clientWidth
-          };
+  useEffect(() => {
+    if (props.parentRef.current) {
+      const parentDiv = props.parentRef.current as HTMLDivElement;
+      const newval = {
+        height: parentDiv.clientHeight,
+        width: parentDiv.clientWidth,
+      };
 
-          setDimensions(newval);
-          console.log("debug: set search results pane to ", newval);
-      }
+      setDimensions(newval);
+      console.log("debug: set search results pane to ", newval);
+    }
   }, [props.parentRef]);
 
   const itemTileContainer = (childProps: GridChildComponentProps) => {
     const { columnIndex, rowIndex, style } = childProps;
     const itemIndex = rowIndex * columnCount + columnIndex;
 
-    const outerDivStyle = Object.assign({} as CSSProperties, style, {marginLeft:tileMargin/2, marginRight:tileMargin/2})
+    const outerDivStyle = Object.assign({} as CSSProperties, style, {
+      marginLeft: tileMargin / 2,
+      marginRight: tileMargin / 2,
+    });
     return itemIndex < totalResults ? (
-        <div style={outerDivStyle}>
-          <ItemTile
-            item={props.results[itemIndex]}
-            imageMaxWidth={240}
-            imageMaxHeight={135}
-            onClick={props.onItemClicked}
-          />
-        </div>
+      <div style={outerDivStyle}>
+        <ItemTile
+          item={props.results[itemIndex]}
+          imageMaxWidth={240}
+          imageMaxHeight={135}
+          onClick={props.onItemClicked}
+        />
+      </div>
     ) : (
       <></>
     );

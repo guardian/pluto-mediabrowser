@@ -1,4 +1,4 @@
-import React, {CSSProperties, useContext} from "react";
+import React, { CSSProperties, useContext } from "react";
 import { VidispineItem } from "../vidispine/item/VidispineItem";
 import {
   BathtubTwoTone,
@@ -103,7 +103,7 @@ const ItemTile: React.FC<ItemTileProps> = (props) => {
     const created = props.item.getMetadataString("created");
     try {
       const createdDate = created ? parseISO(created) : undefined;
-      return createdDate ? format(createdDate, "i dd/MM/yyyy HH:mm:ss") : "";
+      return createdDate ? format(createdDate, "eee dd/MM/yyyy HH:mm:ss") : "";
     } catch (err) {
       console.error(`could not parse and format ${created}: ${err}`);
       return "(invalid date)";
