@@ -1,13 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  BrowserRouter,
-  Link,
-  Route,
-  Switch,
-  Redirect,
-  withRouter,
-} from "react-router-dom";
 import moment from "moment";
 
 import "./dark.css";

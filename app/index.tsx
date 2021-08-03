@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { render } from "react-dom";
 import {
   BrowserRouter,
@@ -19,16 +19,15 @@ import {
 } from "./vidispine/field-group/VidispineFieldGroup";
 import ItemViewComponent from "./ItemViewComponent";
 import FrontpageComponent from "./Frontpage";
+import {SystemNotification} from "pluto-headers";
 
-import { Header, AppSwitcher } from "pluto-headers";
+import {Header, AppSwitcher, PlutoThemeProvider} from "pluto-headers";
 import {
-  createMuiTheme,
-  CssBaseline,
-  Theme,
-  ThemeProvider,
+  CircularProgress,
+  CssBaseline, Typography,
 } from "@material-ui/core";
-import colours from "@material-ui/core/colors";
 import { Helmet } from "react-helmet";
+import {setupInterceptors} from "./interceptors";
 
 interface AppState {
   vidispineBaseUrl?: string;
@@ -49,226 +48,161 @@ if (deploymentRootPath == undefined) {
   deploymentRootPath = "/";
 }
 
-axios.defaults.baseURL = deploymentRootPath;
-axios.interceptors.request.use(function (config) {
-  const token = window.localStorage.getItem("pluto:access-token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-
-  return config;
-});
+//set up request and response interceptors
+setupInterceptors();
 
 //think of a way to improve this later!
 const groupsToCache = ["Deliverable", "Newswire", "Rushes", "Asset"];
 
-class App extends React.Component<RouteComponentProps<any>, AppState> {
-  theme: Theme;
-
-  constructor(props: RouteComponentProps<any>) {
-    super(props);
-    this.state = {
-      vidispineBaseUrl: "",
-      fields: new FieldGroupCache(),
-      loading: true,
-      loadingStage: 0,
-      lastError: null,
-    };
-
-    this.theme = createMuiTheme({
-      typography: {
-        fontFamily: [
-          //keep in-line with pluto-core 'till we implement a theming service
-          "sans-serif",
-          '"Helvetica Neue"',
-          "Helvetica",
-          "Arial",
-          "sans-serif",
-        ].join(","),
-      },
-      palette: {
-        type: "dark",
-      },
-    });
-  }
-
-  setStatePromise(newState: AppState) {
-    return new Promise<void>((resolve, reject) =>
-      this.setState(newState, () => resolve())
-    );
-  }
+const App:React.FC<{}> = ()=> {
+  const [vidispineBaseUrl, setVidispineBaseUrl] = useState("");
+  const [fields, setFields] = useState<FieldGroupCache>(new FieldGroupCache());
+  const [loading, setLoading] = useState(true);
+  const [loadingStage, setLoadingStage] = useState(0);
+  const [lastError, setLastError] = useState<string|undefined>(undefined);
 
   /**
    * loads in the config json from the server. Required to know where Vidispine is.
    */
-  async loadConfig() {
-    const response = await axios.get("/config/config.json");
-
-    const configdata = response.data as ConfigFileData; //FIXME: we can improve this by adding a content test as per VS data
-    return this.setStatePromise({
-      vidispineBaseUrl: configdata.vidispineBaseUrl,
-    });
+  const loadConfig = async () => {
+    const response = await axios.get<ConfigFileData>("/config/config.json");
+    setVidispineBaseUrl(response.data.vidispineBaseUrl);
   }
 
   /**
    * load in field/group definitions from VS. Updates the state.fields parameter
    */
-  async buildCache() {
+  const buildCache = async () => {
     console.log(groupsToCache);
 
     const groupsData = await Promise.all(
       groupsToCache.map((groupName) =>
-        LoadGroupFromServer(this.state.vidispineBaseUrl as string, groupName)
+        LoadGroupFromServer(vidispineBaseUrl, groupName)
       )
     );
-    const newCache = new FieldGroupCache(this.state.fields, ...groupsData);
+    const newCache = new FieldGroupCache(fields, ...groupsData);
     console.log(
       `Successfully loaded ${newCache.size()} metadata groups from Vidispine`
     );
-    return this.setStatePromise({ fields: newCache });
+    setFields(newCache);
   }
 
-  async componentDidMount() {
+  const initialiseComponent = async () => {
     try {
-      await this.loadConfig();
-      await this.setStatePromise({ loadingStage: 1 });
-      await this.buildCache();
-      await this.setStatePromise({
-        loading: false,
-        lastError: null,
-        loadingStage: 0,
-      });
+      await loadConfig();
+      setLoadingStage(1);
+      await buildCache();
+      setLoading(false);
+      setLastError(undefined);
+      setLoadingStage(0);
     } catch (err) {
       console.error(err);
-      this.setState({
-        loading: false,
-        lastError:
-          "Could not load configuration, please try refreshing the page in a minute.  More details in the console log.",
-      });
+      setLoading(false);
+      setLastError("Could not load configuration, please try refreshing the page in a minute.  More details in the console log.");
     }
   }
 
-  doNothing() {}
+  useEffect(()=>{
+    initialiseComponent();
+  }, []);
 
-  render() {
-    if (this.state.lastError) {
-      return (
-        <>
-          <Helmet>
-            <title>PLUTO Media Browser</title>
-          </Helmet>
-          <Header />
-          <AppSwitcher
-            onLoggedIn={this.doNothing}
-            onLoggedOut={this.doNothing}
-          />
-          <div className="error-dialog">
-            <p>{this.state.lastError}</p>
-          </div>
-        </>
-      );
-    }
-
-    if (this.state.loading) {
-      return (
-        <>
-          <Helmet>
-            <title>PLUTO Media Browser</title>
-          </Helmet>
-          <Header />
-          <AppSwitcher
-            onLoggedIn={this.doNothing}
-            onLoggedOut={this.doNothing}
-          />
-          <p>Loading....</p>
-        </>
-      );
-    }
-
-    return (
-      <ThemeProvider theme={this.theme}>
-        <CssBaseline />
-        <Helmet>
-          <title>PLUTO Media Browser</title>
-        </Helmet>
-        <Header />
-        <AppSwitcher onLoggedIn={this.doNothing} onLoggedOut={this.doNothing} />
-        <Switch>
-          <Route
-            path="/item/:itemId"
-            component={(
-              props: RouteComponentProps<ItemViewComponentMatches>
-            ) => (
-              <ItemViewComponent
-                {...props}
-                vidispineBaseUrl={this.state.vidispineBaseUrl as string}
-                //this should never be undefined in reality; but the interface must specify it like that so we can do partial updates.
-                fieldCache={this.state.fields as FieldGroupCache}
+  return (
+    <PlutoThemeProvider>
+      <CssBaseline />
+      <Helmet>
+        <title>PLUTO Media Browser</title>
+      </Helmet>
+      <SystemNotification/>
+      <Header />
+      <AppSwitcher onLoggedIn={()=>{}} onLoggedOut={()=>{}} />
+      {
+        lastError ? <div className="error-dialog">
+          <Typography>{lastError}</Typography>
+        </div> : undefined
+      }
+      {
+        loading ? <CircularProgress/> : undefined
+      }
+      {
+        !lastError && !loading ?
+            <Switch>
+              <Route
+                  path="/item/:itemId"
+                  component={(
+                      props: RouteComponentProps<ItemViewComponentMatches>
+                  ) => (
+                      <ItemViewComponent
+                          {...props}
+                          vidispineBaseUrl={vidispineBaseUrl as string}
+                          //this should never be undefined in reality; but the interface must specify it like that so we can do partial updates.
+                          fieldCache={fields as FieldGroupCache}
+                      />
+                  )}
               />
-            )}
-          />
 
-          <Route
-            path="/last/:pageSize"
-            component={(props: RouteComponentProps<LastNComponentMatches>) => {
-              let itemLimit: number = 15;
-              try {
-                itemLimit = parseInt(props.match.params.pageSize);
-              } catch (err) {
-                console.error(`${props.match.params.pageSize} is not a number`);
-              }
-              return (
-                <FrontpageComponent
-                  {...props}
-                  vidispineBaseUrl={this.state.vidispineBaseUrl as string}
-                  itemLimit={itemLimit}
-                  fieldGroupCache={this.state.fields as FieldGroupCache}
-                  projectIdToLoad={0}
-                />
-              );
-            }}
-          />
-          <Route
-            path="/search"
-            component={(props: RouteComponentProps) => (
-              <FrontpageComponent
-                {...props}
-                vidispineBaseUrl={this.state.vidispineBaseUrl as string}
-                fieldGroupCache={this.state.fields as FieldGroupCache}
-                projectIdToLoad={0}
+              <Route
+                  path="/last/:pageSize"
+                  component={(props: RouteComponentProps<LastNComponentMatches>) => {
+                    let itemLimit: number = 15;
+                    try {
+                      itemLimit = parseInt(props.match.params.pageSize);
+                    } catch (err) {
+                      console.error(`${props.match.params.pageSize} is not a number`);
+                    }
+                    return (
+                        <FrontpageComponent
+                            {...props}
+                            vidispineBaseUrl={vidispineBaseUrl as string}
+                            itemLimit={itemLimit}
+                            fieldGroupCache={fields as FieldGroupCache}
+                            projectIdToLoad={0}
+                        />
+                    );
+                  }}
               />
-            )}
-          />
-          <Route
-            path="/project/:projectId"
-            component={(
-              props: RouteComponentProps<ProjectComponentMatches>
-            ) => {
-              let projectIdToLoad: number = 0;
-              try {
-                projectIdToLoad = parseInt(props.match.params.projectId);
-              } catch (err) {
-                console.error(
-                  `${props.match.params.projectId} is not a number`
-                );
-              }
-              return (
-                <FrontpageComponent
-                  {...props}
-                  vidispineBaseUrl={this.state.vidispineBaseUrl as string}
-                  projectIdToLoad={projectIdToLoad}
-                  fieldGroupCache={this.state.fields as FieldGroupCache}
-                />
-              );
-            }}
-          />
-          <Route
-            path="/"
-            exact={true}
-            component={() => <Redirect to="/last/15" />}
-          />
-        </Switch>
-      </ThemeProvider>
-    );
-  }
+              <Route
+                  path="/search"
+                  component={(props: RouteComponentProps) => (
+                      <FrontpageComponent
+                          {...props}
+                          vidispineBaseUrl={vidispineBaseUrl as string}
+                          fieldGroupCache={fields as FieldGroupCache}
+                          projectIdToLoad={0}
+                      />
+                  )}
+              />
+              <Route
+                  path="/project/:projectId"
+                  component={(
+                      props: RouteComponentProps<ProjectComponentMatches>
+                  ) => {
+                    let projectIdToLoad: number = 0;
+                    try {
+                      projectIdToLoad = parseInt(props.match.params.projectId);
+                    } catch (err) {
+                      console.error(
+                          `${props.match.params.projectId} is not a number`
+                      );
+                    }
+                    return (
+                        <FrontpageComponent
+                            {...props}
+                            vidispineBaseUrl={vidispineBaseUrl as string}
+                            projectIdToLoad={projectIdToLoad}
+                            fieldGroupCache={fields as FieldGroupCache}
+                        />
+                    );
+                  }}
+              />
+              <Route
+                  path="/"
+                  exact={true}
+                  component={() => <Redirect to="/last/15"/>}
+              />
+            </Switch> : undefined
+      }
+    </PlutoThemeProvider>
+  );
 }
 
 const AppWithRouter = withRouter(App);
