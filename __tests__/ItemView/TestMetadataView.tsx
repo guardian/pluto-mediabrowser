@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import {mount, shallow} from "enzyme";
 import MetadataView from "../../app/ItemView/MetadataView";
 import sinon from "sinon";
 import FieldGroupCache from "../../app/vidispine/FieldGroupCache";
@@ -8,6 +8,7 @@ import { VidispineItem } from "../../app/vidispine/item/VidispineItem";
 import MetadataGroupView, {
   MetadataGroupViewMode,
 } from "../../app/ItemView/MetadataGroupView";
+import VidispineContext, {VidispineContextType} from "../../app/Context/VidispineContext";
 
 describe("MetadataView", () => {
   it("should render MetadataGroupView instances via the fieldcache for all groups that are present on the item", () => {
@@ -46,16 +47,22 @@ describe("MetadataView", () => {
 
     const fieldCache = new FieldGroupCache(undefined, ...groups);
 
+    const contextValue:VidispineContextType = {
+      baseUrl: "https://fake-base-url",
+      fieldCache: fieldCache
+    }
+
     const didChangeCb = sinon.spy();
 
-    const rendered = shallow(
-      <MetadataView
-        fieldCache={fieldCache}
-        elevation={1}
-        readonly={false}
-        content={item}
-        valueDidChange={didChangeCb}
-      />
+    const rendered = mount(
+        <VidispineContext.Provider value={contextValue}>
+          <MetadataView
+            elevation={1}
+            readonly={false}
+            content={item}
+            valueDidChange={didChangeCb}
+          />
+        </VidispineContext.Provider>
     );
 
     const mdGroupBoxes = rendered.find("MetadataGroupView");
@@ -105,16 +112,22 @@ describe("MetadataView", () => {
 
     const fieldCache = new FieldGroupCache(undefined, ...groups);
 
+    const contextValue:VidispineContextType = {
+      baseUrl: "https://fake-base-url",
+      fieldCache: fieldCache
+    }
+
     const didChangeCb = sinon.spy();
 
-    const rendered = shallow(
-      <MetadataView
-        fieldCache={fieldCache}
-        elevation={1}
-        readonly={false}
-        content={item}
-        valueDidChange={didChangeCb}
-      />
+    const rendered = mount(
+        <VidispineContext.Provider value={contextValue}>
+          <MetadataView
+            elevation={1}
+            readonly={false}
+            content={item}
+            valueDidChange={didChangeCb}
+          />
+        </VidispineContext.Provider>
     );
 
     const mdGroupBoxes = rendered.find("MetadataGroupView");
@@ -124,7 +137,7 @@ describe("MetadataView", () => {
       MetadataGroupViewMode.MetadataView
     );
 
-    const modebutton = rendered.find("#metadata-edit-toggle");
+    const modebutton = rendered.find("button#metadata-edit-toggle");
     modebutton.simulate("change");
 
     expect(rendered.find("MetadataGroupView").at(0).prop("mode")).toEqual(

@@ -21,7 +21,6 @@ interface PlayerContainerProps {
   shapes: VidispineShape[];
   uriList: string[];
   defaultShapes: string[];
-  vidispineBaseUri: string;
 }
 
 const useStyles = makeStyles({
@@ -54,36 +53,8 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
   const [mimeType, setMimeType] = useState<string>("");
   const [targetUrl, setTargetUrl] = useState<string>("");
 
-  // /**
-  //  * when the selected shape tag changes, update the player url
-  //  */
-  // useEffect(()=>{
-  //     const currentShapeData = findSelectedShape();
-  //     setSelectedShape(currentShapeData);
-  //     //const targetUri = currentShapeData ? currentShapeData.getDefaultUri("http") : undefined;
-  //     // const authedUri = currentShapeData &&
-  //     //                     currentShapeData.containerComponent &&
-  //     //                     currentShapeData.containerComponent.file ?
-  //     //                         `${props.vidispineBaseUri}/API/storage/file/${currentShapeData.containerComponent.file[0].id}/uri` : undefined;
-  //     const authedUri = `${props.vidispineBaseUri}/API/item/${props.itemId}`
-  //     if (authedUri) {
-  //         axios.post(authedUri,null,{headers:{"Accept": "application/json"}}).then((response)=>{
-  //             console.log(response.data);
-  //             if(response.data.uri && response.data.uri.length>0) {
-  //                 setPlayerUri(response.data.uri[0]);
-  //             } else {
-  //                 console.log("No uris returned for playback!")
-  //                 setPlayerUri("");
-  //             }
-  //         }).catch((err)=>{
-  //             console.error("Could not get playback url: ", err);
-  //         })
-  //     }
-  //
-  // }, [selectedShapeTag]);
-
   /**
-   * try to locate the file ID assocaited with the given shape
+   * try to locate the file ID associated with the given shape
    * @param currentShapeData
    */
   const getFileId = (currentShapeData: VidispineShape) => {

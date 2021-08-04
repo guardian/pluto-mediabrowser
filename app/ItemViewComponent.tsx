@@ -1,46 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {
-  Button,
-  IconButton,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
   Typography,
 } from "@material-ui/core";
 import { VidispineItem } from "./vidispine/item/VidispineItem";
-import PreviewPlayer from "./ItemView/PreviewPlayer";
 import { Helmet } from "react-helmet";
 import {
   RouteComponentProps,
-  useHistory,
-  useLocation,
-  useParams,
 } from "react-router-dom";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 import MetadataView from "./ItemView/MetadataView";
 import { makeStyles } from "@material-ui/core/styles";
 import PlayerContainer from "./ItemView/PlayerContainer";
+import VidispineContext from "./Context/VidispineContext";
 
-interface ItemViewComponentProps
-  extends RouteComponentProps<ItemViewComponentMatches> {
-  vidispineBaseUrl: string;
-  fieldCache: FieldGroupCache;
-}
-
-const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
+const ItemViewComponent: React.FC<RouteComponentProps<ItemViewComponentMatches>> = (props) => {
   const [itemData, setItemData] = useState<VidispineItem | undefined>();
   const [lastError, setLastError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
 
   //FIXME: should be loaded in from config!
   const defaultShapes = ["lowres", "lowimage", "lowaudio"];
+
+  const vidispineContext = useContext(VidispineContext);
 
   const useStyles = makeStyles((theme) => ({
     heading: {
@@ -51,8 +34,8 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
 
   const classes = useStyles();
 
-  const loadItemMeta = async () => {
-    const targetUrl = `${props.vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata,shape,uri&methodType=AUTO`;
+  const loadItemMeta = async (vidispineBaseUrl:string) => {
+    const targetUrl = `${vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata,shape,uri&methodType=AUTO`;
     console.debug("loading item data from ", targetUrl);
     try {
       const result = await axios.get(targetUrl, {
@@ -99,9 +82,13 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
   };
 
   useEffect(() => {
-    console.log(`Loading item with id ${props.match.params.itemId}`);
-    loadItemMeta();
-  }, []);
+    if(vidispineContext) {
+      console.log(`Loading item with id ${props.match.params.itemId}`);
+      loadItemMeta(vidispineContext.baseUrl);
+    } else {
+      console.log("not loading item yet because vidispine context is not loaded")
+    }
+  }, [vidispineContext]);
 
   const pageTitle = () => {
     if (!itemData) return "View item";
@@ -137,7 +124,6 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
             <PlayerContainer
               shapes={itemData.shape}
               defaultShapes={defaultShapes}
-              vidispineBaseUri={props.vidispineBaseUrl}
               uriList={itemData.files.uri}
             />
           ) : (
@@ -147,7 +133,6 @@ const ItemViewComponent: React.FC<ItemViewComponentProps> = (props) => {
           )}
           <hr />
           <MetadataView
-            fieldCache={props.fieldCache}
             elevation={3}
             readonly={false}
             content={itemData}
