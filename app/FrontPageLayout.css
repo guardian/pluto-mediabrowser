@@ -54,6 +54,7 @@
   grid-column-end: right-pane;
   grid-row-start: content-main;
   grid-row-end: bottom;
+  overflow: hidden;
 }
 
 .facets-container {

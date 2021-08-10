@@ -313,6 +313,7 @@ function GetItems(content: object): Array<VidispineItem> {
 }
 
 export type {
+  ItemResponse,
   ItemIF,
   MetadataValue,
   MetadataField,

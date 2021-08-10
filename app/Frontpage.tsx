@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Redirect, RouteComponentProps } from "react-router";
 import VidispineSearchDoc, {
   SearchOrderValue,
@@ -8,21 +8,20 @@ import axios from "axios";
 import { VError } from "ts-interface-checker";
 import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
-import FieldGroupCache from "./vidispine/FieldGroupCache";
-import { Grid, Typography, makeStyles } from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
 } from "./vidispine/search/FacetResponse";
 import FacetDisplays from "./Frontpage/FacetDisplays";
+import VidispineContext from "./Context/VidispineContext";
+import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 
 require("./dark.css");
 require("./FrontPageLayout.css");
 
 interface FrontpageComponentProps extends RouteComponentProps {
-  vidispineBaseUrl: string;
   itemLimit?: number;
-  fieldGroupCache: FieldGroupCache;
   projectIdToLoad?: number;
 }
 
@@ -44,6 +43,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const [pageSize, setPageSize] = useState<number>(15);
   const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 100);
+  const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
+
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [facetList, setFacetList] = useState<FacetCountResponse[]>([]);
@@ -55,6 +56,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     undefined
   );
   const classes = useStyles();
+
+  const vidispineContext = useContext(VidispineContext);
 
   /**
    * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
@@ -71,6 +74,10 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         const itemId = content.id ?? "(no id given)";
         console.error(
           `Item ${itemId} failed metadata validation at ${vErr.path}: ${vErr.message}`
+        );
+        SystemNotification.open(
+          SystemNotifcationKind.Error,
+          "This item contains invalid data and can't be displayed"
         );
       } else {
         console.error("Unexpected error: ", err);
@@ -114,7 +121,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     const fromParam = startAt ?? itemList.length;
     const shouldCount: boolean = fromParam == 0;
     const searchUrl = `${
-      props.vidispineBaseUrl
+      vidispineContext?.baseUrl
     }/API/item?content=metadata&first=${
       fromParam + 1
     }&number=${pageSize}&count=${shouldCount}`;
@@ -157,6 +164,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       }
 
       if (serverContent.data.item) {
+        if (serverContent.data.item.length < pageSize)
+          setMoreItemsAvailable(false);
         //only add in items that validate as VidispineItem. Items that don't are logged to console.
         const existingList = previousItemList ?? itemList;
         const updatedItemList = existingList.concat(
@@ -213,7 +222,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     if (props.projectIdToLoad != 0) {
       getProjectTitle(props.projectIdToLoad);
     }
-  }, []);
+  }, [itemLimit]);
 
   /**
    * re-run the search when the searchdoc changes
@@ -240,6 +249,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     return className.join(" ");
   };
 
+  const resultsContainerRef = React.createRef<HTMLDivElement>();
+
   return (
     <div className={makeClassName()}>
       <div className="status-container">
@@ -260,7 +271,6 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       <div className="form-container">
         <VidispineSearchForm
           currentSearch={currentSearch}
-          fieldGroupCache={props.fieldGroupCache}
           onUpdated={(newSearch) => {
             console.log("Got new search doc: ", newSearch);
             setCurrentSearch(newSearch);
@@ -268,12 +278,16 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
           projectIdToLoad={props.projectIdToLoad}
+          moreItemsAvailable={moreItemsAvailable}
+          onLoadMoreClicked={() =>
+            setPageSize((currentValue) => currentValue + 50)
+          }
         />
       </div>
-      <div className="results-container">
+      <div className="results-container" ref={resultsContainerRef}>
         <SearchResultsPane
           results={itemList}
-          vidispineBaseUrl={props.vidispineBaseUrl}
+          parentRef={resultsContainerRef}
           onItemClicked={(itemId) => {
             console.log("You clicked ", itemId);
             props.history.push(`/item/${itemId}`);

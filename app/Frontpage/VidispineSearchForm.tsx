@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import VidispineSearchDoc from "../vidispine/search/VidispineSearch";
 import MetadataGroupView, {
   MetadataGroupViewMode,
@@ -14,17 +14,20 @@ import {
   Input,
   InputLabel,
   Paper,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import { ArrowLeft, ArrowRight } from "@material-ui/icons";
+import VidispineContext from "../Context/VidispineContext";
 
 interface VidispineSearchFormProps {
   currentSearch?: VidispineSearchDoc;
-  fieldGroupCache: FieldGroupCache;
   onUpdated: (newSearch: VidispineSearchDoc) => void;
   onHideToggled: (newValue: boolean) => void;
   isHidden: boolean;
-  projectIdToLoad?: number
+  projectIdToLoad?: number;
+  onLoadMoreClicked?: () => void;
+  moreItemsAvailable?: boolean;
 }
 
 interface SearchEntry {
@@ -39,6 +42,8 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
   const [groupFieldSearch, setGroupFieldSearch] = useState<
     Map<string, string[]>
   >(new Map());
+
+  const vidispineContext = useContext(VidispineContext);
 
   /**
    * reset the search if the user changes the group selector
@@ -70,7 +75,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
     </Paper>
   ) : (
     <>
-      <Paper elevation={3}>
+      <Paper elevation={3} style={{ padding: "0.2em" }}>
         <Grid container justify="space-between">
           <Grid item>
             <Typography variant="h4">Search</Typography>
@@ -101,20 +106,46 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             />
           </li>
           <li className="hidden-list">
-            <Grid container justify="flex-end">
+            <Grid container spacing={2} justify="flex-end">
               <Grid item>
-                <Button variant="contained" onClick={makeSearchDoc}>
-                  Search
-                </Button>
+                <Tooltip
+                  title={
+                    props.moreItemsAvailable
+                      ? "Load in 50 more items"
+                      : "All of the search results are displayed"
+                  }
+                >
+                  <span>
+                    <Button
+                      disabled={!props.moreItemsAvailable}
+                      onClick={() =>
+                        props.onLoadMoreClicked
+                          ? props.onLoadMoreClicked()
+                          : undefined
+                      }
+                    >
+                      Load more
+                    </Button>
+                  </span>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Tooltip title="Start a new search from the first item">
+                  <Button variant="contained" onClick={makeSearchDoc}>
+                    Search
+                  </Button>
+                </Tooltip>
               </Grid>
             </Grid>
           </li>
         </ul>
       </Paper>
 
-      {
+      {vidispineContext ? (
         <MetadataGroupView
-          group={props.fieldGroupCache.get(groupName) as VidispineFieldGroup}
+          group={
+            vidispineContext.fieldCache.get(groupName) as VidispineFieldGroup
+          }
           content={groupFieldSearch}
           elevation={3}
           mode={MetadataGroupViewMode.SearchForm}
@@ -135,7 +166,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
             });
           }}
         />
-      }
+      ) : undefined}
     </>
   );
 };

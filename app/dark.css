@@ -56,22 +56,6 @@ div.items_top_area {
   grid-column-end: 4;
 }
 
-div.item_box {
-  background-color: #222222;
-  margin-top: 6px;
-  margin-left: 6px;
-  border-radius: 6px;
-  width: 240px;
-  display: grid;
-  cursor: pointer;
-  grid-template-columns: 200px;
-  grid-template-rows: 20px 18px 144px 20px;
-  font-size: 14px;
-  float: left;
-  padding: 8px;
-  height: 220px;
-}
-
 input.search_button {
   background-color: #000000;
   color: #ffffff;
@@ -142,29 +126,6 @@ div.form_type_left {
 
 div.form_type_right {
   grid-column-start: 2;
-}
-
-div.item_filename {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-div.item_id {
-  font-size: 13px;
-}
-
-div.item_created {
-  font-size: 13px;
-}
-
-div.item_thumbnail {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  width: 240px;
-  margin-top: 0 !important;
-  margin: -8px; /* inverse of the padding in item_box, its container */
 }
 
 form.main_form {
