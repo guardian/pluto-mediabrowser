@@ -55,8 +55,6 @@ setupInterceptors();
 const groupsToCache = ["Deliverable", "Newswire", "Rushes", "Asset"];
 
 const App: React.FC<{}> = () => {
-  // const [vidispineBaseUrl, setVidispineBaseUrl] = useState("");
-  // const [fields, setFields] = useState<FieldGroupCache>(new FieldGroupCache());
   const [vidispineDetails, setVidispineDetails] = useState<
     VidispineContextType | undefined
   >(undefined);
