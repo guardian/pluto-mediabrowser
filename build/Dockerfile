@@ -1,4 +1,4 @@
-FROM nginx:1.19-alpine
+FROM nginx:mainline-alpine
 
 COPY nginx-server.conf /etc/nginx/conf.d/default.conf
 COPY index.template.html /usr/share/nginx/html
