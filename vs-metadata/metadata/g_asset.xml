@@ -35,6 +35,19 @@
         </data>
     </field>
     <field>
+        <name>gnm_nearline_id</name>
+        <schema min="0" max="1" name="gnm_nearline_id"/>
+        <type>string</type>
+        <stringRestriction>
+            <minLength>0</minLength>
+            <maxLength>32768</maxLength>
+        </stringRestriction>
+        <data>
+            <key>extradata</key>
+            <value>{"name":"Nearline item ID", "readonly":true,"type":"tags"}</value>
+        </data>
+    </field>
+    <field>
         <name>original_filename</name>
         <schema min="1" max="1" name="original_filename"/>
         <type>string-exact</type>
