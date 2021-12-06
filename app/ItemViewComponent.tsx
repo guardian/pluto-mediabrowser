@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import axios from "axios";
 import {
   Paper,
   Typography,
@@ -14,6 +13,7 @@ import MetadataView from "./ItemView/MetadataView";
 import { makeStyles } from "@material-ui/core/styles";
 import PlayerContainer from "./ItemView/PlayerContainer";
 import VidispineContext from "./Context/VidispineContext";
+import {loadItemMeta} from "./ItemView/LoadItem";
 
 const ItemViewComponent: React.FC<RouteComponentProps<ItemViewComponentMatches>> = (props) => {
   const [itemData, setItemData] = useState<VidispineItem | undefined>();
@@ -34,57 +34,20 @@ const ItemViewComponent: React.FC<RouteComponentProps<ItemViewComponentMatches>>
 
   const classes = useStyles();
 
-  const loadItemMeta = async (vidispineBaseUrl:string) => {
-    const targetUrl = `${vidispineBaseUrl}/API/item/${props.match.params.itemId}?content=metadata,shape,uri&methodType=AUTO`;
-    console.debug("loading item data from ", targetUrl);
-    try {
-      const result = await axios.get(targetUrl, {
-        headers: { Accept: "application/json" },
-      });
-      const newItemData = new VidispineItem(result.data);
-      console.debug("completed loading data: ", newItemData);
-      setItemData(newItemData);
-      setLastError("");
-      setLoading(false);
-    } catch (err) {
-      console.error("Could not load from ", targetUrl, ": ", err);
-      setLoading(false);
-      if (err.response) {
-        switch (err.response.status) {
-          case 404:
-            setLastError("The item does not exist.");
-            break;
-          case 400:
-            setLastError("The item ID is not valid");
-            break;
-          case 503 | 502:
-            setLastError("The server is not responding, retrying...");
-            window.setTimeout(loadItemMeta, 3000);
-            break;
-          case 500:
-            setLastError(
-              "There is a server problem, please report this to multimediatech@theguardian.com"
-            );
-            break;
-          default:
-            console.error(err);
-            setLastError(
-              "Unable to load the given item. Please refer to the console for more information."
-            );
-        }
-      } else {
-        console.error(err);
-        setLastError(
-          "Unable to load the given item. Please refer to the console for more information."
-        );
-      }
-    }
-  };
-
   useEffect(() => {
     if(vidispineContext) {
       console.log(`Loading item with id ${props.match.params.itemId}`);
-      loadItemMeta(vidispineContext.baseUrl);
+      loadItemMeta(vidispineContext.baseUrl, props.match.params.itemId)
+          .then(newItemData=>{
+            setItemData(newItemData);
+            setLastError("");
+            setLoading(false);
+          })
+          .catch(err=>{
+            setLoading(false);
+            setLastError(err);
+            if(err.contains("retrying")) window.setTimeout(loadItemMeta, 3000);  //try again in 3 seconds
+          })
     } else {
       console.log("not loading item yet because vidispine context is not loaded")
     }
