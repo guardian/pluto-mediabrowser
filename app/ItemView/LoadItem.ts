@@ -16,7 +16,6 @@ async function loadItemMeta(vidispineBaseUrl:string, itemId:string):Promise<Vidi
             headers: { Accept: "application/json" },
         });
         return new VidispineItem(result.data);
-        //console.debug("completed loading data: ", newItemData);
     } catch (err) {
         console.error("Could not load from ", targetUrl, ": ", err);
 
