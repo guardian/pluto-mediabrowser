@@ -1,6 +1,7 @@
 import React, { CSSProperties, useContext } from "react";
 import { VidispineItem } from "../vidispine/item/VidispineItem";
 import {
+  AccessTime,
   BathtubTwoTone,
   ComputerTwoTone,
   DescriptionTwoTone,
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateRows: "20px 18px 144px 20px",
     fontSize: "14px",
     padding: "8px",
-    height: "220px",
+    height: "240px",
   },
 }));
 
@@ -146,8 +147,8 @@ const ItemTile: React.FC<ItemTileProps> = (props) => {
           mediaTypeIcon()
         )}
       </div>
-      <div className={classes.itemOwner}><Person className={classes.inlineIcon}/>{props.item.getMetadataString("owner")}</div>
-      <div className={classes.itemCreated}>{formatCreatedDate()}</div>
+      <div className={classes.itemOwner}><Person className={classes.inlineIcon}/>{props.item.getMetadataValuesInGroup("gnm_owner", "Asset")}</div>
+      <div className={classes.itemCreated}><AccessTime className={classes.inlineIcon}/>{formatCreatedDate()}</div>
     </div>
   );
 };

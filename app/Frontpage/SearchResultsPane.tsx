@@ -17,7 +17,7 @@ const SearchResultsPane: React.FC<SearchResultsPaneProps> = (props) => {
 
   //tile sizes, in pixels
   const tileWidth = 240;
-  const tileHeight = 220;
+  const tileHeight = 240;
   const tileMargin = 20;
 
   //react-window uses absolute positioning so we need to do a bit of maths...
