@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   itemOwner: {
     fontSize: "13px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   inlineIcon: {
     maxHeight: "13px",
