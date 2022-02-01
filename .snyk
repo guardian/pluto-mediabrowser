@@ -1,0 +1,12 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.22.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-D3COLOR-1076592:
+    - recharts > d3-interpolate > d3-color:
+        reason: None given
+        expires: '2022-03-03T10:40:14.632Z'
+    - recharts > d3-scale > d3-interpolate > d3-color:
+        reason: no update available
+        expires: '2022-03-03T10:40:14.632Z'
+patch: {}

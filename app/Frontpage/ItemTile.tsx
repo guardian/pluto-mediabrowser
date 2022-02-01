@@ -5,7 +5,7 @@ import {
   ComputerTwoTone,
   DescriptionTwoTone,
   MovieTwoTone,
-  PanoramaTwoTone,
+  PanoramaTwoTone, Person,
   VolumeUpTwoTone,
 } from "@material-ui/icons";
 import VidispineContext from "../Context/VidispineContext";
@@ -34,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
   },
   itemCreated: {
     fontSize: "13px",
+  },
+  itemOwner: {
+    fontSize: "13px",
+  },
+  inlineIcon: {
+    maxHeight: "13px",
+    marginRight: "0.2em",
   },
   itemThumbnail: {
     display: "flex",
@@ -139,6 +146,7 @@ const ItemTile: React.FC<ItemTileProps> = (props) => {
           mediaTypeIcon()
         )}
       </div>
+      <div className={classes.itemOwner}><Person className={classes.inlineIcon}/>{props.item.getMetadataString("owner")}</div>
       <div className={classes.itemCreated}>{formatCreatedDate()}</div>
     </div>
   );
