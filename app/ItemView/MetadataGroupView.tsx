@@ -57,24 +57,30 @@ interface MetadataGroupViewProps {
   projectIdToLoad?: number;
 }
 
-const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      warning: {
-        color: theme.palette.warning,
-      },
+export const metadataStylesHook = makeStyles((theme) => ({
+  root: {
+    warning: {
+      color: theme.palette.warning,
     },
-    metagroup: {
-      marginTop: "1.5rem",
-      padding: "0.75rem",
-    },
-    inputField: {
-      minWidth: "100%",
-      maxWidth: "100%",
-    },
-  }));
+  },
+  metagroup: {
+    marginTop: "1.5rem",
+    padding: "0.75rem",
+  },
+  inputField: {
+    minWidth: "100%",
+    maxWidth: "100%",
+  },
+  disabledIcon: {
+    opacity: "50%",
+  },
+  enabledIcon: {
+    opacity: "100%",
+  },
+}));
 
-  const classes = useStyles();
+const MetadataGroupView: React.FC<MetadataGroupViewProps> = (props) => {
+  const classes = metadataStylesHook();
 
   /**
    * returns a suitable control for the field data

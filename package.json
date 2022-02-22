@@ -22,7 +22,7 @@
     ],
     "verbose": true,
     "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less|svg)$": "identity-obj-proxy"
     },
     "testResultsProcessor": "jest-junit",
     "testEnvironment": "jsdom",
