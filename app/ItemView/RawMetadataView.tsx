@@ -12,24 +12,50 @@ import axios from "axios";
 import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 // @ts-ignore
 import CodeMirror from "codemirror/lib/codemirror"; //see https://github.com/codemirror/CodeMirror/issues/5484
-import 'codemirror/lib/codemirror.css';
+import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material-darker.css";
 import "codemirror/mode/xml/xml";
-import {metadataStylesHook} from "./MetadataGroupView";
+import { metadataStylesHook } from "./MetadataGroupView";
 import formatXML from "xml-formatter";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface RawMetadataViewProps {
   itemId: string;
   elevation: number;
 }
 
-const CMTextArea = React.forwardRef<HTMLTextAreaElement, { value: string, visible: boolean }>(
-  (props, textAreaRef) => <textarea ref={textAreaRef} value={props.value} style={{display: props.visible ? "inherit" : "none"}}/>
-);
+const CMTextArea = React.forwardRef<
+  HTMLTextAreaElement,
+  { value: string; visible: boolean }
+>((props, textAreaRef) => (
+  <textarea
+    ref={textAreaRef}
+    value={props.value}
+    style={{ display: props.visible ? "inherit" : "none" }}
+  />
+));
+
+const dragHandleStyles = makeStyles((theme) => ({
+  dragHandle: {
+    background: theme.palette.grey.A400,
+    height: "20px",
+    userSelect: "none",
+    cursor: "row-resize",
+    borderTop: "1px solid #ddd",
+    borderBottom: "1px solid #ddd",
+  },
+}));
+
+const CMDragHandle = React.forwardRef<HTMLDivElement, {}>((props, ref) => {
+  const classes = dragHandleStyles();
+  return <div className={classes.dragHandle} ref={ref} />;
+});
 
 const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
   const [expanded, setExpanded] = useState(true);
-  const [rawMetadataString, setRawMetadataString] = useState("<someRoot><someTag>value</someTag></someRoot>");
+  const [rawMetadataString, setRawMetadataString] = useState(
+    "<someRoot><someTag>value</someTag></someRoot>"
+  );
   const [updateCounter, setUpdateCounter] = useState(0);
 
   const vidispineContext = useContext(VidispineContext);
@@ -66,7 +92,7 @@ const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
     loadMetadata();
   }, [updateCounter]);
 
-  useEffect(()=> {
+  useEffect(() => {
     loadMetadata();
   }, []);
 
@@ -80,16 +106,18 @@ const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
       lineNumbers: true,
       mode: "xml",
       readOnly: true,
-      nocursor: true
+      nocursor: true,
     });
 
-    codeMirror.setValue(formatXML(rawMetadataString,{
-      indentation: '  ',
-      lineSeparator: "\n",
-      collapseContent: true,
-    }));
+    codeMirror.setValue(
+      formatXML(rawMetadataString, {
+        indentation: "  ",
+        lineSeparator: "\n",
+        collapseContent: true,
+      })
+    );
 
-    return ()=>codeMirror.toTextArea();
+    return () => codeMirror.toTextArea();
   }, [textAreaRef.current, rawMetadataString]);
 
   return (
@@ -104,7 +132,7 @@ const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
           </IconButton>
         </Grid>
       </Grid>
-      <CMTextArea value={rawMetadataString} ref={textAreaRef} visible={true}/>
+      <CMTextArea value={rawMetadataString} ref={textAreaRef} visible={true} />
     </Paper>
   );
 };

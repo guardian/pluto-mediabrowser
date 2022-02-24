@@ -2,12 +2,20 @@ import React, { useContext, useState } from "react";
 import MetadataGroupView, { MetadataGroupViewMode } from "./MetadataGroupView";
 import FieldGroupCache from "../vidispine/FieldGroupCache";
 import { VidispineItem } from "../vidispine/item/VidispineItem";
-import { Grid, Typography } from "@material-ui/core";
+import {
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Switch,
+  Typography,
+} from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { Edit } from "@material-ui/icons";
 import VidispineContext from "../Context/VidispineContext";
 import { VidispineFieldGroup } from "../vidispine/field-group/VidispineFieldGroup";
 import MetadataDeliverableView from "./MetadataDeliverableView";
+import RawMetadataView from "./RawMetadataView";
+import content from "*.svg";
 
 interface MetadataViewProps {
   elevation: number;
@@ -22,6 +30,7 @@ interface MetadataViewProps {
 
 const MetadataView: React.FC<MetadataViewProps> = (props) => {
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [rawMode, setRawMode] = useState(false);
 
   const vidispineContext = useContext(VidispineContext);
 
@@ -71,7 +80,18 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
 
   return (
     <>
-      <Grid container justify="flex-end" alignContent="flex-start">
+      <Grid container justify="flex-end" alignContent="flex-start" spacing={4}>
+        <Grid item>
+          <FormControlLabel
+            control={
+              <Switch
+                value={rawMode}
+                onChange={() => setRawMode((prev) => !prev)}
+              />
+            }
+            label="View raw"
+          />
+        </Grid>
         <Grid item>
           <ToggleButton
             id="metadata-edit-toggle"
@@ -85,9 +105,11 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
           </ToggleButton>
         </Grid>
       </Grid>
-      {vidispineContext
-        ? getTableContent(vidispineContext.fieldCache)
-        : undefined}
+      {rawMode ? (
+        <RawMetadataView itemId={props.content.id} elevation={3} />
+      ) : vidispineContext ? (
+        getTableContent(vidispineContext.fieldCache)
+      ) : undefined}
     </>
   );
 };

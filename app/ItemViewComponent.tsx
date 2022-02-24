@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PlayerContainer from "./ItemView/PlayerContainer";
 import VidispineContext from "./Context/VidispineContext";
 import { loadItemMeta } from "./ItemView/LoadItem";
-import {UserContext} from "pluto-headers";
+import { UserContext } from "pluto-headers";
 import RawMetadataView from "./ItemView/RawMetadataView";
 
 const ItemViewComponent: React.FC<RouteComponentProps<
@@ -107,9 +107,6 @@ const ItemViewComponent: React.FC<RouteComponentProps<
               )
             }
           />
-          //FIXME: currently no way to do an "is-admin" check on Usercontext!
-          <hr />
-          <RawMetadataView itemId={props.match.params.itemId} elevation={3}/>
         </>
       ) : null}
     </>
