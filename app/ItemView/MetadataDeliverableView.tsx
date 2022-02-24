@@ -13,7 +13,7 @@ import { metadataStylesHook } from "./MetadataGroupView";
 import atomIcon from "../static/atom_icon.svg";
 import MediaAtomToolContext from "../pluto-deliverables/MediaAtomToolContext";
 import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
-import {DynamicFeed} from "@material-ui/icons";
+import { DynamicFeed } from "@material-ui/icons";
 
 interface MetadataDeliverableViewProps {
   group: VidispineFieldGroup;
@@ -82,9 +82,9 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
   };
 
   const jumpToBundle = () => {
-      const url = `/deliverables/project/${maybeDeliverableBundle}`;
-      window.open(url);
-  }
+    const url = `/deliverables/project/${maybeDeliverableBundle}`;
+    window.open(url);
+  };
 
   return (
     <Paper elevation={props.elevation} className={classes.metagroup}>
@@ -95,9 +95,7 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
         justify="flex-start"
         alignItems="flex-start"
         spacing={2}
-      >
-
-      </Grid>
+      ></Grid>
       <Grid container direction="row" justify="flex-start" spacing={3}>
         <Grid item>
           <Tooltip
@@ -122,13 +120,16 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
           </Tooltip>
         </Grid>
         <Grid item>
-            <Tooltip title="See other versions of this deliverable">
-                <span>
-                    <IconButton onClick={jumpToBundle} disabled={!maybeDeliverableBundle}>
-                        <DynamicFeed/>
-                    </IconButton>
-                </span>
-            </Tooltip>
+          <Tooltip title="See other versions of this deliverable">
+            <span>
+              <IconButton
+                onClick={jumpToBundle}
+                disabled={!maybeDeliverableBundle}
+              >
+                <DynamicFeed />
+              </IconButton>
+            </span>
+          </Tooltip>
         </Grid>
       </Grid>
     </Paper>

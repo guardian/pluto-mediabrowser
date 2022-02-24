@@ -4,6 +4,8 @@ var TerserPlugin = require('terser-webpack-plugin');
 
 var BUILD_DIR = path.resolve(__dirname, 'build');
 var APP_DIR = path.resolve(__dirname, 'app');
+var CM_THEME = path.resolve(__dirname, 'node_modules/codemirror/theme');
+var CM_LIB = path.resolve(__dirname, 'node_modules/codemirror/lib');
 
 var config = {
     entry: APP_DIR + '/index.tsx',
@@ -12,7 +14,7 @@ var config = {
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: [".js",".jsx",".ts",".tsx",".svg"],
+        extensions: [".js",".jsx",".ts",".tsx",".svg",".css"],
         fallback: {
             stream: require.resolve("stream-browserify"),
             util: require.resolve("util/"),
@@ -46,6 +48,11 @@ var config = {
             {
                 test: /\.css$/i,
                 include: APP_DIR,
+                use: ['style-loader', 'css-loader', "sass-loader"]
+            },
+            {
+                test: /\.css$/i,
+                include: [CM_THEME, CM_LIB],
                 use: ['style-loader', 'css-loader', "sass-loader"]
             },
             {
