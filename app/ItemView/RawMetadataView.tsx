@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Grid, IconButton, Paper, Typography } from "@material-ui/core";
 import VidispineContext from "../Context/VidispineContext";
-import { ArrowDownward, ArrowUpward } from "@material-ui/icons";
+import {ArrowDownward, ArrowUpward, Drafts} from "@material-ui/icons";
 import axios from "axios";
 import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 // @ts-ignore
@@ -35,6 +35,7 @@ const CMTextArea = React.forwardRef<
   />
 ));
 
+/* styling and drag-handle from https://jsfiddle.net/mindplay/rs2L2vtb/2/ */
 const dragHandleStyles = makeStyles((theme) => ({
   dragHandle: {
     background: theme.palette.grey.A400,
@@ -43,6 +44,15 @@ const dragHandleStyles = makeStyles((theme) => ({
     cursor: "row-resize",
     borderTop: "1px solid #ddd",
     borderBottom: "1px solid #ddd",
+    "&:before": {
+      content: "\\2261", /* https://en.wikipedia.org/wiki/Triple_bar */
+      color: "#999",
+      position: "absolute",
+      left: "50%"
+    },
+    "&:hover": {
+      background: theme.palette.grey.A700
+    }
   },
 }));
 
@@ -54,9 +64,15 @@ const CMDragHandle = React.forwardRef<HTMLDivElement, {}>((props, ref) => {
 const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
   const [expanded, setExpanded] = useState(true);
   const [rawMetadataString, setRawMetadataString] = useState(
-    "<someRoot><someTag>value</someTag></someRoot>"
+    "<!-- XML content will be shown here -->"
   );
   const [updateCounter, setUpdateCounter] = useState(0);
+  const [codeMirror, setCodeMirror] = useState<CodeMirror|undefined>(undefined);
+  const [startX, setStartX] = useState(-1);
+  const [startY, setStartY] = useState(-1);
+  const [startH, setStartH] = useState(-1);
+
+  const CM_MIN_HEIGHT = 200;  //minimum height of the codemirror view, in px.
 
   const vidispineContext = useContext(VidispineContext);
   const classes = metadataStylesHook();
@@ -97,6 +113,7 @@ const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
   }, []);
 
   const textAreaRef = createRef<HTMLTextAreaElement>();
+  const dragHandleRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     console.log("Initialising Codemirror, ref is ", textAreaRef.current);
@@ -109,16 +126,75 @@ const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
       nocursor: true,
     });
 
-    codeMirror.setValue(
-      formatXML(rawMetadataString, {
-        indentation: "  ",
-        lineSeparator: "\n",
-        collapseContent: true,
-      })
-    );
+    try {
+      codeMirror.setValue(
+          formatXML(rawMetadataString, {
+            indentation: "  ",
+            lineSeparator: "\n",
+            collapseContent: true,
+          })
+      );
+    } catch(err) {
+      codeMirror.setValue(`<!-- XML metadata failed to parse: ${err.toString()} -->`)
+    }
+    setCodeMirror(codeMirror);
 
-    return () => codeMirror.toTextArea();
+    return () => {
+      console.log("removing codemirror");
+      codeMirror.toTextArea();
+      setCodeMirror(undefined);
+    }
   }, [textAreaRef.current, rawMetadataString]);
+
+  /**
+   * This callback is only used temporarily. It is inserted by `startDraggingHandler` and removed by `onDragRelease`,
+   * so it is only active while the user has a mouse button down over the drag handle.
+   * It continuously changes the height of the codemirror instance according to the relative movement of the mouse
+   * @param evt MouseEvent provided by the DOM
+   */
+  const onDragHandler = (evt:MouseEvent) => {
+    if(codeMirror) {
+      const desiredHeight =  Math.max(CM_MIN_HEIGHT, (startH + evt.y - startY));
+      codeMirror.setSize(null, `${desiredHeight}px`);
+    } else {
+      console.error("codeMirror not set in state so can't change it");
+    }
+  }
+
+  const onDragRelease = (evt:MouseEvent) => {
+    console.log("drag end");
+    document.body.removeEventListener("mousemove", onDragHandler);
+    window.removeEventListener("mouseup", onDragRelease);
+  }
+
+  /**
+   * This callback is run when the user pushes a mouse button over the drag handle.
+   * We store the co-ords of the start of the drag in order to compute how much to increase/reduce the size by
+   * We also register handlers to detect movement within the document, in order to update the size continuously,
+   * and another to detect mouse-up anywhere in the window to stop the operation.
+   * @param evt MouseEvent provided by the DOM
+   */
+  const startDraggingHandler = (evt:MouseEvent)=> {
+    if (codeMirror) {
+      console.log("drag start");
+      setStartX(evt.x);
+      setStartY(evt.y);
+      setStartH(codeMirror.getSize());
+      document.body.addEventListener("mousemove", onDragHandler);
+      window.addEventListener("mouseup", onDragRelease);
+    } else {
+      console.log("CodeMirror not set in state, so can't resize it");
+    }
+  }
+
+  //set up the drag handle
+  useEffect(()=>{
+    if(dragHandleRef.current) {
+      dragHandleRef.current.addEventListener("mousedown", startDraggingHandler);
+
+      return ()=>dragHandleRef.current?.removeEventListener("mousedown", startDraggingHandler);
+    }
+  }, [dragHandleRef.current]);
 
   return (
     <Paper elevation={props.elevation} className={classes.metagroup}>
@@ -133,6 +209,7 @@ const RawMetadataView: React.FC<RawMetadataViewProps> = (props) => {
         </Grid>
       </Grid>
       <CMTextArea value={rawMetadataString} ref={textAreaRef} visible={true} />
+      <CMDragHandle ref={dragHandleRef}/>
     </Paper>
   );
 };
