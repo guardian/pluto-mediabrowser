@@ -8,12 +8,21 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
+import { parseISO } from "date-fns";
+import { format } from "date-fns";
 import { metadataStylesHook } from "./MetadataGroupView";
 // @ts-ignore
 import atomIcon from "../static/atom_icon.svg";
 import MediaAtomToolContext from "../pluto-deliverables/MediaAtomToolContext";
-import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
+import {
+  Breadcrumb,
+  SystemNotifcationKind,
+  SystemNotification,
+} from "pluto-headers";
 import { DynamicFeed } from "@material-ui/icons";
+import { DenormalisedDeliverable } from "../pluto-deliverables/DeliverablesTypes";
+import { GetDeliverableById } from "../pluto-deliverables/DeliverablesService";
+import { Alert } from "@material-ui/lab";
 
 interface MetadataDeliverableViewProps {
   group: VidispineFieldGroup;
@@ -28,6 +37,11 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
   const [maybeDeliverableBundle, setMaybeDeliverableBundle] = useState<
     number | undefined
   >(undefined);
+  const [maybeDeliverableInfo, setMaybeDeliverableInfo] = useState<
+    DenormalisedDeliverable | undefined
+  >(undefined);
+  const [loadError, setLoadError] = useState<string | undefined>(undefined);
+
   const classes = metadataStylesHook();
 
   const mediaAtomContext = useContext(MediaAtomToolContext);
@@ -66,6 +80,20 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
     }
   }, [props.content]);
 
+  /**
+   * Load in deliverable bundle information (if possible) when the deliverable bundle number changes
+   */
+  useEffect(() => {
+    if (maybeDeliverableBundle) {
+      GetDeliverableById(maybeDeliverableBundle)
+        .then((deliv) => setMaybeDeliverableInfo(deliv))
+        .catch((err) => {
+          setMaybeDeliverableInfo(undefined);
+          setLoadError("Could not load deliverable information at this time");
+        });
+    }
+  }, [maybeDeliverableBundle]);
+
   const jumpToAtom = () => {
     if (mediaAtomContext && maybeAtomId) {
       const url = `${mediaAtomContext.baseUrl}/videos/${maybeAtomId}`;
@@ -86,6 +114,29 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
     window.open(url);
   };
 
+  /**
+   * Takes in an ISO timestamp as a string and reformats it with date-fns
+   * @param ts
+   */
+  const friendlyTimestamp = (ts: string) => {
+    try {
+      const parsedDT = parseISO(ts);
+      return format(parsedDT, "HH:mm, eee do MMM yyyy");
+    } catch (err) {
+      console.error(`Could not format timestamp ${ts}: `, err);
+      return "invalid date";
+    }
+  };
+
+  const safeConvertId = (info: DenormalisedDeliverable) => {
+    try {
+      return Number(BigInt.asIntN(64, info.id));
+    } catch (err) {
+      console.log(`Could not use bundle id ${info.id}: `, err);
+      return undefined;
+    }
+  };
+
   return (
     <Paper elevation={props.elevation} className={classes.metagroup}>
       <Typography variant="h3">Deliverable</Typography>
@@ -95,7 +146,46 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
         justify="flex-start"
         alignItems="flex-start"
         spacing={2}
-      ></Grid>
+      >
+        <>
+          {loadError ? (
+            <Grid item>
+              <Alert severity="error">{loadError}</Alert>
+            </Grid>
+          ) : undefined}
+          {maybeDeliverableInfo ? (
+            <>
+              <Grid item>
+                <Breadcrumb
+                  commissionId={maybeDeliverableInfo.deliverable?.commission_id}
+                  projectId={
+                    maybeDeliverableInfo.deliverable?.pluto_core_project_id
+                  }
+                  masterId={safeConvertId(maybeDeliverableInfo)}
+                />
+              </Grid>
+              <Grid item>
+                <Typography>
+                  This is version {maybeDeliverableInfo.version} of a{" "}
+                  {maybeDeliverableInfo.type_string} in the bundle{" "}
+                  {maybeDeliverableInfo.deliverable?.name}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography>
+                  Current status: {maybeDeliverableInfo.status_string}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Typography>
+                  Last modified at{" "}
+                  {friendlyTimestamp(maybeDeliverableInfo.modified_dt)}
+                </Typography>
+              </Grid>
+            </>
+          ) : undefined}
+        </>
+      </Grid>
       <Grid container direction="row" justify="flex-start" spacing={3}>
         <Grid item>
           <Tooltip
