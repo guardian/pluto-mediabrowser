@@ -13,6 +13,12 @@ function setupInterceptors() {
     const token = window.localStorage.getItem("pluto:access-token");
     if (token) config.headers.Authorization = `Bearer ${token}`;
 
+    if (
+      config.url?.startsWith("/deliverables") ||
+      config.url?.startsWith("/pluto-core")
+    ) {
+      config.baseURL = undefined;
+    }
     return config;
   });
 
