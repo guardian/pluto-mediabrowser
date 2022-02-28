@@ -37,6 +37,9 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
   const [maybeDeliverableBundle, setMaybeDeliverableBundle] = useState<
     number | undefined
   >(undefined);
+  const [maybeDeliverableId, setMaybeDeliverableId] = useState<
+    number | undefined
+  >(undefined);
   const [maybeDeliverableInfo, setMaybeDeliverableInfo] = useState<
     DenormalisedDeliverable | undefined
   >(undefined);
@@ -80,19 +83,39 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
     }
   }, [props.content]);
 
+  useEffect(() => {
+    const results = props.content.getMetadataValuesInGroup(
+      "gnm_deliverable_id",
+      "Deliverable"
+    );
+    try {
+      const numericBundleId =
+        results && results.length > 0 ? parseInt(results[0]) : undefined;
+      setMaybeDeliverableId(numericBundleId);
+    } catch (err) {
+      console.error(
+        "The returned metadata ",
+        results,
+        " did not contain a valid deliverable ID. Error was ",
+        err
+      );
+      setMaybeDeliverableId(undefined);
+    }
+  }, [props.content]);
+
   /**
    * Load in deliverable bundle information (if possible) when the deliverable bundle number changes
    */
   useEffect(() => {
-    if (maybeDeliverableBundle) {
-      GetDeliverableById(maybeDeliverableBundle)
+    if (maybeDeliverableId) {
+      GetDeliverableById(maybeDeliverableId)
         .then((deliv) => setMaybeDeliverableInfo(deliv))
         .catch((err) => {
           setMaybeDeliverableInfo(undefined);
           setLoadError("Could not load deliverable information at this time");
         });
     }
-  }, [maybeDeliverableBundle]);
+  }, [maybeDeliverableId]);
 
   const jumpToAtom = () => {
     if (mediaAtomContext && maybeAtomId) {
