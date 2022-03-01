@@ -24,7 +24,7 @@ interface Project {
  * for a raw DeliverableAsset and DenormalisedDeliverable returns fields for a denormalised records
  */
 interface BaseDeliverable {
-  id: bigint;
+  id: number;
   type: number | null;
   filename: string;
   size: bigint;

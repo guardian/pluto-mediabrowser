@@ -151,24 +151,16 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
     }
   };
 
-  const safeConvertId = (info: DenormalisedDeliverable) => {
-    try {
-      return Number(BigInt.asIntN(64, info.id));
-    } catch (err) {
-      console.log(`Could not use bundle id ${info.id}: `, err);
-      return undefined;
-    }
-  };
-
   return (
     <Paper elevation={props.elevation} className={classes.metagroup}>
-      <Typography variant="h3">Deliverable</Typography>
+      <Typography variant="h3" style={{marginBottom: "0.6em"}}>Deliverable</Typography>
       <Grid
         container
         direction="row"
         justify="flex-start"
         alignItems="flex-start"
         spacing={2}
+        style={{paddingLeft:"0.4em", paddingRight: "0.4em"}}
       >
         <>
           {loadError ? (
@@ -176,22 +168,23 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
               <Alert severity="error">{loadError}</Alert>
             </Grid>
           ) : undefined}
+
           {maybeDeliverableInfo ? (
-            <>
+            <Grid container direction="column" spacing={1}>
               <Grid item>
                 <Breadcrumb
                   commissionId={maybeDeliverableInfo.deliverable?.commission_id}
                   projectId={
                     maybeDeliverableInfo.deliverable?.pluto_core_project_id
                   }
-                  masterId={safeConvertId(maybeDeliverableInfo)}
+                  masterId={maybeDeliverableInfo.id}
                 />
               </Grid>
               <Grid item>
                 <Typography>
-                  This is version {maybeDeliverableInfo.version} of a{" "}
-                  {maybeDeliverableInfo.type_string} in the bundle{" "}
-                  {maybeDeliverableInfo.deliverable?.name}
+                  This is a {maybeDeliverableInfo.version}{" "}
+                  {maybeDeliverableInfo.type_string} in the bundle &quot;
+                  {maybeDeliverableInfo.deliverable?.name}&quot;
                 </Typography>
               </Grid>
               <Grid item>
@@ -205,28 +198,29 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
                   {friendlyTimestamp(maybeDeliverableInfo.modified_dt)}
                 </Typography>
               </Grid>
-            </>
+            </Grid>
           ) : undefined}
         </>
       </Grid>
-      <Grid container direction="row" justify="flex-start" spacing={3}>
+      <hr style={{marginTop: "1em"}}/>
+      <Grid container direction="row" justify="flex-start" spacing={1}>
         <Grid item>
           <Tooltip
-            title={
-              maybeAtomId
-                ? "Open the media atom for this video in a new tab"
-                : "This video did not come from a media atom"
-            }
+              title={
+                maybeAtomId
+                    ? "Open the media atom for this video in a new tab"
+                    : "This video did not come from a media atom"
+              }
           >
             <span>
               <IconButton onClick={jumpToAtom} disabled={!maybeAtomId}>
                 <img
-                  src={atomIcon}
-                  alt="atom"
-                  style={{ width: "26px", height: "26px" }}
-                  className={
-                    maybeAtomId ? classes.enabledIcon : classes.disabledIcon
-                  }
+                    src={atomIcon}
+                    alt="atom"
+                    style={{ width: "26px", height: "26px" }}
+                    className={
+                      maybeAtomId ? classes.enabledIcon : classes.disabledIcon
+                    }
                 />
               </IconButton>
             </span>
@@ -236,8 +230,8 @@ const MetadataDeliverableView: React.FC<MetadataDeliverableViewProps> = (
           <Tooltip title="See other versions of this deliverable">
             <span>
               <IconButton
-                onClick={jumpToBundle}
-                disabled={!maybeDeliverableBundle}
+                  onClick={jumpToBundle}
+                  disabled={!maybeDeliverableBundle}
               >
                 <DynamicFeed />
               </IconButton>
