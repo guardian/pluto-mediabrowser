@@ -1,5 +1,5 @@
 import React from "react";
-import {mount, shallow} from "enzyme";
+import { mount, shallow } from "enzyme";
 import MetadataView from "../../app/ItemView/MetadataView";
 import sinon from "sinon";
 import FieldGroupCache from "../../app/vidispine/FieldGroupCache";
@@ -8,7 +8,9 @@ import { VidispineItem } from "../../app/vidispine/item/VidispineItem";
 import MetadataGroupView, {
   MetadataGroupViewMode,
 } from "../../app/ItemView/MetadataGroupView";
-import VidispineContext, {VidispineContextType} from "../../app/Context/VidispineContext";
+import VidispineContext, {
+  VidispineContextType,
+} from "../../app/Context/VidispineContext";
 
 describe("MetadataView", () => {
   it("should render MetadataGroupView instances via the fieldcache for all groups that are present on the item", () => {
@@ -47,22 +49,22 @@ describe("MetadataView", () => {
 
     const fieldCache = new FieldGroupCache(undefined, ...groups);
 
-    const contextValue:VidispineContextType = {
+    const contextValue: VidispineContextType = {
       baseUrl: "https://fake-base-url",
-      fieldCache: fieldCache
-    }
+      fieldCache: fieldCache,
+    };
 
     const didChangeCb = sinon.spy();
 
     const rendered = mount(
-        <VidispineContext.Provider value={contextValue}>
-          <MetadataView
-            elevation={1}
-            readonly={false}
-            content={item}
-            valueDidChange={didChangeCb}
-          />
-        </VidispineContext.Provider>
+      <VidispineContext.Provider value={contextValue}>
+        <MetadataView
+          elevation={1}
+          readonly={false}
+          content={item}
+          valueDidChange={didChangeCb}
+        />
+      </VidispineContext.Provider>
     );
 
     const mdGroupBoxes = rendered.find("MetadataGroupView");
@@ -112,22 +114,22 @@ describe("MetadataView", () => {
 
     const fieldCache = new FieldGroupCache(undefined, ...groups);
 
-    const contextValue:VidispineContextType = {
+    const contextValue: VidispineContextType = {
       baseUrl: "https://fake-base-url",
-      fieldCache: fieldCache
-    }
+      fieldCache: fieldCache,
+    };
 
     const didChangeCb = sinon.spy();
 
     const rendered = mount(
-        <VidispineContext.Provider value={contextValue}>
-          <MetadataView
-            elevation={1}
-            readonly={false}
-            content={item}
-            valueDidChange={didChangeCb}
-          />
-        </VidispineContext.Provider>
+      <VidispineContext.Provider value={contextValue}>
+        <MetadataView
+          elevation={1}
+          readonly={false}
+          content={item}
+          valueDidChange={didChangeCb}
+        />
+      </VidispineContext.Provider>
     );
 
     const mdGroupBoxes = rendered.find("MetadataGroupView");

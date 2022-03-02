@@ -1,21 +1,18 @@
-import React, {useContext, useEffect, useState} from "react";
-import {
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
+import { Paper, Typography } from "@material-ui/core";
 import { VidispineItem } from "./vidispine/item/VidispineItem";
 import { Helmet } from "react-helmet";
-import {
-  RouteComponentProps,
-} from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import FieldGroupCache from "./vidispine/FieldGroupCache";
 import MetadataView from "./ItemView/MetadataView";
 import { makeStyles } from "@material-ui/core/styles";
 import PlayerContainer from "./ItemView/PlayerContainer";
 import VidispineContext from "./Context/VidispineContext";
-import {loadItemMeta} from "./ItemView/LoadItem";
+import { loadItemMeta } from "./ItemView/LoadItem";
 
-const ItemViewComponent: React.FC<RouteComponentProps<ItemViewComponentMatches>> = (props) => {
+const ItemViewComponent: React.FC<RouteComponentProps<
+  ItemViewComponentMatches
+>> = (props) => {
   const [itemData, setItemData] = useState<VidispineItem | undefined>();
   const [lastError, setLastError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,21 +32,23 @@ const ItemViewComponent: React.FC<RouteComponentProps<ItemViewComponentMatches>>
   const classes = useStyles();
 
   useEffect(() => {
-    if(vidispineContext) {
+    if (vidispineContext) {
       console.log(`Loading item with id ${props.match.params.itemId}`);
       loadItemMeta(vidispineContext.baseUrl, props.match.params.itemId)
-          .then(newItemData=>{
-            setItemData(newItemData);
-            setLastError("");
-            setLoading(false);
-          })
-          .catch(err=>{
-            setLoading(false);
-            setLastError(err);
-            if(err.contains("retrying")) window.setTimeout(loadItemMeta, 3000);  //try again in 3 seconds
-          })
+        .then((newItemData) => {
+          setItemData(newItemData);
+          setLastError("");
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          setLastError(err);
+          if (err.contains("retrying")) window.setTimeout(loadItemMeta, 3000); //try again in 3 seconds
+        });
     } else {
-      console.log("not loading item yet because vidispine context is not loaded")
+      console.log(
+        "not loading item yet because vidispine context is not loaded"
+      );
     }
   }, [vidispineContext]);
 

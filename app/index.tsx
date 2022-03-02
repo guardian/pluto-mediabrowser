@@ -109,95 +109,95 @@ const App: React.FC<{}> = () => {
     initialiseComponent();
   }, []);
 
-  if(window.location.href.includes("embed")) {
+  if (window.location.href.includes("embed")) {
     //if we are embedding, we just need a minimum of decorations so don't load the full UI
     return (
-        <PlutoThemeProvider>
-          <CssBaseline/>
-          <VidispineContext.Provider value={vidispineDetails}>
-              <Switch>
-                <Route path="/embed/player" component={EmbeddablePlayer}/>
-              </Switch>
-          </VidispineContext.Provider>
-        </PlutoThemeProvider>
-    )
+      <PlutoThemeProvider>
+        <CssBaseline />
+        <VidispineContext.Provider value={vidispineDetails}>
+          <Switch>
+            <Route path="/embed/player" component={EmbeddablePlayer} />
+          </Switch>
+        </VidispineContext.Provider>
+      </PlutoThemeProvider>
+    );
   } else {
     return (
-        <PlutoThemeProvider>
-          <CssBaseline/>
-          <Helmet>
-            <title>PLUTO Media Browser</title>
-          </Helmet>
-          <SystemNotification/>
-          <Header/>
-          <AppSwitcher onLoggedIn={() => {
-          }} onLoggedOut={() => {
-          }}/>
-          {lastError ? (
-              <div className="error-dialog">
-                <Typography>{lastError}</Typography>
-              </div>
-          ) : undefined}
-          {loading ? <CircularProgress/> : undefined}
-          {!lastError && !loading ? (
-              <VidispineContext.Provider value={vidispineDetails}>
-                <Switch>
-                  <Route path="/item/:itemId" component={ItemViewComponent}/>
+      <PlutoThemeProvider>
+        <CssBaseline />
+        <Helmet>
+          <title>PLUTO Media Browser</title>
+        </Helmet>
+        <SystemNotification />
+        <Header />
+        <AppSwitcher onLoggedIn={() => {}} onLoggedOut={() => {}} />
+        {lastError ? (
+          <div className="error-dialog">
+            <Typography>{lastError}</Typography>
+          </div>
+        ) : undefined}
+        {loading ? <CircularProgress /> : undefined}
+        {!lastError && !loading ? (
+          <VidispineContext.Provider value={vidispineDetails}>
+            <Switch>
+              <Route path="/item/:itemId" component={ItemViewComponent} />
 
-                  <Route
-                      path="/last/:pageSize"
-                      render={(props: RouteComponentProps<LastNComponentMatches>) => {
-                        let itemLimit: number = 15;
-                        try {
-                          itemLimit = parseInt(props.match.params.pageSize);
-                        } catch (err) {
-                          console.error(
-                              `${props.match.params.pageSize} is not a number`
-                          );
-                        }
-                        return (
-                            <FrontpageComponent
-                                {...props}
-                                itemLimit={itemLimit}
-                                projectIdToLoad={0}
-                            />
-                        );
-                      }}
-                  />
-                  <Route
-                      path="/search"
-                      render={(props: RouteComponentProps) => (
-                          <FrontpageComponent {...props} projectIdToLoad={0}/>
-                      )}
-                  />
-                  <Route
-                      path="/project/:projectId"
-                      render={(props: RouteComponentProps<ProjectComponentMatches>) => {
-                        let projectIdToLoad: number = 0;
-                        try {
-                          projectIdToLoad = parseInt(props.match.params.projectId);
-                        } catch (err) {
-                          console.error(
-                              `${props.match.params.projectId} is not a number`
-                          );
-                        }
-                        return (
-                            <FrontpageComponent
-                                {...props}
-                                projectIdToLoad={projectIdToLoad}
-                            />
-                        );
-                      }}
-                  />
-                  <Route
-                      path="/"
-                      exact={true}
-                      component={() => <Redirect to="/last/15"/>}
-                  />
-                </Switch>
-              </VidispineContext.Provider>
-          ) : undefined}
-        </PlutoThemeProvider>
+              <Route
+                path="/last/:pageSize"
+                render={(props: RouteComponentProps<LastNComponentMatches>) => {
+                  let itemLimit: number = 15;
+                  try {
+                    itemLimit = parseInt(props.match.params.pageSize);
+                  } catch (err) {
+                    console.error(
+                      `${props.match.params.pageSize} is not a number`
+                    );
+                  }
+                  return (
+                    <FrontpageComponent
+                      {...props}
+                      itemLimit={itemLimit}
+                      projectIdToLoad={0}
+                    />
+                  );
+                }}
+              />
+              <Route
+                path="/search"
+                render={(props: RouteComponentProps) => (
+                  <FrontpageComponent {...props} projectIdToLoad={0} />
+                )}
+              />
+              <Route
+                path="/project/:projectId"
+                render={(
+                  props: RouteComponentProps<ProjectComponentMatches>
+                ) => {
+                  let projectIdToLoad: number = 0;
+                  try {
+                    projectIdToLoad = parseInt(props.match.params.projectId);
+                  } catch (err) {
+                    console.error(
+                      `${props.match.params.projectId} is not a number`
+                    );
+                  }
+                  return (
+                    <FrontpageComponent
+                      {...props}
+                      projectIdToLoad={projectIdToLoad}
+                    />
+                  );
+                }}
+              />
+              <Route
+                path="/"
+                exact={true}
+                component={() => <Redirect to="/last/15" />}
+              />
+            </Switch>
+          </VidispineContext.Provider>
+        ) : undefined}
+      </PlutoThemeProvider>
     );
   }
 };

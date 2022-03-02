@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import MetadataGroupView, { MetadataGroupViewMode } from "./MetadataGroupView";
 import FieldGroupCache from "../vidispine/FieldGroupCache";
 import { VidispineItem } from "../vidispine/item/VidispineItem";
@@ -23,28 +23,27 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
 
   const vidispineContext = useContext(VidispineContext);
 
-  const getTableContent = (fieldCache:FieldGroupCache) => (
+  const getTableContent = (fieldCache: FieldGroupCache) =>
     //So, Array.from() is not the most performant method of iterating, but should be fine on small collections
     //https://stackoverflow.com/questions/43885365/using-map-on-an-iterator
     Array.from(fieldCache._content, ([groupname, group]) => {
       return props.content.hasGroup(groupname) ? ( //only render groups that are present on the item
-          <MetadataGroupView
-              key={groupname}
-              group={group}
-              content={props.content}
-              elevation={props.elevation}
-              mode={
-                editMode
-                    ? MetadataGroupViewMode.MetadataEdit
-                    : MetadataGroupViewMode.MetadataView
-              }
-              valueDidChange={(fieldname, newvalue) =>
-                  props.valueDidChange(groupname, fieldname, newvalue)
-              }
-          />
+        <MetadataGroupView
+          key={groupname}
+          group={group}
+          content={props.content}
+          elevation={props.elevation}
+          mode={
+            editMode
+              ? MetadataGroupViewMode.MetadataEdit
+              : MetadataGroupViewMode.MetadataView
+          }
+          valueDidChange={(fieldname, newvalue) =>
+            props.valueDidChange(groupname, fieldname, newvalue)
+          }
+        />
       ) : null;
-    })
-  )
+    });
 
   return (
     <>
@@ -62,9 +61,9 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
           </ToggleButton>
         </Grid>
       </Grid>
-      {
-        vidispineContext ? getTableContent(vidispineContext.fieldCache) : undefined
-      }
+      {vidispineContext
+        ? getTableContent(vidispineContext.fieldCache)
+        : undefined}
     </>
   );
 };
