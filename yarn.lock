@@ -6683,9 +6683,9 @@ please-upgrade-node@^3.2.0:
   dependencies:
     semver-compare "^1.0.0"
 
-"pluto-headers@https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.6.2":
-  version "1.6.2"
-  resolved "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#6cca4d7c788a35a435e2f258d389a6eaaedd0201"
+"pluto-headers@https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.6.3":
+  version "1.6.3"
+  resolved "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#136803bdc5d2ad3cc681373903a80566cb7fb713"
 
 popper.js@1.16.1-lts:
   version "1.16.1-lts"
