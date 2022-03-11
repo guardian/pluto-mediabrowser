@@ -28,6 +28,9 @@ import VidispineContext, {
   VidispineContextType,
 } from "./Context/VidispineContext";
 import EmbeddablePlayer from "./Embeddable/EmbeddablePlayer";
+import MediaAtomToolContext, {
+  MediaAtomToolContextType,
+} from "./pluto-deliverables/MediaAtomToolContext";
 
 interface AppState {
   vidispineBaseUrl?: string;
@@ -39,6 +42,7 @@ interface AppState {
 
 interface ConfigFileData {
   vidispineBaseUrl: string;
+  mediaAtomBaseUrl: string;
 }
 
 declare var deploymentRootPath: string | undefined;
@@ -57,6 +61,9 @@ const groupsToCache = ["Deliverable", "Newswire", "Rushes", "Asset"];
 const App: React.FC<{}> = () => {
   const [vidispineDetails, setVidispineDetails] = useState<
     VidispineContextType | undefined
+  >(undefined);
+  const [mediaAtomDetails, setMediaAtomDetails] = useState<
+    MediaAtomToolContextType | undefined
   >(undefined);
 
   const [loading, setLoading] = useState(true);
@@ -93,6 +100,10 @@ const App: React.FC<{}> = () => {
         baseUrl: configResponse.data.vidispineBaseUrl,
         fieldCache: fieldGroupCache,
       });
+      if (configResponse.data.mediaAtomBaseUrl)
+        setMediaAtomDetails({
+          baseUrl: configResponse.data.mediaAtomBaseUrl,
+        });
 
       setLoading(false);
       setLastError(undefined);
@@ -139,62 +150,66 @@ const App: React.FC<{}> = () => {
         {loading ? <CircularProgress /> : undefined}
         {!lastError && !loading ? (
           <VidispineContext.Provider value={vidispineDetails}>
-            <Switch>
-              <Route path="/item/:itemId" component={ItemViewComponent} />
+            <MediaAtomToolContext.Provider value={mediaAtomDetails}>
+              <Switch>
+                <Route path="/item/:itemId" component={ItemViewComponent} />
 
-              <Route
-                path="/last/:pageSize"
-                render={(props: RouteComponentProps<LastNComponentMatches>) => {
-                  let itemLimit: number = 15;
-                  try {
-                    itemLimit = parseInt(props.match.params.pageSize);
-                  } catch (err) {
-                    console.error(
-                      `${props.match.params.pageSize} is not a number`
+                <Route
+                  path="/last/:pageSize"
+                  render={(
+                    props: RouteComponentProps<LastNComponentMatches>
+                  ) => {
+                    let itemLimit: number = 15;
+                    try {
+                      itemLimit = parseInt(props.match.params.pageSize);
+                    } catch (err) {
+                      console.error(
+                        `${props.match.params.pageSize} is not a number`
+                      );
+                    }
+                    return (
+                      <FrontpageComponent
+                        {...props}
+                        itemLimit={itemLimit}
+                        projectIdToLoad={0}
+                      />
                     );
-                  }
-                  return (
-                    <FrontpageComponent
-                      {...props}
-                      itemLimit={itemLimit}
-                      projectIdToLoad={0}
-                    />
-                  );
-                }}
-              />
-              <Route
-                path="/search"
-                render={(props: RouteComponentProps) => (
-                  <FrontpageComponent {...props} projectIdToLoad={0} />
-                )}
-              />
-              <Route
-                path="/project/:projectId"
-                render={(
-                  props: RouteComponentProps<ProjectComponentMatches>
-                ) => {
-                  let projectIdToLoad: number = 0;
-                  try {
-                    projectIdToLoad = parseInt(props.match.params.projectId);
-                  } catch (err) {
-                    console.error(
-                      `${props.match.params.projectId} is not a number`
+                  }}
+                />
+                <Route
+                  path="/search"
+                  render={(props: RouteComponentProps) => (
+                    <FrontpageComponent {...props} projectIdToLoad={0} />
+                  )}
+                />
+                <Route
+                  path="/project/:projectId"
+                  render={(
+                    props: RouteComponentProps<ProjectComponentMatches>
+                  ) => {
+                    let projectIdToLoad: number = 0;
+                    try {
+                      projectIdToLoad = parseInt(props.match.params.projectId);
+                    } catch (err) {
+                      console.error(
+                        `${props.match.params.projectId} is not a number`
+                      );
+                    }
+                    return (
+                      <FrontpageComponent
+                        {...props}
+                        projectIdToLoad={projectIdToLoad}
+                      />
                     );
-                  }
-                  return (
-                    <FrontpageComponent
-                      {...props}
-                      projectIdToLoad={projectIdToLoad}
-                    />
-                  );
-                }}
-              />
-              <Route
-                path="/"
-                exact={true}
-                component={() => <Redirect to="/last/15" />}
-              />
-            </Switch>
+                  }}
+                />
+                <Route
+                  path="/"
+                  exact={true}
+                  component={() => <Redirect to="/last/15" />}
+                />
+              </Switch>
+            </MediaAtomToolContext.Provider>
           </VidispineContext.Provider>
         ) : undefined}
       </PlutoThemeProvider>

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
-    "dev": "webpack --mode development --watch",
+    "dev": "webpack --mode development",
     "compile": "webpack --mode production",
     "snyk-protect": "snyk protect",
     "lint": "prettier --check app __tests__",
@@ -22,7 +22,7 @@
     ],
     "verbose": true,
     "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
+      "\\.(css|less|svg)$": "identity-obj-proxy"
     },
     "testResultsProcessor": "jest-junit",
     "testEnvironment": "jsdom",
@@ -36,6 +36,7 @@
   "author": "Andy Gallagher <andy.gallagher@theguardian.com>",
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
+    "@types/codemirror": "^5.60.5",
     "@types/enzyme": "^3.10.5",
     "@types/jest": "^26.0.7",
     "@types/jsonwebtoken": "^8.5.0",
@@ -45,6 +46,7 @@
     "@types/react-helmet": "^6.1.1",
     "@types/react-router-dom": "^5.1.7",
     "@types/sinon": "^9.0.4",
+    "@types/xml-formatter": "^2.1.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "expect": "^24.9.0",
@@ -81,6 +83,7 @@
     "ajv": "^6.12.3",
     "axios": "^0.21.3",
     "buffer": "^6.0.3",
+    "codemirror": "^5.65.2",
     "cross-storage": "^1.0.0",
     "crypto-browserify": "^3.12.0",
     "css-loader": "^5.2.3",
@@ -92,7 +95,7 @@
     "lodash": "^4.17.21",
     "lodash.omit": "^4.5.0",
     "material-ui-chip-input": "^1.1.0",
-    "pluto-headers": "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.6.2",
+    "pluto-headers": "https://gitlab.com/codmill/customer-projects/guardian/pluto-headers.git#v1.6.3",
     "process": "^0.11.10",
     "query-string": "^6.13.1",
     "react": "^16.12.0",
@@ -111,6 +114,7 @@
     "util": "^0.12.3",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0",
+    "xml-formatter": "^2.6.1",
     "y18n": "^4.0.1",
     "yarn": "^1.21.1"
   },
