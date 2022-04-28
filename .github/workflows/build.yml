@@ -1,0 +1,83 @@
+name: Build and upload pluto-mediabrowser
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # The first two permissions are needed to interact with GitHub's OIDC Token endpoint.
+    # The second set of two permissions are needed to write test results back to GH
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.14.1"
+
+      # GITHUB_RUN_NUMBER always starts from 1, so to maintain compatibility we adjust it here
+      - name: Make GITHUB_RUN_NUMBER env var available outside of shells
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        shell: bash
+        run: |
+          echo GITHUB_RUN_NUMBER=$(( GITHUB_RUN_NUMBER + 170 ))>> $GITHUB_ENV
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GHA-build
+
+      - name: ECR Login
+        run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - run: if [ -d "junit-tests" ]; then mkdir junit-tests; fi
+        name: Prepare test outputs location
+
+      - run: bash ./ci-build/setup_headers.sh
+        env:
+          HEADERS_DEPLOY_USER: ${{ secrets.HEADERS_DEPLOY_USER }}
+          HEADERS_DEPLOY_TOKEN: ${{ secrets.HEADERS_DEPLOY_TOKEN }}
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn test
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ../junit-tests
+          JEST_JUNIT_TITLE: Frontend tests
+      - run: yarn compile
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()  #runs even if there is a test failure
+        with:
+          files: junit-tests/*.xml
+
+      - name: Output build-info.yaml
+        uses: fredex42/pluto-build-info@v1.1
+        with:
+          builtimage: AWS_ACCOUNT_ID.dkr.ecr.AWS_REGION.amazonaws.com/pluto-mediabrowser:${{ env.GITHUB_RUN_NUMBER }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check the output
+        run: cat build-info.yaml
+
+      - name: Upload build info
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-info
+          path: build-info.yaml
