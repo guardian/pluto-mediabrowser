@@ -48,7 +48,7 @@ jobs:
       - run: if [ -d "junit-tests" ]; then mkdir junit-tests; fi
         name: Prepare test outputs location
 
-      - run: bash ./ci-build/setup_headers.sh
+      - run: bash ./ci-scripts/setup_headers.sh
         env:
           HEADERS_DEPLOY_USER: ${{ secrets.HEADERS_DEPLOY_USER }}
           HEADERS_DEPLOY_TOKEN: ${{ secrets.HEADERS_DEPLOY_TOKEN }}
