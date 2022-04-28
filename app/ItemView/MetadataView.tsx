@@ -71,7 +71,6 @@ const MetadataView: React.FC<MetadataViewProps> = (props) => {
     //So, Array.from() is not the most performant method of iterating, but should be fine on small collections
     //https://stackoverflow.com/questions/43885365/using-map-on-an-iterator
     Array.from(fieldCache._content, ([groupname, group]) => {
-
       //only render groups that are present on the item
       return props.content.hasGroup(groupname)
         ? contentForGroupName(groupname, group)
