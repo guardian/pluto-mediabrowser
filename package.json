@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --verbose",
+    "test-ci": "jest --ci --testResultsProcessor=\"jest-junit\"",
     "dev": "webpack --mode development",
     "compile": "webpack --mode production",
     "snyk-protect": "snyk protect",
@@ -54,7 +55,7 @@
     "jest": "^26.6.3",
     "jest-cli": "^26.6.3",
     "jest-fetch-mock": "^3.0.1",
-    "jest-junit": "^4.0.0",
+    "jest-junit": "^13.0.0",
     "moxios": "^0.4.0",
     "prettier": "^2.0.5",
     "react-test-renderer": "^16.12.0",
