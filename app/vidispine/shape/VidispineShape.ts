@@ -104,6 +104,13 @@ interface VidispineVideoComponent {
   startTimestamp?: SampleBasedTime;
 }
 
+interface VidispineBinaryComponent {
+  file: VidispineFile[];
+  id: string;
+  metadata?: DataPair[];
+  length?: number;
+}
+
 interface VidispineShapeIF {
   id: string;
   created: string;
@@ -113,6 +120,7 @@ interface VidispineShapeIF {
   containerComponent?: VidispineContainerComponent;
   audioComponent?: VidispineAudioComponent[];
   videoComponent?: VidispineVideoComponent[];
+  binaryComponent?: VidispineBinaryComponent[];
 }
 
 const {
@@ -120,6 +128,7 @@ const {
   VidispineVideoComponent,
   VidispineAudioComponent,
   VidispineContainerComponent,
+  VidispineBinaryComponent,
 } = createCheckers(VidispineShapeTI, CustomDataTI, VidispineFileTI);
 
 /**
@@ -140,6 +149,7 @@ class VidispineShape implements VidispineShapeIF {
   containerComponent?: VidispineContainerComponent;
   audioComponent?: VidispineAudioComponent[];
   videoComponent?: VidispineVideoComponent[];
+  binaryComponent?: VidispineBinaryComponent[];
 
   /**
    * construct from an untyped object (parsed from json).
@@ -160,11 +170,16 @@ class VidispineShape implements VidispineShapeIF {
       check && sourceObject.hasOwnProperty("videoComponent")
         ? this.validateVideoComponentList(sourceObject.videoComponent)
         : sourceObject.videoComponent;
+    const binaryComponents =
+      check && sourceObject.hasOwnProperty("binaryComponent")
+        ? this.validateBinaryComponentList(sourceObject.binaryComponent)
+        : sourceObject.binaryComponent;
 
     const everythingElse = omit(sourceObject, [
       "containerComponent",
       "audioComponent",
       "videoComponent",
+      "binaryComponent",
     ]);
     if (check) VidispineShapeIF.check(everythingElse);
     this.id = everythingElse.id;
@@ -176,6 +191,7 @@ class VidispineShape implements VidispineShapeIF {
     this.containerComponent = containerComponent;
     this.audioComponent = audioComponents;
     this.videoComponent = videoComponents;
+    this.binaryComponent = binaryComponents;
   }
 
   validateFiles(sourceFileList: any[], parentPath: string): VidispineFile[] {
@@ -272,6 +288,35 @@ class VidispineShape implements VidispineShapeIF {
           : undefined;
         i += 1;
         return <VidispineVideoComponent>(
+          Object.assign(component, { file: files })
+        );
+      });
+  }
+
+  validateBinaryComponentList(
+    sourceComponent: any[]
+  ): VidispineBinaryComponent[] {
+    let i = 0;
+    return sourceComponent
+      .filter((component) => {
+        try {
+          //the object does not verify if the "file" key is absent so replace it with an empty one
+          const everythingElse = Object.assign(omit(component, "file"), {
+            file: [],
+          });
+          VidispineBinaryComponent.check(everythingElse);
+          return true;
+        } catch (err) {
+          console.warn(`Binary component ${i} did not validate: ${err}`);
+          return false;
+        }
+      })
+      .map((component) => {
+        const files = component.hasOwnProperty("file")
+          ? this.validateFiles(component.file, `binaryComponent.${i}`)
+          : undefined;
+        i += 1;
+        return <VidispineBinaryComponent>(
           Object.assign(component, { file: files })
         );
       });

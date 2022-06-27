@@ -99,6 +99,13 @@ export const VidispineVideoComponent = t.iface([], {
   startTimestamp: t.opt("SampleBasedTime"),
 });
 
+export const VidispineBinaryComponent = t.iface([], {
+  id: "string",
+  length: t.opt("number"),
+  file: t.opt(t.array("VidispineFile")),
+  metadata: t.opt(t.array("DataPair")),
+});
+
 export const VidispineShapeIF = t.iface([], {
   id: "string",
   created: "string",
@@ -108,6 +115,7 @@ export const VidispineShapeIF = t.iface([], {
   containerComponent: t.opt("VidispineContainerComponent"),
   audioComponent: t.opt(t.array("VidispineAudioComponent")),
   videoComponent: t.opt(t.array("VidispineVideoComponent")),
+  binaryComponent: t.opt(t.array("VidispineBinaryComponent")),
 });
 
 const exportedTypeSuite: t.ITypeSuite = {
@@ -119,6 +127,7 @@ const exportedTypeSuite: t.ITypeSuite = {
   VidispineContainerComponent,
   VidispineAudioComponent,
   VidispineVideoComponent,
+  VidispineBinaryComponent,
   VidispineShapeIF,
 };
 export default exportedTypeSuite;
