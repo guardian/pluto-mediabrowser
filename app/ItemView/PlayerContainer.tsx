@@ -165,35 +165,31 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
               />
             </Grid>
             <Grid item xs={4}>
-              {playerUri != "" ? (
-                <div style={{ marginTop: "8px" }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    target="_blank"
-                    href={targetUrl}
-                  >
-                    Download
-                  </Button>
-                </div>
-              ) : null}
+              <div style={{ marginTop: "8px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  target="_blank"
+                  href={targetUrl}
+                >
+                  Download
+                </Button>
+              </div>
             </Grid>
             <Grid item xs={4}>
-              {playerUri != "" ? (
-                <Tooltip
-                  className={classes.infoIcon}
-                  title="How do I download files?"
+              <Tooltip
+                className={classes.infoIcon}
+                title="How do I download files?"
+              >
+                <IconButton
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setOpenDialog(true);
+                  }}
                 >
-                  <IconButton
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      setOpenDialog(true);
-                    }}
-                  >
-                    <HelpIcon />
-                  </IconButton>
-                </Tooltip>
-              ) : null}
+                  <HelpIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </Grid>
         </Grid>
