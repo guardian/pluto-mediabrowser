@@ -87,6 +87,16 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
         return undefined;
       }
     }
+    if (currentShapeData.binaryComponent) {
+      const potentialComponents = currentShapeData.binaryComponent.filter(
+        (c) => c.file.length > 0
+      );
+      if (potentialComponents.length > 0) {
+        return potentialComponents[0].file[0].id;
+      } else {
+        return undefined;
+      }
+    }
     return undefined;
   };
 
