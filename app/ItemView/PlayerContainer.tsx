@@ -42,7 +42,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     const shapeMatches = props.shapes
       .filter((shape) => shape.tag.length > 0)
       .filter((shape) => props.defaultShapes.includes(shape.tag[0]));
-    return shapeMatches.length > 0 ? shapeMatches[0].tag[0] : "";
+    return shapeMatches.length > 0 ? shapeMatches[0].tag[0] : "original";
   };
 
   const [selectedShapeTag, setSelectedShapeTag] = useState<string>(
