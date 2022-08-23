@@ -225,7 +225,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
     if (props.projectIdToLoad != 0) {
       getProjectTitle(props.projectIdToLoad);
     }
-  }, [itemLimit]);
+  }, [itemLimit, pageSize]);
 
   /**
    * re-run the search when the searchdoc changes
@@ -282,9 +282,10 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           isHidden={hideSearchBox}
           projectIdToLoad={props.projectIdToLoad}
           moreItemsAvailable={moreItemsAvailable}
-          onLoadMoreClicked={() =>
-            setPageSize((currentValue) => currentValue + 50)
-          }
+          onLoadMoreClicked={() => {
+            setPageSize((currentValue) => currentValue + 50);
+            setItemLimit((currentValue) => currentValue + 50);
+          }}
         />
       </div>
       <div className="results-container" ref={resultsContainerRef}>
