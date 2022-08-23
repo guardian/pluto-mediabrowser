@@ -63,7 +63,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
     if (maybeFields != undefined) {
       maybeFields.set("gnm_nearline_id", [""]);
     } else {
-      maybeFields = new Map([["gnm_nearline_id", [""]]])
+      maybeFields = new Map([["gnm_nearline_id", [""]]]);
     }
 
     const groups: Map<string, Map<string, string[]>> = new Map([
