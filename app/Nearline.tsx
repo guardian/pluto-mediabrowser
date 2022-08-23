@@ -44,7 +44,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [pageSize, setPageSize] = useState<number>(15);
   const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 100);
   const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
-
+  const [loadFrom, setLoadFrom] = useState<number>(0);
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [facetList, setFacetList] = useState<FacetCountResponse[]>([]);
@@ -225,7 +225,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
     if (props.projectIdToLoad != 0) {
       getProjectTitle(props.projectIdToLoad);
     }
-  }, [itemLimit, pageSize]);
+  }, [itemLimit]);
 
   /**
    * re-run the search when the searchdoc changes
@@ -234,7 +234,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
     console.log("Search updated, reloading...");
     setLastError(undefined);
     //give the above a chance to execute before we kick off the download
-    window.setTimeout(() => loadNextPage(0, []), 100);
+    window.setTimeout(() => loadNextPage(loadFrom, []), 100);
   }, [currentSearch]);
 
   if (redirectToItem) return <Redirect to={`/item/${redirectToItem}`} />;
@@ -283,8 +283,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           projectIdToLoad={props.projectIdToLoad}
           moreItemsAvailable={moreItemsAvailable}
           onLoadMoreClicked={() => {
-            setPageSize((currentValue) => currentValue + 50);
-            setItemLimit((currentValue) => currentValue + 50);
+            setLoadFrom((currentValue) => currentValue + 100);
           }}
         />
       </div>
