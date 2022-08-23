@@ -31,6 +31,7 @@ import EmbeddablePlayer from "./Embeddable/EmbeddablePlayer";
 import MediaAtomToolContext, {
   MediaAtomToolContextType,
 } from "./pluto-deliverables/MediaAtomToolContext";
+import NearlineComponent from "./Nearline";
 
 interface AppState {
   vidispineBaseUrl?: string;
@@ -202,6 +203,12 @@ const App: React.FC<{}> = () => {
                       />
                     );
                   }}
+                />
+                <Route
+                  path="/nearline"
+                  render={(props: RouteComponentProps) => (
+                    <NearlineComponent {...props} projectIdToLoad={0} />
+                  )}
                 />
                 <Route
                   path="/"
