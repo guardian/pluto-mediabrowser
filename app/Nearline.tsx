@@ -164,8 +164,11 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
       }
 
       if (serverContent.data.item) {
-        if (serverContent.data.item.length < pageSize)
+        if (serverContent.data.item.length < pageSize) {
           setMoreItemsAvailable(false);
+        } else {
+          setMoreItemsAvailable(true);
+        }
         //only add in items that validate as VidispineItem. Items that don't are logged to console.
         const existingList = previousItemList ?? itemList;
         const updatedItemList = existingList.concat(
