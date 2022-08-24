@@ -118,7 +118,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
     previousItemList?: VidispineItem[]
   ) => {
     setSearching(true);
-    const fromParam = startAt ?? loadFrom + itemList.length;
+    const fromParam = loadFrom + itemList.length;
     const shouldCount: boolean = fromParam == 0;
     const searchUrl = `${
       vidispineContext?.baseUrl
