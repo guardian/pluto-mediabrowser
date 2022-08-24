@@ -118,7 +118,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
     previousItemList?: VidispineItem[]
   ) => {
     setSearching(true);
-    const fromParam = loadFrom + itemList.length;
+    const fromParam = startAt ?? loadFrom + itemList.length;
     const shouldCount: boolean = fromParam == 0;
     const searchUrl = `${
       vidispineContext?.baseUrl
@@ -184,7 +184,8 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
         ) {
           //allow the javascript engine to process state updates above before recursing on to next page.
           window.setTimeout(
-            () => loadNextPage(updatedItemList.length, updatedItemList),
+            () =>
+              loadNextPage(updatedItemList.length + loadFrom, updatedItemList),
             200
           );
         } else {
