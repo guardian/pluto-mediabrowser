@@ -132,7 +132,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                           : undefined
                       }
                     >
-                      Load Previous 100
+                      Previous 100
                     </Button>
                   </span>
                 </Tooltip>
@@ -154,7 +154,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                           : undefined
                       }
                     >
-                      Load Next 100
+                      Next 100
                     </Button>
                   </span>
                 </Tooltip>

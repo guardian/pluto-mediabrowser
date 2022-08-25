@@ -170,7 +170,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
         } else {
           setMoreItemsAvailable(true);
         }
-        if (serverContent.data.item.length > pageSize) {
+        if (loadFrom == 0) {
           setPreviousItemsAvailable(false);
         } else {
           setPreviousItemsAvailable(true);
