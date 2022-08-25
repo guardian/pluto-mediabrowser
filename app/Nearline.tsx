@@ -231,16 +231,6 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
   };
 
   /**
-   * display last-15 items on startup
-   * */
-  useEffect(() => {
-    loadNextPage();
-    if (props.projectIdToLoad != 0) {
-      getProjectTitle(props.projectIdToLoad);
-    }
-  }, [itemLimit]);
-
-  /**
    * re-run the search when the searchdoc changes
    * */
   useEffect(() => {
