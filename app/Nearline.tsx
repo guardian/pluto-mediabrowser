@@ -6,14 +6,14 @@ import VidispineSearchDoc, {
 import { VidispineItem } from "./vidispine/item/VidispineItem";
 import axios from "axios";
 import { VError } from "ts-interface-checker";
-import SearchResultsPane from "./Nearline/SearchResultsPane";
+import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Nearline/VidispineSearchForm";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
 } from "./vidispine/search/FacetResponse";
-import FacetDisplays from "./Nearline/FacetDisplays";
+import FacetDisplays from "./Frontpage/FacetDisplays";
 import VidispineContext from "./Context/VidispineContext";
 import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
 

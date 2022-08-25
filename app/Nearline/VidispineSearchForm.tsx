@@ -5,7 +5,7 @@ import MetadataGroupView, {
 } from "../ItemView/MetadataGroupView";
 import FieldGroupCache from "../vidispine/FieldGroupCache";
 import { VidispineFieldGroup } from "../vidispine/field-group/VidispineFieldGroup";
-import MetadataGroupSelector from "./MetadataGroupSelector";
+import MetadataGroupSelector from "../Frontpage/MetadataGroupSelector";
 import {
   Button,
   FormControl,
