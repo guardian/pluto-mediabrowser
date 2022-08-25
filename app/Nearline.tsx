@@ -34,7 +34,13 @@ const useStyles = makeStyles({
 const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [currentSearch, setCurrentSearch] = useState<
     VidispineSearchDoc | undefined
-  >(undefined);
+  >(
+    new VidispineSearchDoc(
+      undefined,
+      new Map([["gnm_nearline_id", [""]]]),
+      new Map([["Asset", new Map()]])
+    )
+  );
   const [hideSearchBox, setHideSearchBox] = useState<boolean>(
     !props.location.pathname.startsWith("/search")
   );
