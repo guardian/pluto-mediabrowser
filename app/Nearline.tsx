@@ -48,6 +48,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [facetList, setFacetList] = useState<FacetCountResponse[]>([]);
+  const [previousItemsAvailable, setPreviousItemsAvailable] = useState(false);
 
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
@@ -169,6 +170,11 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
         } else {
           setMoreItemsAvailable(true);
         }
+        if (serverContent.data.item.length > pageSize) {
+          setPreviousItemsAvailable(false);
+        } else {
+          setPreviousItemsAvailable(true);
+        }
         //only add in items that validate as VidispineItem. Items that don't are logged to console.
         const existingList = previousItemList ?? itemList;
         const updatedItemList = existingList.concat(
@@ -285,6 +291,10 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           moreItemsAvailable={moreItemsAvailable}
           onLoadMoreClicked={() => {
             setLoadFrom((currentValue) => currentValue + 100);
+          }}
+          previousItemsAvailable={previousItemsAvailable}
+          onLoadPreviousClicked={() => {
+            setLoadFrom((currentValue) => currentValue - 100);
           }}
         />
       </div>
