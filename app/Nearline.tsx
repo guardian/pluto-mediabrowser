@@ -48,7 +48,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [searching, setSearching] = useState<boolean>(false);
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const [pageSize, setPageSize] = useState<number>(20);
-  const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 100);
+  const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 500);
   const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
   const [loadFrom, setLoadFrom] = useState<number>(0);
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
@@ -286,11 +286,11 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           projectIdToLoad={props.projectIdToLoad}
           moreItemsAvailable={moreItemsAvailable}
           onLoadMoreClicked={() => {
-            setLoadFrom((currentValue) => currentValue + 100);
+            setLoadFrom((currentValue) => currentValue + 500);
           }}
           previousItemsAvailable={previousItemsAvailable}
           onLoadPreviousClicked={() => {
-            setLoadFrom((currentValue) => currentValue - 100);
+            setLoadFrom((currentValue) => currentValue - 500);
           }}
         />
       </div>
