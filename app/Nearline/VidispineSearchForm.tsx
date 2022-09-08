@@ -119,7 +119,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                 <Tooltip
                   title={
                     props.previousItemsAvailable
-                      ? "Load the previous 100 items"
+                      ? "Load the previous 500 items"
                       : "There are no previous items"
                   }
                 >
@@ -132,7 +132,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                           : undefined
                       }
                     >
-                      Previous 100
+                      Previous 500
                     </Button>
                   </span>
                 </Tooltip>
@@ -141,7 +141,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                 <Tooltip
                   title={
                     props.moreItemsAvailable
-                      ? "Load the next 100 items"
+                      ? "Load the next 500 items"
                       : "All of the search results are displayed"
                   }
                 >
@@ -154,7 +154,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                           : undefined
                       }
                     >
-                      Next 100
+                      Next 500
                     </Button>
                   </span>
                 </Tooltip>

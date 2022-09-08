@@ -42,7 +42,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [searching, setSearching] = useState<boolean>(false);
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const [pageSize, setPageSize] = useState<number>(15);
-  const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 100);
+  const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 500);
   const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
 
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
