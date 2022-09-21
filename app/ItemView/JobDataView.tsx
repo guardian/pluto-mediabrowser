@@ -53,7 +53,7 @@ const JobDataView: React.FC<JobDataViewProps> = (props) => {
           const incommingVidispineData = await result.json();
           setVidispineHits(incommingVidispineData.hits);
           setVidispineJobData(incommingVidispineData.job);
-          return
+          return;
         default:
           console.error(
             "Attempt at loading Vidispine job data failed with status: " +
