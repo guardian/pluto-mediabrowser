@@ -11,6 +11,7 @@ import VidispineContext from "./Context/VidispineContext";
 import { loadItemMeta } from "./ItemView/LoadItem";
 import { UserContext } from "pluto-headers";
 import RawMetadataView from "./ItemView/RawMetadataView";
+import JobDataView from "./ItemView/JobDataView"
 
 const ItemViewComponent: React.FC<RouteComponentProps<
   ItemViewComponentMatches
@@ -107,6 +108,12 @@ const ItemViewComponent: React.FC<RouteComponentProps<
               )
             }
           />
+          {vidispineContext ? (
+            <JobDataView
+              itemId={itemData.id}
+              baseURL={vidispineContext.baseUrl}
+              />
+          ) : null}
         </>
       ) : null}
     </>
