@@ -1,14 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class StatusFormatter extends React.Component {
-
   static propTypes = {
-    status: PropTypes.string.isRequired
+    status: PropTypes.string.isRequired,
   };
 
   returnStatus(status) {
-    switch(status) {
+    switch (status) {
       case "FAILED_TOTAL":
         return "Failed";
       case "READY":
@@ -28,13 +27,12 @@ class StatusFormatter extends React.Component {
       case "ABORTED":
         return "Aborted";
       default:
-       return status;
+        return status;
     }
   }
 
-render() {
-  return <div>{this.returnStatus(this.props.status)}
-  </div>
+  render() {
+    return <div>{this.returnStatus(this.props.status)}</div>;
   }
 }
 

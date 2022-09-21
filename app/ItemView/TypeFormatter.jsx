@@ -1,14 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class TypeFormatter extends React.Component {
-
   static propTypes = {
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
   };
 
   returnType(type) {
-    switch(type) {
+    switch (type) {
       case "RAW_IMPORT":
         return "Raw Import";
       case "NONE":
@@ -56,13 +55,12 @@ class TypeFormatter extends React.Component {
       case "COPY_FILE":
         return "Copy File";
       default:
-       return type;
+        return type;
     }
   }
 
-render() {
-  return <div>{this.returnType(this.props.type)}
-  </div>
+  render() {
+    return <div>{this.returnType(this.props.type)}</div>;
   }
 }
 
