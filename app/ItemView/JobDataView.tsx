@@ -65,7 +65,7 @@ const JobDataView: React.FC<JobDataViewProps> = (props) => {
   };
 
   useEffect(() => {
-    getJobData("job?jobmetadata=itemId%3d" + props.itemId);
+    getJobData("job?jobmetadata=itemId%3d" + props.itemId + "&user=false");
   }, []);
 
   const detectDarkTheme = () => {
