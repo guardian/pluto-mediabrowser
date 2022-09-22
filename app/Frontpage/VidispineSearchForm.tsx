@@ -28,6 +28,9 @@ interface VidispineSearchFormProps {
   projectIdToLoad?: number;
   onLoadMoreClicked?: () => void;
   moreItemsAvailable?: boolean;
+  onLoadPreviousClicked?: () => void;
+  previousItemsAvailable?: boolean;
+  searching?: boolean;
 }
 
 interface SearchEntry {
@@ -110,28 +113,56 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
               <Grid item>
                 <Tooltip
                   title={
+                    props.previousItemsAvailable
+                      ? "Load the previous 500 items"
+                      : "There are no previous items"
+                  }
+                >
+                  <span>
+                    <Button
+                      disabled={
+                        !props.previousItemsAvailable || props.searching
+                      }
+                      onClick={() =>
+                        props.onLoadPreviousClicked
+                          ? props.onLoadPreviousClicked()
+                          : undefined
+                      }
+                    >
+                      Previous 500
+                    </Button>
+                  </span>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Tooltip
+                  title={
                     props.moreItemsAvailable
-                      ? "Load in 50 more items"
+                      ? "Load the next 500 items"
                       : "All of the search results are displayed"
                   }
                 >
                   <span>
                     <Button
-                      disabled={!props.moreItemsAvailable}
+                      disabled={!props.moreItemsAvailable || props.searching}
                       onClick={() =>
                         props.onLoadMoreClicked
                           ? props.onLoadMoreClicked()
                           : undefined
                       }
                     >
-                      Load more
+                      Next 500
                     </Button>
                   </span>
                 </Tooltip>
               </Grid>
               <Grid item>
                 <Tooltip title="Start a new search from the first item">
-                  <Button variant="contained" onClick={makeSearchDoc}>
+                  <Button
+                    variant="contained"
+                    onClick={makeSearchDoc}
+                    disabled={props.searching}
+                  >
                     Search
                   </Button>
                 </Tooltip>

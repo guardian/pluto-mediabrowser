@@ -30,6 +30,7 @@ interface VidispineSearchFormProps {
   moreItemsAvailable?: boolean;
   onLoadPreviousClicked?: () => void;
   previousItemsAvailable?: boolean;
+  searching?: boolean;
 }
 
 interface SearchEntry {
@@ -125,7 +126,9 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                 >
                   <span>
                     <Button
-                      disabled={!props.previousItemsAvailable}
+                      disabled={
+                        !props.previousItemsAvailable || props.searching
+                      }
                       onClick={() =>
                         props.onLoadPreviousClicked
                           ? props.onLoadPreviousClicked()
@@ -147,7 +150,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                 >
                   <span>
                     <Button
-                      disabled={!props.moreItemsAvailable}
+                      disabled={!props.moreItemsAvailable || props.searching}
                       onClick={() =>
                         props.onLoadMoreClicked
                           ? props.onLoadMoreClicked()
@@ -161,7 +164,11 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
               </Grid>
               <Grid item>
                 <Tooltip title="Start a new search from the first item">
-                  <Button variant="contained" onClick={makeSearchDoc}>
+                  <Button
+                    variant="contained"
+                    onClick={makeSearchDoc}
+                    disabled={props.searching}
+                  >
                     Search
                   </Button>
                 </Tooltip>

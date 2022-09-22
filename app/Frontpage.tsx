@@ -44,10 +44,11 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [pageSize, setPageSize] = useState<number>(20);
   const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 500);
   const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
-
+  const [loadFrom, setLoadFrom] = useState<number>(0);
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [facetList, setFacetList] = useState<FacetCountResponse[]>([]);
+  const [previousItemsAvailable, setPreviousItemsAvailable] = useState(false);
 
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
@@ -118,7 +119,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     previousItemList?: VidispineItem[]
   ) => {
     setSearching(true);
-    const fromParam = startAt ?? itemList.length;
+    const fromParam = startAt ?? loadFrom + itemList.length;
     const shouldCount: boolean = fromParam == 0;
     const searchUrl = `${
       vidispineContext?.baseUrl
@@ -164,8 +165,16 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       }
 
       if (serverContent.data.item) {
-        if (serverContent.data.item.length < pageSize)
+        if (serverContent.data.item.length < pageSize) {
           setMoreItemsAvailable(false);
+        } else {
+          setMoreItemsAvailable(true);
+        }
+        if (loadFrom == 0) {
+          setPreviousItemsAvailable(false);
+        } else {
+          setPreviousItemsAvailable(true);
+        }
         //only add in items that validate as VidispineItem. Items that don't are logged to console.
         const existingList = previousItemList ?? itemList;
         const updatedItemList = existingList.concat(
@@ -181,7 +190,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         ) {
           //allow the javascript engine to process state updates above before recursing on to next page.
           window.setTimeout(
-            () => loadNextPage(updatedItemList.length, updatedItemList),
+            () =>
+              loadNextPage(updatedItemList.length + loadFrom, updatedItemList),
             200
           );
         } else {
@@ -231,8 +241,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     console.log("Search updated, reloading...");
     setLastError(undefined);
     //give the above a chance to execute before we kick off the download
-    window.setTimeout(() => loadNextPage(0, []), 100);
-  }, [currentSearch]);
+    window.setTimeout(() => loadNextPage(loadFrom, []), 100);
+  }, [currentSearch, loadFrom]);
 
   if (redirectToItem) return <Redirect to={`/item/${redirectToItem}`} />;
 
@@ -274,14 +284,20 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           onUpdated={(newSearch) => {
             console.log("Got new search doc: ", newSearch);
             setCurrentSearch(newSearch);
+            setLoadFrom(0);
           }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
           projectIdToLoad={props.projectIdToLoad}
           moreItemsAvailable={moreItemsAvailable}
-          onLoadMoreClicked={() =>
-            setPageSize((currentValue) => currentValue + 50)
-          }
+          onLoadMoreClicked={() => {
+            setLoadFrom((currentValue) => currentValue + 500);
+          }}
+          previousItemsAvailable={previousItemsAvailable}
+          onLoadPreviousClicked={() => {
+            setLoadFrom((currentValue) => currentValue - 500);
+          }}
+          searching={searching}
         />
       </div>
       <div className="results-container" ref={resultsContainerRef}>

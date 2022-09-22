@@ -280,6 +280,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           onUpdated={(newSearch) => {
             console.log("Got new search doc: ", newSearch);
             setCurrentSearch(newSearch);
+            setLoadFrom(0);
           }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
@@ -292,6 +293,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           onLoadPreviousClicked={() => {
             setLoadFrom((currentValue) => currentValue - 500);
           }}
+          searching={searching}
         />
       </div>
       <div className="results-container" ref={resultsContainerRef}>
