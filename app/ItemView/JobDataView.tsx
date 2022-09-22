@@ -33,6 +33,10 @@ const JobDataView: React.FC<JobDataViewProps> = (props) => {
     jobTable: {
       marginTop: "24px",
     },
+    jobTableTitle: {
+      paddingTop: "10px",
+      marginLeft: "18px",
+    },
   }));
 
   const classes = useStyles();
@@ -110,7 +114,9 @@ const JobDataView: React.FC<JobDataViewProps> = (props) => {
     <>
       {vidispineHits != 0 ? (
         <Paper elevation={3} className={classes.jobTable}>
-          <Typography variant="h3">Vidispine Jobs</Typography>
+          <Typography variant="h3" className={classes.jobTableTitle}>
+            Vidispine Jobs
+          </Typography>
           <Table>
             <TableHead>
               <TableRow>
