@@ -293,6 +293,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           onLoadPreviousClicked={() => {
             setLoadFrom((currentValue) => currentValue - 500);
           }}
+          searching={searching}
         />
       </div>
       <div className="results-container" ref={resultsContainerRef}>
