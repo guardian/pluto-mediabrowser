@@ -319,7 +319,8 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
               textAlign: "right",
             }}
           >
-            Showing {itemList.length} items out of {totalItems} matching search
+            Showing item {itemList.length > 0 ? loadFrom + 1 : 0} -{" "}
+            {itemList.length + loadFrom} of {totalItems}
           </Typography>
         </FacetDisplays>
       </div>
