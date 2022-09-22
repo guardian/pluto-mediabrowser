@@ -324,7 +324,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
             }}
           >
             Showing item {itemList.length > 0 ? loadFrom + 1 : 0} -{" "}
-            {itemList.length + loadFrom} of {totalItems} matching search
+            {itemList.length + loadFrom} of {totalItems}
           </Typography>
         </FacetDisplays>
       </div>
