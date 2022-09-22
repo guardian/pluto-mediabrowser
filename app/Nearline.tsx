@@ -280,6 +280,7 @@ const NearlineComponent: React.FC<FrontpageComponentProps> = (props) => {
           onUpdated={(newSearch) => {
             console.log("Got new search doc: ", newSearch);
             setCurrentSearch(newSearch);
+            setLoadFrom(0);
           }}
           onHideToggled={(newValue) => setHideSearchBox(newValue)}
           isHidden={hideSearchBox}
