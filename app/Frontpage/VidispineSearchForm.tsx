@@ -28,6 +28,8 @@ interface VidispineSearchFormProps {
   projectIdToLoad?: number;
   onLoadMoreClicked?: () => void;
   moreItemsAvailable?: boolean;
+  onLoadPreviousClicked?: () => void;
+  previousItemsAvailable?: boolean;
 }
 
 interface SearchEntry {
@@ -110,8 +112,30 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
               <Grid item>
                 <Tooltip
                   title={
+                    props.previousItemsAvailable
+                      ? "Load the previous 500 items"
+                      : "There are no previous items"
+                  }
+                >
+                  <span>
+                    <Button
+                      disabled={!props.previousItemsAvailable}
+                      onClick={() =>
+                        props.onLoadPreviousClicked
+                          ? props.onLoadPreviousClicked()
+                          : undefined
+                      }
+                    >
+                      Previous 500
+                    </Button>
+                  </span>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                <Tooltip
+                  title={
                     props.moreItemsAvailable
-                      ? "Load in 50 more items"
+                      ? "Load the next 500 items"
                       : "All of the search results are displayed"
                   }
                 >
@@ -124,7 +148,7 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                           : undefined
                       }
                     >
-                      Load more
+                      Next 500
                     </Button>
                   </span>
                 </Tooltip>

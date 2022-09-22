@@ -44,10 +44,11 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const [pageSize, setPageSize] = useState<number>(20);
   const [itemLimit, setItemLimit] = useState<number>(props.itemLimit ?? 500);
   const [moreItemsAvailable, setMoreItemsAvailable] = useState(false);
-
+  const [loadFrom, setLoadFrom] = useState<number>(0);
   const [itemList, setItemList] = useState<VidispineItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
   const [facetList, setFacetList] = useState<FacetCountResponse[]>([]);
+  const [previousItemsAvailable, setPreviousItemsAvailable] = useState(false);
 
   const [redirectToItem, setRedirectToItem] = useState<string | undefined>(
     undefined
@@ -279,9 +280,13 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
           isHidden={hideSearchBox}
           projectIdToLoad={props.projectIdToLoad}
           moreItemsAvailable={moreItemsAvailable}
-          onLoadMoreClicked={() =>
-            setPageSize((currentValue) => currentValue + 50)
-          }
+          onLoadMoreClicked={() => {
+            setLoadFrom((currentValue) => currentValue + 500);
+          }}
+          previousItemsAvailable={previousItemsAvailable}
+          onLoadPreviousClicked={() => {
+            setLoadFrom((currentValue) => currentValue - 500);
+          }}
         />
       </div>
       <div className="results-container" ref={resultsContainerRef}>
