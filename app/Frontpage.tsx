@@ -323,7 +323,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
               textAlign: "right",
             }}
           >
-            Showing item {itemList.length > 0 ? (loadFrom + 1) : (0)} - {(itemList.length + loadFrom)}  of {totalItems} matching search
+            Showing item {itemList.length > 0 ? loadFrom + 1 : 0} -{" "}
+            {itemList.length + loadFrom} of {totalItems} matching search
           </Typography>
         </FacetDisplays>
       </div>
