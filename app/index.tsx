@@ -20,7 +20,12 @@ import ItemViewComponent from "./ItemViewComponent";
 import FrontpageComponent from "./Frontpage";
 import { SystemNotification } from "pluto-headers";
 
-import { Header, AppSwitcher, PlutoThemeProvider, JwtDataShape } from "pluto-headers";
+import {
+  Header,
+  AppSwitcher,
+  PlutoThemeProvider,
+  JwtDataShape,
+} from "pluto-headers";
 import { CircularProgress, CssBaseline, Typography } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 import { setupInterceptors } from "./interceptors";
@@ -72,10 +77,13 @@ const App: React.FC<{}> = () => {
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  const onLoginValid = async (valid: boolean, loginData: JwtDataShape | undefined) => {
+  const onLoginValid = async (
+    valid: boolean,
+    loginData: JwtDataShape | undefined
+  ) => {
     console.log("onLoginValid: ", valid, loginData);
     setIsLoggedIn(valid);
-  }
+  };
 
   /**
    * load in field/group definitions from VS. Updates the state.fields parameter
@@ -164,7 +172,7 @@ const App: React.FC<{}> = () => {
         </Helmet>
         <SystemNotification />
         <Header />
-        <AppSwitcher onLoginValid={onLoginValid}/>
+        <AppSwitcher onLoginValid={onLoginValid} />
         {lastError ? (
           <div className="error-dialog">
             <Typography>{lastError}</Typography>
