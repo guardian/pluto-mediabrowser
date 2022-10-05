@@ -20,7 +20,7 @@ import ItemViewComponent from "./ItemViewComponent";
 import FrontpageComponent from "./Frontpage";
 import { SystemNotification } from "pluto-headers";
 
-import { Header, AppSwitcher, PlutoThemeProvider } from "pluto-headers";
+import { Header, AppSwitcher, PlutoThemeProvider, JwtDataShape } from "pluto-headers";
 import { CircularProgress, CssBaseline, Typography } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 import { setupInterceptors } from "./interceptors";
@@ -39,6 +39,7 @@ interface AppState {
   loading?: boolean;
   loadingStage?: number;
   lastError?: string | null;
+  isLoggedIn?: boolean;
 }
 
 interface ConfigFileData {
@@ -69,6 +70,12 @@ const App: React.FC<{}> = () => {
 
   const [loading, setLoading] = useState(true);
   const [lastError, setLastError] = useState<string | undefined>(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const onLoginValid = async (valid: boolean, loginData: JwtDataShape | undefined) => {
+    console.log("onLoginValid: ", valid, loginData);
+    setIsLoggedIn(valid);
+  }
 
   /**
    * load in field/group definitions from VS. Updates the state.fields parameter
@@ -121,6 +128,21 @@ const App: React.FC<{}> = () => {
     initialiseComponent();
   }, []);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!isLoggedIn) {
+        console.log("Not logged in, redirecting to pluto-start.");
+        window.location.assign(
+          "/refreshLogin?returnTo=" + window.location.pathname
+        );
+      }
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isLoggedIn]);
+
   if (window.location.href.includes("embed")) {
     //if we are embedding, we just need a minimum of decorations so don't load the full UI
     return (
@@ -142,7 +164,7 @@ const App: React.FC<{}> = () => {
         </Helmet>
         <SystemNotification />
         <Header />
-        <AppSwitcher onLoggedIn={() => {}} onLoggedOut={() => {}} />
+        <AppSwitcher onLoginValid={onLoginValid}/>
         {lastError ? (
           <div className="error-dialog">
             <Typography>{lastError}</Typography>
