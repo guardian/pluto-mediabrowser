@@ -137,18 +137,20 @@ const App: React.FC<{}> = () => {
   }, []);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!isLoggedIn) {
-        console.log("Not logged in, redirecting to pluto-start.");
-        window.location.assign(
-          "/refreshLogin?returnTo=" + window.location.pathname
-        );
-      }
-    }, 3000);
+    if (!window.location.href.includes("embed")) {
+      const timeout = setTimeout(() => {
+        if (!isLoggedIn) {
+          console.log("Not logged in, redirecting to pluto-start.");
+          window.location.assign(
+            "/refreshLogin?returnTo=" + window.location.pathname
+          );
+        }
+      }, 3000);
 
-    return () => {
-      clearTimeout(timeout);
-    };
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
   }, [isLoggedIn]);
 
   if (window.location.href.includes("embed")) {
