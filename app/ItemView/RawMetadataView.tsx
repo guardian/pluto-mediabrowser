@@ -9,7 +9,10 @@ import { Grid, IconButton, Paper, Typography } from "@material-ui/core";
 import VidispineContext from "../Context/VidispineContext";
 import { ArrowDownward, ArrowUpward, Drafts, Replay } from "@material-ui/icons";
 import axios from "axios";
-import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
+import {
+  SystemNotifcationKind,
+  SystemNotification,
+} from "@guardian/pluto-headers";
 // @ts-ignore
 import CodeMirror from "codemirror/lib/codemirror"; //see https://github.com/codemirror/CodeMirror/issues/5484
 import "codemirror/lib/codemirror.css";
