@@ -18,14 +18,17 @@ import {
 } from "./vidispine/field-group/VidispineFieldGroup";
 import ItemViewComponent from "./ItemViewComponent";
 import FrontpageComponent from "./Frontpage";
-import { SystemNotification } from "pluto-headers";
-
 import {
-  Header,
   AppSwitcher,
-  PlutoThemeProvider,
+  Header,
   JwtDataShape,
-} from "pluto-headers";
+  OAuthContextData,
+  OAuthContextProvider,
+  SystemNotification,
+  UserContextProvider,
+  verifyExistingLogin,
+  PlutoThemeProvider,
+} from "@guardian/pluto-headers";
 import { CircularProgress, CssBaseline, Typography } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 import { setupInterceptors } from "./interceptors";
@@ -76,13 +79,25 @@ const App: React.FC<{}> = () => {
   const [loading, setLoading] = useState(true);
   const [lastError, setLastError] = useState<string | undefined>(undefined);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userProfile, setUserProfile] = useState<JwtDataShape | undefined>(
+    undefined
+  );
 
-  const onLoginValid = async (
-    valid: boolean,
-    loginData: JwtDataShape | undefined
-  ) => {
-    console.log("onLoginValid: ", valid, loginData);
-    setIsLoggedIn(valid);
+  const haveToken = () => {
+    return window.localStorage.getItem("pluto:access-token");
+  };
+
+  const oAuthConfigLoaded = (oAuthConfig: OAuthContextData) => {
+    if (haveToken()) {
+      verifyExistingLogin(oAuthConfig)
+        .then((profile) => {
+          setUserProfile(profile);
+          setIsLoggedIn(true);
+        })
+        .catch((err) =>
+          console.error("Could not verify existing user profile: ", err)
+        );
+    }
   };
 
   /**
@@ -158,11 +173,20 @@ const App: React.FC<{}> = () => {
     return (
       <PlutoThemeProvider>
         <CssBaseline />
-        <VidispineContext.Provider value={vidispineDetails}>
-          <Switch>
-            <Route path="/embed/player" component={EmbeddablePlayer} />
-          </Switch>
-        </VidispineContext.Provider>
+        <OAuthContextProvider onLoaded={oAuthConfigLoaded}>
+          <UserContextProvider
+            value={{
+              profile: userProfile,
+              updateProfile: (newValue) => setUserProfile(newValue),
+            }}
+          >
+            <VidispineContext.Provider value={vidispineDetails}>
+              <Switch>
+                <Route path="/embed/player" component={EmbeddablePlayer} />
+              </Switch>
+            </VidispineContext.Provider>
+          </UserContextProvider>
+        </OAuthContextProvider>
       </PlutoThemeProvider>
     );
   } else {
@@ -173,84 +197,95 @@ const App: React.FC<{}> = () => {
           <title>PLUTO Media Browser</title>
         </Helmet>
         <SystemNotification />
-        <Header />
-        <AppSwitcher onLoginValid={onLoginValid} />
-        {lastError ? (
-          <div className="error-dialog">
-            <Typography>{lastError}</Typography>
-          </div>
-        ) : undefined}
-        {loading ? <CircularProgress /> : undefined}
-        {!lastError && !loading ? (
-          <VidispineContext.Provider value={vidispineDetails}>
-            <MediaAtomToolContext.Provider value={mediaAtomDetails}>
-              <Switch>
-                <Route path="/item/:itemId" component={ItemViewComponent} />
+        <OAuthContextProvider onLoaded={oAuthConfigLoaded}>
+          <UserContextProvider
+            value={{
+              profile: userProfile,
+              updateProfile: (newValue) => setUserProfile(newValue),
+            }}
+          >
+            <Header />
+            {userProfile ? <AppSwitcher /> : undefined}
+            {lastError ? (
+              <div className="error-dialog">
+                <Typography>{lastError}</Typography>
+              </div>
+            ) : undefined}
+            {loading ? <CircularProgress /> : undefined}
+            {!lastError && !loading ? (
+              <VidispineContext.Provider value={vidispineDetails}>
+                <MediaAtomToolContext.Provider value={mediaAtomDetails}>
+                  <Switch>
+                    <Route path="/item/:itemId" component={ItemViewComponent} />
 
-                <Route
-                  path="/last/:pageSize"
-                  render={(
-                    props: RouteComponentProps<LastNComponentMatches>
-                  ) => {
-                    let itemLimit: number = 15;
-                    try {
-                      itemLimit = parseInt(props.match.params.pageSize);
-                    } catch (err) {
-                      console.error(
-                        `${props.match.params.pageSize} is not a number`
-                      );
-                    }
-                    return (
-                      <FrontpageComponent
-                        {...props}
-                        itemLimit={itemLimit}
-                        projectIdToLoad={0}
-                      />
-                    );
-                  }}
-                />
-                <Route
-                  path="/search"
-                  render={(props: RouteComponentProps) => (
-                    <FrontpageComponent {...props} projectIdToLoad={0} />
-                  )}
-                />
-                <Route
-                  path="/project/:projectId"
-                  render={(
-                    props: RouteComponentProps<ProjectComponentMatches>
-                  ) => {
-                    let projectIdToLoad: number = 0;
-                    try {
-                      projectIdToLoad = parseInt(props.match.params.projectId);
-                    } catch (err) {
-                      console.error(
-                        `${props.match.params.projectId} is not a number`
-                      );
-                    }
-                    return (
-                      <FrontpageComponent
-                        {...props}
-                        projectIdToLoad={projectIdToLoad}
-                      />
-                    );
-                  }}
-                />
-                <Route
-                  path="/nearline"
-                  render={(props: RouteComponentProps) => (
-                    <NearlineComponent {...props} projectIdToLoad={0} />
-                  )}
-                />
-                <Route
-                  path="/"
-                  exact={true}
-                  component={() => <Redirect to="/last/15" />}
-                />
-              </Switch>
-            </MediaAtomToolContext.Provider>
-          </VidispineContext.Provider>
-        ) : undefined}
+                    <Route
+                      path="/last/:pageSize"
+                      render={(
+                        props: RouteComponentProps<LastNComponentMatches>
+                      ) => {
+                        let itemLimit: number = 15;
+                        try {
+                          itemLimit = parseInt(props.match.params.pageSize);
+                        } catch (err) {
+                          console.error(
+                            `${props.match.params.pageSize} is not a number`
+                          );
+                        }
+                        return (
+                          <FrontpageComponent
+                            {...props}
+                            itemLimit={itemLimit}
+                            projectIdToLoad={0}
+                          />
+                        );
+                      }}
+                    />
+                    <Route
+                      path="/search"
+                      render={(props: RouteComponentProps) => (
+                        <FrontpageComponent {...props} projectIdToLoad={0} />
+                      )}
+                    />
+                    <Route
+                      path="/project/:projectId"
+                      render={(
+                        props: RouteComponentProps<ProjectComponentMatches>
+                      ) => {
+                        let projectIdToLoad: number = 0;
+                        try {
+                          projectIdToLoad = parseInt(
+                            props.match.params.projectId
+                          );
+                        } catch (err) {
+                          console.error(
+                            `${props.match.params.projectId} is not a number`
+                          );
+                        }
+                        return (
+                          <FrontpageComponent
+                            {...props}
+                            projectIdToLoad={projectIdToLoad}
+                          />
+                        );
+                      }}
+                    />
+                    <Route
+                      path="/nearline"
+                      render={(props: RouteComponentProps) => (
+                        <NearlineComponent {...props} projectIdToLoad={0} />
+                      )}
+                    />
+                    <Route
+                      path="/"
+                      exact={true}
+                      component={() => <Redirect to="/last/15" />}
+                    />
+                  </Switch>
+                </MediaAtomToolContext.Provider>
+              </VidispineContext.Provider>
+            ) : undefined}
+          </UserContextProvider>
+        </OAuthContextProvider>
       </PlutoThemeProvider>
     );
   }

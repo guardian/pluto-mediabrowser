@@ -18,7 +18,7 @@ import {
   Breadcrumb,
   SystemNotifcationKind,
   SystemNotification,
-} from "pluto-headers";
+} from "@guardian/pluto-headers";
 import { DynamicFeed } from "@material-ui/icons";
 import { DenormalisedDeliverable } from "../pluto-deliverables/DeliverablesTypes";
 import { GetDeliverableById } from "../pluto-deliverables/DeliverablesService";

@@ -15,7 +15,10 @@ import {
 } from "./vidispine/search/FacetResponse";
 import FacetDisplays from "./Frontpage/FacetDisplays";
 import VidispineContext from "./Context/VidispineContext";
-import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
+import {
+  SystemNotifcationKind,
+  SystemNotification,
+} from "@guardian/pluto-headers";
 
 require("./dark.css");
 require("./FrontPageLayout.css");

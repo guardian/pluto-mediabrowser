@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import PlayerContainer from "./ItemView/PlayerContainer";
 import VidispineContext from "./Context/VidispineContext";
 import { loadItemMeta } from "./ItemView/LoadItem";
-import { UserContext } from "pluto-headers";
+import { UserContext } from "@guardian/pluto-headers";
 import RawMetadataView from "./ItemView/RawMetadataView";
 import JobDataView from "./ItemView/JobDataView";
 

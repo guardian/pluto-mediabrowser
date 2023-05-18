@@ -1,5 +1,8 @@
 import axios, { AxiosError } from "axios";
-import { SystemNotifcationKind, SystemNotification } from "pluto-headers";
+import {
+  SystemNotifcationKind,
+  SystemNotification,
+} from "@guardian/pluto-headers";
 
 declare var deploymentRootPath: string;
 
