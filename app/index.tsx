@@ -151,23 +151,6 @@ const App: React.FC<{}> = () => {
     initialiseComponent();
   }, []);
 
-  useEffect(() => {
-    if (!window.location.href.includes("embed")) {
-      const timeout = setTimeout(() => {
-        if (!isLoggedIn) {
-          console.log("Not logged in, redirecting to pluto-start.");
-          window.location.assign(
-            "/refreshLogin?returnTo=" + window.location.pathname
-          );
-        }
-      }, 3000);
-
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [isLoggedIn]);
-
   if (window.location.href.includes("embed")) {
     //if we are embedding, we just need a minimum of decorations so don't load the full UI
     return (
