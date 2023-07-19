@@ -1,4 +1,4 @@
-FROM nginx:1.23.2-alpine
+FROM nginx:mainline
 
 COPY nginx-server.conf /etc/nginx/conf.d/default.conf
 COPY index.template.html /usr/share/nginx/html
