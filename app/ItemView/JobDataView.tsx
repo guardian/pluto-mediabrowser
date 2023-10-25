@@ -149,7 +149,10 @@ const JobDataView: React.FC<JobDataViewProps> = (props) => {
                   <TableRow
                     hover
                     onClick={() => {
-                      window.open(`/vs-jobs/job/${entry.jobId}`, "_blank");
+                      window.open(
+                        `/vidispine-jobs/job/${entry.jobId}`,
+                        "_blank"
+                      );
                     }}
                     key={entry.jobId}
                     className={classes.tableRow}
