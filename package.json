@@ -23,7 +23,8 @@
     ],
     "verbose": true,
     "moduleNameMapper": {
-      "\\.(css|less|svg)$": "identity-obj-proxy"
+      "\\.(css|less|svg)$": "identity-obj-proxy",
+      "axios": "axios/dist/node/axios.cjs"
     },
     "testResultsProcessor": "jest-junit",
     "testEnvironment": "jsdom",
