@@ -68,7 +68,7 @@ const ItemViewComponent: React.FC<RouteComponentProps<
   };
 
   return (
-    <> 
+    <>
       {itemData ? (
         <Helmet>
           <title>{pageTitle()}</title>
@@ -89,7 +89,10 @@ const ItemViewComponent: React.FC<RouteComponentProps<
         <>
           {console.log("ItemData is ", itemData)}
           {console.log("ItemData metadata is ", itemData.metadata)}
-          {console.log("ItemData getmetadata is", itemData.getMetadataString("path"))}
+          {console.log(
+            "ItemData getmetadata is",
+            itemData.getMetadataString("path")
+          )}
           {console.log("ItemData.shape is ", itemData.shape)}
           {console.log("ItemData.files is ", itemData.files)}
           {itemData && itemData.shape && itemData.files ? (
