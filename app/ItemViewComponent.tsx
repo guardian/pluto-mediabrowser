@@ -38,6 +38,7 @@ const ItemViewComponent: React.FC<RouteComponentProps<
   useEffect(() => {
     if (vidispineContext) {
       console.log(`Loading item with id ${props.match.params.itemId}`);
+      console.log(`Item params are:  ${props.match.params}`);
       loadItemMeta(vidispineContext.baseUrl, props.match.params.itemId)
         .then((newItemData) => {
           setItemData(newItemData);
@@ -67,7 +68,7 @@ const ItemViewComponent: React.FC<RouteComponentProps<
   };
 
   return (
-    <>
+    <> 
       {itemData ? (
         <Helmet>
           <title>{pageTitle()}</title>
@@ -86,6 +87,11 @@ const ItemViewComponent: React.FC<RouteComponentProps<
       ) : null}
       {itemData ? (
         <>
+          {console.log("ItemData is ", itemData)}
+          {console.log("ItemData metadata is ", itemData.metadata)}
+          {console.log("ItemData getmetadata is", itemData.getMetadataString("path"))}
+          {console.log("ItemData.shape is ", itemData.shape)}
+          {console.log("ItemData.files is ", itemData.files)}
           {itemData && itemData.shape && itemData.files ? (
             <PlayerContainer
               shapes={itemData.shape}

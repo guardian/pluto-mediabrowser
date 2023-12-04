@@ -115,7 +115,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     const matcher = new RegExp(`${fileId}\..*$`);
     //uri.search returns the index in the string of a match, or -1 if there is no match
     const matchingUris = props.uriList.filter((uri) => uri.search(matcher) > 0);
-    console.log(matchingUris);
+    console.log("Matching Uris: ", matchingUris);
     console.debug(`Found ${matchingUris.length} matching URIs`);
 
     if (matchingUris.length > 0) {
