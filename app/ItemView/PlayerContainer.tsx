@@ -21,6 +21,7 @@ interface PlayerContainerProps {
   shapes: VidispineShape[];
   uriList: string[];
   defaultShapes: string[];
+  originalFilename: string;
 }
 
 const useStyles = makeStyles({
@@ -117,7 +118,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     const matchingUris = props.uriList.filter((uri) => uri.search(matcher) > 0);
     console.log("Matching Uris: ", matchingUris);
     console.debug(`Found ${matchingUris.length} matching URIs`);
-
+    const originalFilename = props.originalFilename;
     if (matchingUris.length > 0) {
       setPlayerUri(matchingUris[0]);
     } else {
@@ -127,6 +128,8 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
 
   useEffect(() => {
     setTargetUrl(`${playerUri.replace(":8080", "")}`);
+    console.log("targetUrl is ", targetUrl);
+    console.log("originalFilename is ", props.originalFilename);
   }, [playerUri]);
 
   /**
