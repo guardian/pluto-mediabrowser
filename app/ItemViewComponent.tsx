@@ -38,7 +38,6 @@ const ItemViewComponent: React.FC<RouteComponentProps<
   useEffect(() => {
     if (vidispineContext) {
       console.log(`Loading item with id ${props.match.params.itemId}`);
-      console.log(`Item params are:  ${props.match.params}`);
       loadItemMeta(vidispineContext.baseUrl, props.match.params.itemId)
         .then((newItemData) => {
           setItemData(newItemData);
@@ -68,12 +67,12 @@ const ItemViewComponent: React.FC<RouteComponentProps<
   };
 
   const originalFilename = () => {
-    if (!itemData) return "asset";
+    if (!itemData) return "asset_download";
     const possibleFilename = itemData.getMetadataString("originalFilename");
     if (possibleFilename) {
       return `${possibleFilename as string}`;
     } else {
-      return `asset`;
+      return "asset_download";
     }
   };
 
@@ -97,14 +96,6 @@ const ItemViewComponent: React.FC<RouteComponentProps<
       ) : null}
       {itemData ? (
         <>
-          {console.log("ItemData is ", itemData)}
-          {console.log("ItemData metadata is ", itemData.metadata)}
-          {console.log(
-            "ItemData getMetadataString originalFilename is",
-            itemData.getMetadataString("originalFilename")
-          )}
-          {console.log("ItemData.shape is ", itemData.shape)}
-          {console.log("ItemData.files is ", itemData.files)}
           {itemData && itemData.shape && itemData.files ? (
             <PlayerContainer
               shapes={itemData.shape}
