@@ -119,6 +119,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     console.log("Matching Uris: ", matchingUris);
     console.debug(`Found ${matchingUris.length} matching URIs`);
     const originalFilename = props.originalFilename;
+
     if (matchingUris.length > 0) {
       setPlayerUri(matchingUris[0]);
     } else {
@@ -127,10 +128,11 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
   }, [selectedShapeTag]);
 
   useEffect(() => {
-    setTargetUrl(`${playerUri.replace(":8080", "")}`);
-    console.log("targetUrl is ", targetUrl);
-    console.log("originalFilename is ", props.originalFilename);
-  }, [playerUri]);
+    let baseUri = playerUri.replace(":8080", "");
+    let baseUrl = baseUri.slice(0, baseUri.lastIndexOf("/") + 1);
+    let newTargetUrl = baseUrl + props.originalFilename;
+    setTargetUrl(newTargetUrl);
+  }, [playerUri, props.originalFilename]);
 
   /**
    * returns the VidispineShape data structure associated with the shape matching the selected tag
