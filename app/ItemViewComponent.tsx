@@ -67,12 +67,12 @@ const ItemViewComponent: React.FC<RouteComponentProps<
   };
 
   const originalFilename = () => {
-    if (!itemData) return "asset_download";
+    if (!itemData) return undefined;
     const possibleFilename = itemData.getMetadataString("originalFilename");
     if (possibleFilename) {
       return `${possibleFilename as string}`;
     } else {
-      return "asset_download";
+      return undefined;
     }
   };
 
