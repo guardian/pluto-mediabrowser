@@ -53,12 +53,12 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
   }, [vidispineContext]);
 
   const originalFilename = () => {
-    if (!itemData) return "asset";
+    if (!itemData) return undefined;
     const possibleFilename = itemData.getMetadataString("originalFilename");
     if (possibleFilename) {
       return `${possibleFilename as string}`;
     } else {
-      return `asset`;
+      return undefined;
     }
   };
 
