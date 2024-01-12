@@ -100,10 +100,10 @@ export const VidispineVideoComponent = t.iface([], {
 });
 
 export const VidispineBinaryComponent = t.iface([], {
+  file: t.array("VidispineFile"),
   id: "string",
-  length: t.opt("number"),
-  file: t.opt(t.array("VidispineFile")),
   metadata: t.opt(t.array("DataPair")),
+  length: t.opt("number"),
 });
 
 export const VidispineShapeIF = t.iface([], {

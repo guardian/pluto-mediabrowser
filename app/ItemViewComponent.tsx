@@ -66,6 +66,16 @@ const ItemViewComponent: React.FC<RouteComponentProps<
     }
   };
 
+  const originalFilename = () => {
+    if (!itemData) return undefined;
+    const possibleFilename = itemData.getMetadataString("originalFilename");
+    if (possibleFilename) {
+      return `${possibleFilename as string}`;
+    } else {
+      return undefined;
+    }
+  };
+
   return (
     <>
       {itemData ? (
@@ -91,6 +101,7 @@ const ItemViewComponent: React.FC<RouteComponentProps<
               shapes={itemData.shape}
               defaultShapes={defaultShapes}
               uriList={itemData.files.uri}
+              originalFilename={originalFilename()}
             />
           ) : (
             <Typography variant="caption">

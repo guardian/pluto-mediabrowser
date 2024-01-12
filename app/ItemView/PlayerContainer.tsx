@@ -21,6 +21,7 @@ interface PlayerContainerProps {
   shapes: VidispineShape[];
   uriList: string[];
   defaultShapes: string[];
+  originalFilename: string | undefined;
 }
 
 const useStyles = makeStyles({
@@ -115,8 +116,9 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     const matcher = new RegExp(`${fileId}\..*$`);
     //uri.search returns the index in the string of a match, or -1 if there is no match
     const matchingUris = props.uriList.filter((uri) => uri.search(matcher) > 0);
-    console.log(matchingUris);
+    console.log("Matching Uris: ", matchingUris);
     console.debug(`Found ${matchingUris.length} matching URIs`);
+    const originalFilename = props.originalFilename;
 
     if (matchingUris.length > 0) {
       setPlayerUri(matchingUris[0]);
@@ -126,8 +128,15 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
   }, [selectedShapeTag]);
 
   useEffect(() => {
-    setTargetUrl(`${playerUri.replace(":8080", "")}`);
-  }, [playerUri]);
+    let baseUri = playerUri.replace(":8080", "");
+    if (props.originalFilename === undefined) {
+      setTargetUrl(baseUri);
+    } else {
+      let baseUrl = baseUri.slice(0, baseUri.lastIndexOf("/") + 1);
+      let newTargetUrl = baseUrl + props.originalFilename;
+      setTargetUrl(newTargetUrl);
+    }
+  }, [playerUri, props.originalFilename]);
 
   /**
    * returns the VidispineShape data structure associated with the shape matching the selected tag

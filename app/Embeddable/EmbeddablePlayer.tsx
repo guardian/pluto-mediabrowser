@@ -52,6 +52,16 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
     }
   }, [vidispineContext]);
 
+  const originalFilename = () => {
+    if (!itemData) return undefined;
+    const possibleFilename = itemData.getMetadataString("originalFilename");
+    if (possibleFilename) {
+      return `${possibleFilename as string}`;
+    } else {
+      return undefined;
+    }
+  };
+
   return (
     <div id="mediabrowser-embed">
       {loading ? <CircularProgress /> : undefined}
@@ -60,6 +70,7 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
           shapes={itemData.shape}
           defaultShapes={defaultShapes}
           uriList={itemData.files.uri}
+          originalFilename={originalFilename()}
         />
       ) : (
         <Typography variant="caption">No shapes exist on this item</Typography>
