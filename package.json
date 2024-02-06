@@ -120,7 +120,7 @@
     "webpack-cli": "^4.6.0",
     "xml-formatter": "^2.6.1",
     "y18n": "^4.0.1",
-    "yarn": "^1.21.1"
+    "yarn": "^1.22.13"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
