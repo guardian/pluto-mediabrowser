@@ -8,7 +8,13 @@ import axios from "axios";
 import { VError } from "ts-interface-checker";
 import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
@@ -264,12 +270,78 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
 
   const resultsContainerRef = React.createRef<HTMLDivElement>();
 
+  const displayProgressBar = (current: number, total: number) => {
+    if (current < 1) {
+      return (
+        <div
+          style={{
+            width: "0%",
+            backgroundColor: barColour(),
+            borderRadius: "3px",
+            height: "18px",
+          }}
+        ></div>
+      );
+    }
+    const percentNumber = 100 / total;
+    var percentageDone = Math.round(percentNumber * current);
+    if (percentageDone > 100) {
+      percentageDone = 100;
+    }
+    return (
+      <div
+        style={{
+          width: percentageDone + "%",
+          backgroundColor: barColour(),
+          borderRadius: "3px",
+          height: "18px",
+        }}
+      ></div>
+    );
+  };
+
+  const barTotal = (from: number, total: number) => {
+    if (total < 500) {
+      return total;
+    } else if (total - from > 500) {
+      return 500;
+    } else {
+      return total - Math.floor(total / 500) * 500;
+    }
+  };
+
+  const detectDarkTheme = () => {
+    const isDarkTheme = useTheme().palette.type === "dark";
+    return isDarkTheme;
+  };
+
+  const barColour = () => {
+    if (detectDarkTheme()) {
+      return "#ffffff";
+    } else {
+      return "#B0B0B0";
+    }
+  };
+
   return (
     <div className={makeClassName()}>
       <div className="status-container">
         <Grid container className={classes.statusArea}>
           {searching ? (
             <Grid item>
+              <div
+                style={{
+                  backgroundColor: "#000000",
+                  borderRadius: "3px",
+                  width: "200px",
+                  height: "19px",
+                }}
+              >
+                {displayProgressBar(
+                  itemList.length,
+                  barTotal(loadFrom, totalItems)
+                )}
+              </div>
               <Typography>Loading...</Typography>
             </Grid>
           ) : (
