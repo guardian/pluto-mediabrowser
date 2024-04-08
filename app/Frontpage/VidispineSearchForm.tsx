@@ -157,15 +157,29 @@ const VidispineSearchForm: React.FC<VidispineSearchFormProps> = (props) => {
                 </Tooltip>
               </Grid>
               <Grid item>
-                <Tooltip title="Start a new search from the first item">
-                  <Button
-                    variant="contained"
-                    onClick={makeSearchDoc}
-                    disabled={props.searching}
-                  >
-                    Search
-                  </Button>
-                </Tooltip>
+                {props.searching ? (
+                  <Tooltip title="You must wait for the current search to complete before starting a new one">
+                    <span>
+                      <Button
+                        variant="contained"
+                        onClick={makeSearchDoc}
+                        disabled={props.searching}
+                      >
+                        Search
+                      </Button>
+                    </span>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Start a new search from the first item">
+                    <Button
+                      variant="contained"
+                      onClick={makeSearchDoc}
+                    >
+                      Search
+                    </Button>
+                  </Tooltip>
+                )
+                }
               </Grid>
             </Grid>
           </li>

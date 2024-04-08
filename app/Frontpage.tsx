@@ -264,13 +264,44 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
 
   const resultsContainerRef = React.createRef<HTMLDivElement>();
 
+  const displayProgressBar = (current: number, total: number) => {
+    if (current < 1) {
+      return (
+        <div style={{width:'0%', backgroundColor: "#ffffff", borderRadius: "3px", height: "18px"}}></div>
+      )
+    }
+    const percentNumber = 100 / total;
+    var percentageDone = Math.round(percentNumber * current);
+    if (percentageDone > 100) {
+      percentageDone = 100;
+    }
+    return (
+      <div style={{width:percentageDone+'%', backgroundColor: "#ffffff", borderRadius: "3px", height: "18px"}}></div>
+    )
+  };
+
+  const barTotal = (total: number) => {
+    if (total < 500) {
+      return total
+    } else if ((total / 500) % 1 != 0) {
+      return 500
+    } else {
+      return (total - (Math.floor(total / 500) * 500))
+    }
+  }
+
   return (
     <div className={makeClassName()}>
       <div className="status-container">
         <Grid container className={classes.statusArea}>
           {searching ? (
             <Grid item>
-              <Typography>Loading...</Typography>
+              <div style={{backgroundColor: "#000000", borderRadius: "3px", width: "200px", height: "19px"}}>
+                {displayProgressBar(itemList.length, barTotal(totalItems))}
+              </div>
+              <Typography>
+                Loading...
+              </Typography>
             </Grid>
           ) : (
             <Grid item>
