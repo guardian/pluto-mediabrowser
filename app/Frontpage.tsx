@@ -297,7 +297,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const barTotal = (total: number) => {
     if (total < 500) {
       return total;
-    } else if ((total / 500) % 1 != 0) {
+    } else if ((total / 500) % 1 == 0) {
       return 500;
     } else {
       return total - Math.floor(total / 500) * 500;
@@ -320,9 +320,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
               >
                 {displayProgressBar(itemList.length, barTotal(totalItems))}
               </div>
-              <Typography>
-                Loading... {itemList.length} {barTotal(totalItems)}
-              </Typography>
+              <Typography>Loading...</Typography>
             </Grid>
           ) : (
             <Grid item>
