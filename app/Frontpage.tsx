@@ -267,8 +267,15 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
   const displayProgressBar = (current: number, total: number) => {
     if (current < 1) {
       return (
-        <div style={{width:'0%', backgroundColor: "#ffffff", borderRadius: "3px", height: "18px"}}></div>
-      )
+        <div
+          style={{
+            width: "0%",
+            backgroundColor: "#ffffff",
+            borderRadius: "3px",
+            height: "18px",
+          }}
+        ></div>
+      );
     }
     const percentNumber = 100 / total;
     var percentageDone = Math.round(percentNumber * current);
@@ -276,19 +283,26 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       percentageDone = 100;
     }
     return (
-      <div style={{width:percentageDone+'%', backgroundColor: "#ffffff", borderRadius: "3px", height: "18px"}}></div>
-    )
+      <div
+        style={{
+          width: percentageDone + "%",
+          backgroundColor: "#ffffff",
+          borderRadius: "3px",
+          height: "18px",
+        }}
+      ></div>
+    );
   };
 
   const barTotal = (total: number) => {
     if (total < 500) {
-      return total
+      return total;
     } else if ((total / 500) % 1 != 0) {
-      return 500
+      return 500;
     } else {
-      return (total - (Math.floor(total / 500) * 500))
+      return total - Math.floor(total / 500) * 500;
     }
-  }
+  };
 
   return (
     <div className={makeClassName()}>
@@ -296,12 +310,17 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         <Grid container className={classes.statusArea}>
           {searching ? (
             <Grid item>
-              <div style={{backgroundColor: "#000000", borderRadius: "3px", width: "200px", height: "19px"}}>
+              <div
+                style={{
+                  backgroundColor: "#000000",
+                  borderRadius: "3px",
+                  width: "200px",
+                  height: "19px",
+                }}
+              >
                 {displayProgressBar(itemList.length, barTotal(totalItems))}
               </div>
-              <Typography>
-                Loading...
-              </Typography>
+              <Typography>Loading...</Typography>
             </Grid>
           ) : (
             <Grid item>
