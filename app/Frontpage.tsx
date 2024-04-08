@@ -8,7 +8,13 @@ import axios from "axios";
 import { VError } from "ts-interface-checker";
 import SearchResultsPane from "./Frontpage/SearchResultsPane";
 import VidispineSearchForm from "./Frontpage/VidispineSearchForm";
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
 import {
   FacetCountResponse,
   validateFacetResponse,
@@ -270,7 +276,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
         <div
           style={{
             width: "0%",
-            backgroundColor: "#ffffff",
+            backgroundColor: barColour(),
             borderRadius: "3px",
             height: "18px",
           }}
@@ -286,7 +292,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       <div
         style={{
           width: percentageDone + "%",
-          backgroundColor: "#ffffff",
+          backgroundColor: barColour(),
           borderRadius: "3px",
           height: "18px",
         }}
@@ -301,6 +307,19 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
       return 500;
     } else {
       return total - Math.floor(total / 500) * 500;
+    }
+  };
+
+  const detectDarkTheme = () => {
+    const isDarkTheme = useTheme().palette.type === "dark";
+    return isDarkTheme;
+  };
+
+  const barColour = () => {
+    if (detectDarkTheme()) {
+      return "#ffffff";
+    } else {
+      return "#B0B0B0";
     }
   };
 
