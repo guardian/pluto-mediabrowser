@@ -320,7 +320,9 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
               >
                 {displayProgressBar(itemList.length, barTotal(totalItems))}
               </div>
-              <Typography>Loading...</Typography>
+              <Typography>
+                Loading... {itemList.length} {barTotal(totalItems)}
+              </Typography>
             </Grid>
           ) : (
             <Grid item>
