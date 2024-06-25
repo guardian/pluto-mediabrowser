@@ -69,6 +69,8 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
 
   const vidispineContext = useContext(VidispineContext);
 
+  console.log("FrontpageComponent mounted");
+
   /**
    * validates a given vidispine item, returning either a VidispineItem or undefined if it fails to validate.
    * error message is output to console if it fails.
@@ -132,7 +134,7 @@ const FrontpageComponent: React.FC<FrontpageComponentProps> = (props) => {
     const shouldCount: boolean = fromParam == 0;
     const searchUrl = `${
       vidispineContext?.baseUrl
-    }/API/item?content=metadata&first=${
+    }/API/item?first=${
       fromParam + 1
     }&number=${pageSize}&count=${shouldCount}`;
 

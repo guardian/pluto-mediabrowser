@@ -25,6 +25,8 @@ const SearchResultsPane: React.FC<SearchResultsPaneProps> = (props) => {
   const columnCount = Math.floor(dimensions.width / (tileWidth + tileMargin));
   const rowCount = Math.ceil(totalResults / columnCount);
 
+  console.log("SearchResultsPane mounted");
+
   useEffect(() => {
     if (props.parentRef.current) {
       const parentDiv = props.parentRef.current as HTMLDivElement;

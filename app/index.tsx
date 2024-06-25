@@ -83,6 +83,8 @@ const App: React.FC<{}> = () => {
     undefined
   );
 
+  console.log("App mounted");
+
   const haveToken = () => {
     return window.localStorage.getItem("pluto:access-token");
   };
