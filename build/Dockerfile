@@ -1,4 +1,4 @@
-FROM nginx:mainline-alpine
+FROM nginx:mainline-alpine3.19
 
 RUN apk update && \
     apk add --no-cache libx11=1.8.7-r0 && \
