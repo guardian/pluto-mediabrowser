@@ -40,10 +40,35 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
    * if so, return the first matching tag. this is used as the default value for the shapetag selector.
    */
   const findInitialShapetag = () => {
-    const shapeMatches = props.shapes
-      .filter((shape) => shape.tag.length > 0)
-      .filter((shape) => props.defaultShapes.includes(shape.tag[0]));
-    return shapeMatches.length > 0 ? shapeMatches[0].tag[0] : "original";
+    // First try to find a shape with video from our default shapes
+    for (const defaultTag of props.defaultShapes) {
+      const matchingShapes = props.shapes.filter(shape => 
+        shape.tag.includes(defaultTag) && 
+        shape.videoComponent && 
+        shape.videoComponent.length > 0
+      );
+      if (matchingShapes.length > 0) {
+        console.log(`Found initial shape with tag ${defaultTag}`);
+        return defaultTag;
+      }
+    }
+
+    // If no default shapes with video found, try any shape with video
+    const videoShapes = props.shapes.filter(shape => 
+      shape.videoComponent && 
+      shape.videoComponent.length > 0
+    );
+    if (videoShapes.length > 0 && videoShapes[0].tag.length > 0) {
+      console.log(`Falling back to shape with tag ${videoShapes[0].tag[0]}`);
+      return videoShapes[0].tag[0];
+    }
+
+    // Last resort - use the first shape's tag or "original"
+    const fallbackTag = props.shapes.length > 0 && props.shapes[0].tag.length > 0 
+      ? props.shapes[0].tag[0] 
+      : "original";
+    console.log(`Falling back to tag ${fallbackTag}`);
+    return fallbackTag;
   };
 
   const [selectedShapeTag, setSelectedShapeTag] = useState<string>(
@@ -59,6 +84,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
    * @param currentShapeData
    */
   const getFileId = (currentShapeData: VidispineShape) => {
+    console.log("Shape data:", currentShapeData);
     if (currentShapeData.mimeType.length > 0) {
       setMimeType(currentShapeData.mimeType[0]);
     }
@@ -105,27 +131,33 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
    * when the selected shape tag changes, update the player url
    */
   useEffect(() => {
+    console.log("Shape selection changed to:", selectedShapeTag);
     const currentShapeData = findSelectedShape();
-    if (!currentShapeData) return;
+    console.log("Selected shape:", currentShapeData);
+    
+    if (!currentShapeData) {
+      console.warn("No suitable shape found");
+      return;
+    }
 
     const fileId = getFileId(currentShapeData);
-    if (!fileId) return;
-
-    console.log("fileId is ", fileId);
-
-    const matcher = new RegExp(`${fileId}\..*$`);
-    //uri.search returns the index in the string of a match, or -1 if there is no match
-    const matchingUris = props.uriList.filter((uri) => uri.search(matcher) > 0);
-    console.log("Matching Uris: ", matchingUris);
-    console.debug(`Found ${matchingUris.length} matching URIs`);
-    const originalFilename = props.originalFilename;
-
-    if (matchingUris.length > 0) {
-      setPlayerUri(matchingUris[0]);
-    } else {
-      setPlayerUri("");
+    if (!fileId) {
+      console.warn("No file ID found in shape", currentShapeData);
+      return;
     }
-  }, [selectedShapeTag]);
+
+    // Find the matching URI from the uriList
+    const matchingUri = props.uriList.find(uri => uri.includes(fileId));
+    if (matchingUri) {
+      console.log("Found matching URI:", matchingUri);
+      setPlayerUri(matchingUri);
+      setTargetUrl(matchingUri);
+    } else {
+      console.warn("No matching URI found for file ID", fileId);
+      setPlayerUri("");
+      setTargetUrl("");
+    }
+  }, [selectedShapeTag, props.shapes, props.uriList]);
 
   useEffect(() => {
     let baseUri = playerUri.replace(":8080", "");
@@ -141,13 +173,33 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
   /**
    * returns the VidispineShape data structure associated with the shape matching the selected tag
    */
-  const findSelectedShape = () => {
-    if (selectedShapeTag === "") return null;
-    for (let i = 0; i < props.shapes.length; ++i) {
-      if (props.shapes[i].tag.includes(selectedShapeTag))
-        return props.shapes[i];
-    }
-    return null;
+  const findSelectedShape = (): VidispineShape | undefined => {
+    // First try to find a shape with the selected tag that has video
+    const videoShapes = props.shapes.filter(shape => 
+      shape.tag.includes(selectedShapeTag) && 
+      shape.videoComponent && 
+      shape.videoComponent.length > 0
+    );
+    
+    if (videoShapes.length > 0) return videoShapes[0];
+
+    // If no video shapes found, try any shape with the selected tag
+    const anyShapes = props.shapes.filter(shape => 
+      shape.tag.includes(selectedShapeTag)
+    );
+    
+    if (anyShapes.length > 0) return anyShapes[0];
+
+    // If still nothing found, try the first shape with video
+    const anyVideoShapes = props.shapes.filter(shape => 
+      shape.videoComponent && 
+      shape.videoComponent.length > 0
+    );
+
+    if (anyVideoShapes.length > 0) return anyVideoShapes[0];
+
+    // Last resort - just return the first shape
+    return props.shapes.length > 0 ? props.shapes[0] : undefined;
   };
 
   const closeDialog = () => {

@@ -48,6 +48,7 @@ interface VidispineContainerComponent {
   mediaInfo?: VidispineShapeMediaInfo;
   file?: VidispineFile[];
   metadata?: DataPair[];
+  hash?: string;
 }
 
 interface VidispineAudioComponent {
@@ -199,9 +200,12 @@ class VidispineShape implements VidispineShapeIF {
       throw new VError(parentPath + ".file", "file list was not present");
     }
 
-    return <VidispineFile[]>sourceFileList.filter((f: any) => {
+    return sourceFileList.filter((f: any) => {
       try {
-        VidispineFileChecker.check(f);
+        if (!f.id || !f.path || !Array.isArray(f.uri) || !f.state || 
+            typeof f.size !== 'number' || !f.timestamp || !f.storage) {
+          throw new Error("Missing required fields");
+        }
         return true;
       } catch (e) {
         const displayFileId = f.hasOwnProperty("id") ? f.id : "no-id-present";
