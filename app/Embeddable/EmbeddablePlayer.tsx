@@ -23,7 +23,7 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
     if (vidispineContext) {
       const params = BreakDownQueryString(props.location.search);
       console.log("params are ", params);
-      const maybeId = params.get("onlineId");
+      const maybeId = params?.get("onlineId");
       if (maybeId) {
         console.log(`Loading item with id ${maybeId}`);
         loadItemMeta(vidispineContext.baseUrl, maybeId)
@@ -36,7 +36,9 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
               newItemData?.shape?.map((s) => ({
                 id: s.id,
                 tags: s.tag,
-                hasVideo: s.videoComponent?.length > 0,
+                hasVideo: s.videoComponent
+                  ? s.videoComponent.length > 0
+                  : false,
               }))
             );
           })
