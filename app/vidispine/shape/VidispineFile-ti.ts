@@ -10,7 +10,7 @@ export const VidispineFile = t.iface([], {
   uri: t.array("string"),
   state: "string",
   size: "number",
-  hash: "string",
+  hash: t.opt("string"),
   timestamp: t.opt("string"),
   refreshFlag: t.opt("number"),
   storage: "string",

@@ -8,10 +8,11 @@ interface VidispineFile {
   uri: string[];
   state: string;
   size: number;
+  hash?: string;
   timestamp?: string;
   refreshFlag?: number;
   storage: string;
-  metadata: any; //not sure about the format of this yet
+  metadata: any;
 }
 
 const { VidispineFile } = createCheckers(VidispineFileTI);
