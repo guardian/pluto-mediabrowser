@@ -202,8 +202,15 @@ class VidispineShape implements VidispineShapeIF {
 
     return sourceFileList.filter((f: any) => {
       try {
-        if (!f.id || !f.path || !Array.isArray(f.uri) || !f.state || 
-            typeof f.size !== 'number' || !f.timestamp || !f.storage) {
+        if (
+          !f.id ||
+          !f.path ||
+          !Array.isArray(f.uri) ||
+          !f.state ||
+          typeof f.size !== "number" ||
+          !f.timestamp ||
+          !f.storage
+        ) {
           throw new Error("Missing required fields");
         }
         return true;

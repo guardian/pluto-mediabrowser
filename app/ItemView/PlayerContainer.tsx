@@ -42,10 +42,11 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
   const findInitialShapetag = () => {
     // First try to find a shape with video from our default shapes
     for (const defaultTag of props.defaultShapes) {
-      const matchingShapes = props.shapes.filter(shape => 
-        shape.tag.includes(defaultTag) && 
-        shape.videoComponent && 
-        shape.videoComponent.length > 0
+      const matchingShapes = props.shapes.filter(
+        (shape) =>
+          shape.tag.includes(defaultTag) &&
+          shape.videoComponent &&
+          shape.videoComponent.length > 0
       );
       if (matchingShapes.length > 0) {
         console.log(`Found initial shape with tag ${defaultTag}`);
@@ -54,9 +55,8 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     }
 
     // If no default shapes with video found, try any shape with video
-    const videoShapes = props.shapes.filter(shape => 
-      shape.videoComponent && 
-      shape.videoComponent.length > 0
+    const videoShapes = props.shapes.filter(
+      (shape) => shape.videoComponent && shape.videoComponent.length > 0
     );
     if (videoShapes.length > 0 && videoShapes[0].tag.length > 0) {
       console.log(`Falling back to shape with tag ${videoShapes[0].tag[0]}`);
@@ -64,9 +64,10 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     }
 
     // Last resort - use the first shape's tag or "original"
-    const fallbackTag = props.shapes.length > 0 && props.shapes[0].tag.length > 0 
-      ? props.shapes[0].tag[0] 
-      : "original";
+    const fallbackTag =
+      props.shapes.length > 0 && props.shapes[0].tag.length > 0
+        ? props.shapes[0].tag[0]
+        : "original";
     console.log(`Falling back to tag ${fallbackTag}`);
     return fallbackTag;
   };
@@ -134,7 +135,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     console.log("Shape selection changed to:", selectedShapeTag);
     const currentShapeData = findSelectedShape();
     console.log("Selected shape:", currentShapeData);
-    
+
     if (!currentShapeData) {
       console.warn("No suitable shape found");
       return;
@@ -147,7 +148,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
     }
 
     // Find the matching URI from the uriList
-    const matchingUri = props.uriList.find(uri => uri.includes(fileId));
+    const matchingUri = props.uriList.find((uri) => uri.includes(fileId));
     if (matchingUri) {
       console.log("Found matching URI:", matchingUri);
       setPlayerUri(matchingUri);
@@ -175,25 +176,25 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
    */
   const findSelectedShape = (): VidispineShape | undefined => {
     // First try to find a shape with the selected tag that has video
-    const videoShapes = props.shapes.filter(shape => 
-      shape.tag.includes(selectedShapeTag) && 
-      shape.videoComponent && 
-      shape.videoComponent.length > 0
+    const videoShapes = props.shapes.filter(
+      (shape) =>
+        shape.tag.includes(selectedShapeTag) &&
+        shape.videoComponent &&
+        shape.videoComponent.length > 0
     );
-    
+
     if (videoShapes.length > 0) return videoShapes[0];
 
     // If no video shapes found, try any shape with the selected tag
-    const anyShapes = props.shapes.filter(shape => 
+    const anyShapes = props.shapes.filter((shape) =>
       shape.tag.includes(selectedShapeTag)
     );
-    
+
     if (anyShapes.length > 0) return anyShapes[0];
 
     // If still nothing found, try the first shape with video
-    const anyVideoShapes = props.shapes.filter(shape => 
-      shape.videoComponent && 
-      shape.videoComponent.length > 0
+    const anyVideoShapes = props.shapes.filter(
+      (shape) => shape.videoComponent && shape.videoComponent.length > 0
     );
 
     if (anyVideoShapes.length > 0) return anyVideoShapes[0];

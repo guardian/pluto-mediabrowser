@@ -31,11 +31,14 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
             setItemData(newItemData);
             setLastError("");
             setLoading(false);
-            console.log("Available shapes:", newItemData?.shape?.map(s => ({
-              id: s.id,
-              tags: s.tag,
-              hasVideo: s.videoComponent?.length > 0
-            })));
+            console.log(
+              "Available shapes:",
+              newItemData?.shape?.map((s) => ({
+                id: s.id,
+                tags: s.tag,
+                hasVideo: s.videoComponent?.length > 0,
+              }))
+            );
           })
           .catch((err) => {
             setLoading(false);
