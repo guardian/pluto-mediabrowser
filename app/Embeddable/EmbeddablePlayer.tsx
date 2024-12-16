@@ -72,6 +72,18 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
     }
   };
 
+  console.log("Item data loaded:", {
+    shapes: itemData?.shape?.map((s) => ({
+      id: s.id,
+      tags: s.tag,
+      mimeTypes: s.mimeType,
+      hasAudio: s.audioComponent ? s.audioComponent.length > 0 : false,
+      hasVideo: s.videoComponent ? s.videoComponent.length > 0 : false,
+      hasContainer: !!s.containerComponent,
+    })),
+    files: itemData?.files,
+  });
+
   return (
     <div id="mediabrowser-embed">
       {loading ? <CircularProgress /> : undefined}

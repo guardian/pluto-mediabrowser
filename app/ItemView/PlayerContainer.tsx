@@ -85,7 +85,26 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
    * @param currentShapeData
    */
   const getFileId = (currentShapeData: VidispineShape) => {
-    console.log("Shape data:", currentShapeData);
+    console.log("Processing shape:", {
+      id: currentShapeData.id,
+      tags: currentShapeData.tag,
+      mimeTypes: currentShapeData.mimeType,
+      containerComponent: currentShapeData.containerComponent?.file?.map(
+        (f) => ({
+          id: f.id,
+          uri: f.uri,
+        })
+      ),
+      audioComponent: currentShapeData.audioComponent?.map((c) => ({
+        id: c.id,
+        files: c.file.map((f) => ({ id: f.id, uri: f.uri })),
+      })),
+      videoComponent: currentShapeData.videoComponent?.map((c) => ({
+        id: c.id,
+        files: c.file.map((f) => ({ id: f.id, uri: f.uri })),
+      })),
+    });
+
     if (currentShapeData.mimeType.length > 0) {
       setMimeType(currentShapeData.mimeType[0]);
     }
@@ -149,6 +168,7 @@ const PlayerContainer: React.FC<PlayerContainerProps> = (props) => {
 
     // Find the matching URI from the uriList
     const matchingUri = props.uriList.find((uri) => uri.includes(fileId));
+    console.log("Matching URI:", matchingUri);
     if (matchingUri) {
       console.log("Found matching URI:", matchingUri);
       setPlayerUri(matchingUri);
