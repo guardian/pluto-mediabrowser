@@ -23,7 +23,7 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
     if (vidispineContext) {
       const params = BreakDownQueryString(props.location.search);
       console.log("params are ", params);
-      const maybeId = params.get("onlineId");
+      const maybeId = params?.get("onlineId");
       if (maybeId) {
         console.log(`Loading item with id ${maybeId}`);
         loadItemMeta(vidispineContext.baseUrl, maybeId)
@@ -31,6 +31,16 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
             setItemData(newItemData);
             setLastError("");
             setLoading(false);
+            console.log(
+              "Available shapes:",
+              newItemData?.shape?.map((s) => ({
+                id: s.id,
+                tags: s.tag,
+                hasVideo: s.videoComponent
+                  ? s.videoComponent.length > 0
+                  : false,
+              }))
+            );
           })
           .catch((err) => {
             setLoading(false);
@@ -61,6 +71,18 @@ const EmbeddablePlayer: React.FC<RouteComponentProps> = (props) => {
       return undefined;
     }
   };
+
+  console.log("Item data loaded:", {
+    shapes: itemData?.shape?.map((s) => ({
+      id: s.id,
+      tags: s.tag,
+      mimeTypes: s.mimeType,
+      hasAudio: s.audioComponent ? s.audioComponent.length > 0 : false,
+      hasVideo: s.videoComponent ? s.videoComponent.length > 0 : false,
+      hasContainer: !!s.containerComponent,
+    })),
+    files: itemData?.files,
+  });
 
   return (
     <div id="mediabrowser-embed">

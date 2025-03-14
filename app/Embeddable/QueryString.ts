@@ -3,6 +3,8 @@
  * @param qs querystring
  */
 function BreakDownQueryString(qs: string): Map<string, string> {
+  if (!qs) return new Map();
+
   return qs
     .replace(/^\?/, "")
     .split("&")
